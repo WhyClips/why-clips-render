@@ -1,30 +1,23 @@
 {
-  "name": "henry-short",
+  "name": "island-short",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "render": "remotion render src/index.ts HenryShort out/video.mp4 --codec h264 --crf 16 --concurrency 1",
-    "still": "node scripts/henry-stills.mjs",
+    "render": "remotion render src/index.ts IslandShort out/video.mp4 --codec h264 --crf 16 --concurrency 1",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-three/fiber": "^9.7.0",
-    "@react-three/postprocessing": "^3.0.0",
     "@remotion/bundler": "4.0.545",
     "@remotion/cli": "4.0.545",
     "@remotion/renderer": "4.0.545",
-    "@remotion/three": "4.0.545",
-    "postprocessing": "6.37.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "remotion": "4.0.545",
-    "three": "0.175.0"
+    "remotion": "4.0.545"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@types/three": "0.175.0",
     "typescript": "^5.8.0"
   }
 }
