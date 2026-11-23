@@ -1,12 +1,9 @@
-# Renders the Island Short ("The Island That Disappeared From Maps",
-# Why Clips) in 4 parallel chunks on GitHub Actions CPU runners, then
-# assembles the final 1080x1920 MP4.
-# Trigger: Actions tab > "Render Island Short" > Run workflow.
-# Pure SVG/DOM Remotion (no WebGL) — renders at full 1080x1920 directly,
-# no upscale step. Adapted from the Henry workflow (commit da55e33 kept
-# the ffmpeg install in the assemble job — ubuntu-26.04 runners do not
-# ship ffmpeg).
-name: Render Island Short
+# Renders the Spam Short (Why Clips) in 4 parallel chunks on
+# GitHub Actions CPU runners, then assembles the final 1080x1920 MP4.
+# Trigger: Actions tab > "Render Spam Short" > Run workflow.
+# Adapted from the Island workflow (same repo, run 45067895128, success).
+# Pure SVG/DOM Remotion at full 1080x1920 — no upscale step.
+name: Render Spam Short
 
 on:
   workflow_dispatch:
@@ -20,10 +17,10 @@ jobs:
       fail-fast: false
       matrix:
         chunk:
-          - { name: c1, frames: "0-547" }
-          - { name: c2, frames: "548-1095" }
-          - { name: c3, frames: "1096-1643" }
-          - { name: c4, frames: "1644-2189" }
+          - { name: c1, frames: "0-437" }
+          - { name: c2, frames: "438-875" }
+          - { name: c3, frames: "876-1313" }
+          - { name: c4, frames: "1314-1750" }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,7 +34,7 @@ jobs:
       - name: Render chunk
         run: |
           mkdir -p out
-          npx remotion render src/index.ts IslandShort out/chunk-${{ matrix.chunk.name }}.mp4 --codec h264 --crf 16 --concurrency 2 --scale 1 --frames ${{ matrix.chunk.frames }} --timeout 180000 --log=verbose
+          npx remotion render src/index.ts SpamShort out/chunk-${{ matrix.chunk.name }}.mp4 --codec h264 --crf 16 --concurrency 2 --scale 1 --frames ${{ matrix.chunk.frames }} --timeout 180000 --log=verbose
       - uses: actions/upload-artifact@v4
         with:
           name: chunk-${{ matrix.chunk.name }}
@@ -63,10 +60,10 @@ jobs:
           ls -la chunks
           printf "file 'chunk-c1.mp4'\nfile 'chunk-c2.mp4'\nfile 'chunk-c3.mp4'\nfile 'chunk-c4.mp4'\n" > chunks/chunks.txt
           ffmpeg -y -v error -f concat -safe 0 -i chunks/chunks.txt -c copy chunks/video-1080.mp4
-          ffmpeg -y -v error -i chunks/video-1080.mp4 -i audio/voiceover.mp3 -i audio/music_sfx.wav -filter_complex "[1:a]apad[a1];[a1][2:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[aout]" -map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 192k -shortest island-full-quality-github.mp4
-          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name island-full-quality-github.mp4
+          ffmpeg -y -v error -i chunks/video-1080.mp4 -i audio/voiceover.mp3 -i audio/music_sfx.wav -filter_complex "[1:a]apad[a1];[a1][2:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[aout]" -map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 192k -shortest spam-full-quality-github.mp4
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name spam-full-quality-github.mp4
       - uses: actions/upload-artifact@v4
         with:
-          name: island-full-quality-github
-          path: island-full-quality-github.mp4
+          name: spam-full-quality-github
+          path: spam-full-quality-github.mp4
           if-no-files-found: error
