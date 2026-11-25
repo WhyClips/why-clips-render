@@ -40,9 +40,12 @@ jobs:
           ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,r_frame_rate out/smoke-test.mp4
           ls -la out/smoke-frames/ | head -35
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: template-smoke-test
           path: |
             out/smoke-frames/manifest.json
+            out/smoke-frames/frame-*.png
+            out/smoke-frames/run_0_29/frame-*.png
             out/smoke-test.mp4
-          if-no-files-found: error
+          if-no-files-found: warn

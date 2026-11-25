@@ -70,16 +70,22 @@ const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 const MIN_BYTES = 10 * 1024; // a real 1080x1920 PNG is hundreds of KB; smaller = truncated
 const frameFile = (f) => path.join(outDir, `frame-${f}.png`);
 
+// Returns {ok, reason} — reason names the actual problem (missing / too small /
+// bad magic) plus the observed size and first bytes, so a failed run on a
+// remote machine can be diagnosed from the log alone.
 function validPng(p) {
+  let st;
+  try { st = fs.statSync(p); } catch { return { ok: false, reason: "missing" }; }
+  if (st.size < MIN_BYTES) return { ok: false, reason: `too small (${st.size} bytes)` };
   try {
-    const st = fs.statSync(p);
-    if (st.size < MIN_BYTES) return false;
     const fd = fs.openSync(p, "r");
     const buf = Buffer.alloc(8);
     fs.readSync(fd, buf, 0, 8, 0);
     fs.closeSync(fd);
-    return buf.equals(PNG_MAGIC);
-  } catch { return false; }
+    return buf.equals(PNG_MAGIC)
+      ? { ok: true, reason: `valid (${st.size} bytes)` }
+      : { ok: false, reason: `bad magic (${buf.toString("hex")}, ${st.size} bytes)` };
+  } catch (e) { return { ok: false, reason: `unreadable (${e.message})` }; }
 }
 const sha1 = (p) => createHash("sha1").update(fs.readFileSync(p)).digest("hex");
 
@@ -102,7 +108,7 @@ function missingRuns(manifest) {
   const missing = [];
   for (let f = chunkStart; f <= chunkEnd; f++) {
     const entry = manifest.frames[String(f)];
-    if (entry && entry.file && validPng(path.join(outDir, entry.file))) continue;
+    if (entry && entry.file && validPng(path.join(outDir, entry.file)).ok) continue;
     if (entry) delete manifest.frames[String(f)]; // manifest says done but file is gone/corrupt: re-render
     missing.push(f);
   }
@@ -154,11 +160,21 @@ for (const [a, b] of runs) {
     process.exit(1);
   }
   renderSeconds += seconds;
+  // diagnostic: what did Remotion actually write? (sizes tell us at a glance
+  // whether a frame is a real render ~1-2 MB or a blank ~5 KB)
+  console.log(`run dir ${path.relative(projectDir, runDir)}: ` +
+    fs.readdirSync(runDir).map((n) => `${n} ${fs.statSync(path.join(runDir, n)).size}B`).join(", "));
   // verify each PNG, then move it into place (atomic rename) and record it
   let moved = 0;
   for (let f = a; f <= b; f++) {
     const src = path.join(runDir, `frame-${f}.png`);
-    if (!validPng(src)) { console.error(`frame ${f} did not render as a valid PNG (${src})`); process.exit(1); }
+    const check = validPng(src);
+    if (!check.ok) {
+      console.error(`frame ${f} did not render as a valid PNG (${src}): ${check.reason}`);
+      console.error(`run dir contents: ` +
+        fs.readdirSync(runDir).map((n) => `${n} ${fs.statSync(path.join(runDir, n)).size}B`).join(", "));
+      process.exit(1);
+    }
     fs.renameSync(src, frameFile(f));
     const st = fs.statSync(frameFile(f));
     manifest.frames[String(f)] = { file: `frame-${f}.png`, bytes: st.size, sha1: sha1(frameFile(f)) };
