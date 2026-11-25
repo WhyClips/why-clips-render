@@ -62,7 +62,7 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
     // S2 train yard: Frank + four ballplayers with the mail sacks, grinning, mid-robbery.
     // All five in FRONT of the boxcar (z <= 139.8) and clear of the sack pile
     // (x 1.5..2.5, z 139.6..141.2) — two were hidden behind/inside the boxcar before.
-    const spots: [number, number, number][] = [[0.2, 139.6, 1], [1.0, 139.2, 3], [-1.2, 139.8, 4], [3.2, 139.0, 5], [-2.4, 139.4, 6]];
+    const spots: [number, number, number][] = [[0.2, 139.6, 1], [1.0, 139.2, 3], [-1.2, 139.8, 4], [2.9, 139.2, 5], [-2.4, 139.4, 6]];
     for (const [x, z, i] of spots) {
       const w = who(i, i === 1 ? FRANK : BALL);
       const v = faceCam(cam, x, z);

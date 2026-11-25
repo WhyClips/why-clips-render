@@ -33,7 +33,7 @@ export const SET_NAME: Record<number, string> = { 1: "street", 2: "room", 3: "of
 export type Light = "day" | "golden";
 export type ShotDef = { id: number; a: number; b: number; light: Light; set: number };
 export const SHOTS: ShotDef[] = [
-  { id: 1, a: 0, b: 154, light: "golden", set: 5 },    // HOOK: ECU wooden gun on the bench
+  { id: 1, a: 0, b: 154, light: "day", set: 5 },    // HOOK: ECU wooden gun on the bench
   { id: 2, a: 154, b: 360, light: "day", set: 6 },     // robbery: ballplayers + mail sacks + $700
   { id: 3, a: 360, b: 488, light: "day", set: 4 },     // prisoners building their own prison
   { id: 4, a: 488, b: 659, light: "day", set: 4 },     // ESCAPE: loco drives through the gates
@@ -46,7 +46,7 @@ export const SHOTS: ShotDef[] = [
   { id: 11, a: 1214, b: 1433, light: "day", set: 3 },  // fingerprinting + 24 YEARS
   { id: 12, a: 1433, b: 1495, light: "day", set: 3 },  // the match: card + wanted poster
   { id: 13, a: 1495, b: 1689, light: "day", set: 1 },  // bail crowd + $10,000
-  { id: 14, a: 1689, b: TOTAL, light: "golden", set: 2 }, // FINAL: object-only, wooden gun on the desk
+  { id: 14, a: 1689, b: TOTAL, light: "day", set: 2 }, // FINAL: object-only, wooden gun on the desk
 ];
 /** crossfades at shot changes; a white 4-frame flash after the hook (shot 1) */
 export const XFADE: Record<number, number> = { 2: 8, 3: 8, 4: 8, 5: 8, 6: 8, 7: 8, 8: 8, 9: 8, 10: 8, 11: 8, 12: 8, 13: 8, 14: 8 };
@@ -90,22 +90,26 @@ const pushK = (f: number, f0: number, rate: number, punch = 0, n = 35) => {
 const dolly = (pos: V3, look: V3, k: number, rest: Partial<Cam> = {}): Shot =>
   ({ pos: [look[0] + (pos[0] - look[0]) * k, look[1] + (pos[1] - look[1]) * k, look[2] + (pos[2] - look[2]) * k], look, ...rest });
 
-// ---- shot 1 — workshop (golden): ECU wooden gun on the bench, then medium on the prisoner ----
-// Gun on the bench at (0.35, 0.53, -68.1); prisoner behind the bench at (0, 0, -66.8).
+// ---- shot 1 — workshop (day): ECU wooden gun on the bench, then medium on the prisoner ----
+// Gun on the bench at (-0.1, 0.68, -67.95); prisoner behind the bench at (0, 0, -66.8).
 // S1a looks DOWN at the bench top from above-front so the gun is the subject and the
 // prisoner stays out of frame (was a giant face + hammer, gun invisible against his torso).
-const S1a = (f: number) => dolly([1.6, 2.2, -69.6], [0.3, 0.5, -68.0], pushK(f, 0, 0.0028), { fov: 30 });
+// Light is "day", not "golden": the golden preset leaves this windowless interior in
+// hemisphere-only light and everything reads purple (walls, floor, bench).
+const S1a = (f: number) => dolly([1.4, 2.1, -69.8], [-0.05, 0.6, -67.95], pushK(f, 0, 0.0028), { fov: 30 });
 const S1b = (f: number) => dolly([3.4, 1.9, -72.8], [0, 1.4, -67.5], pushK(f, 80, 0.0022), { fov: 38, roll: -0.03 });
 // ---- shot 2 — train yard (day): wide robbery, medium on Frank + sacks, ECU sacks + $700 ----
 // Boxcar at (0, 0, 143); mail sacks at (2.0, 0, 140.5); ballplayers around (-2.4..3.2, 0, 139-140).
 const S2a = (f: number) => dolly([7.5, 2.8, 130.5], [0, 1.6, 141], pushK(f, 154, 0.0022), { fov: 44 });
 const S2b = (f: number) => dolly([4.0, 1.9, 136.2], [0.2, 1.4, 139.8], pushK(f, 230, 0.0022), { fov: 36, roll: 0.03 });
-const S2c = (f: number) => dolly([3.0, 1.5, 137.6], [1.9, 0.9, 140.6], pushK(f, 310, 0.0025), { fov: 32 });
+// S2c is a MEDIUM on the sacks + $700, not a tight ECU: at 3 m the 2.6 m number card
+// filled the whole frame and was cut off on both sides. Pulled back so the card fits.
+const S2c = (f: number) => dolly([4.5, 2.2, 135.5], [1.7, 1.0, 140.7], pushK(f, 310, 0.0025), { fov: 36 });
 // ---- shot 3 — prison (day): wide of the half-built wall, medium on the builders ----
 // Half-built wall at x -6..-2, z 72; facade at z 76; prisoners IN FRONT of the wall at z 70.2-70.8.
 // S3a pulled back + wider so the full LEAVENWORTH sign (was cut off) and the builders fit.
-const S3a = (f: number) => dolly([10.0, 3.2, 57.0], [-3.5, 2.2, 73], pushK(f, 360, 0.002), { fov: 46 });
-const S3b = (f: number) => dolly([-1.2, 1.9, 66.5], [-4.5, 1.3, 70.6], pushK(f, 420, 0.0025), { fov: 36, roll: -0.03 });
+const S3a = (f: number) => dolly([11.0, 3.4, 55.5], [-2.0, 2.4, 74], pushK(f, 360, 0.002), { fov: 46 });
+const S3b = (f: number) => dolly([0.5, 2.2, 63.0], [-4.5, 1.3, 70.6], pushK(f, 420, 0.0025), { fov: 38, roll: -0.03 });
 // ---- shot 4 — prison (day): ESCAPE, loco drives through the gates ----
 // Loco starts z 71.5 (inside), ends z 79.5 (through the gate at z 76); gates at x +/-1.5, z 76.
 const S4a = (f: number) => dolly([8.5, 3.0, 58.5], [0, 2.0, 74], pushK(f, 488, 0.0018), { fov: 44 });
@@ -149,10 +153,11 @@ const S12b = (f: number) => dolly([-37.8, 1.8, -1.0], [-39.6, 1.5, 3.4], pushK(f
 // Crowd at (-1.5..3.3, 0, 1.2-2.2); $10,000 card above at (0.5, 2.8, 3.0).
 const S13a = (f: number) => dolly([6.5, 2.6, -8.5], [0.5, 1.6, 1.5], pushK(f, 1495, 0.002), { fov: 44 });
 const S13b = (f: number) => dolly([3.5, 2.0, -4.0], [0.8, 1.7, 1.2], pushK(f, 1600, 0.0022), { fov: 36, roll: 0.03 });
-// ---- shot 14 — room (golden): FINAL, object-only ECU, wooden gun on the desk ----
+// ---- shot 14 — room (day): FINAL, object-only ECU, wooden gun on the desk ----
 // Gun on the table at (39.55, 0.85, 2.75); no characters.
 // Shot from above-front so the frame is the sunlit desk top (the old angle showed the
 // shadowed desk faces, purple from the hemisphere ground bounce, and no gun at all).
+// Light is "day", not "golden": golden leaves this interior purple (same as the workshop).
 const S14a = (f: number) => dolly([40.3, 2.6, 1.2], [39.55, 0.85, 2.75], pushK(f, 1689, 0.0022), { fov: 28 });
 const S14b = (f: number) => dolly([40.1, 2.3, 1.8], [39.55, 0.85, 2.75], pushK(f, 1750, 0.0025), { fov: 28 });
 
@@ -184,11 +189,11 @@ export const keyEnd = (id: number, f: number) => {
 // DOF on close-ups/mediums (focus = the character or the hero object), wides stay sharp.
 export type Dof = { f: number; dur?: number; cInf: number; focus?: (f: number) => V3 };
 export const DOF: Dof[] = [
-  { f: 0, cInf: 14, focus: () => [0.35, 0.53, -68.1] },   // S1 ECU: gun sharp, prisoner soft
+  { f: 0, cInf: 14, focus: () => [-0.1, 0.68, -67.95] },   // S1 ECU: gun sharp, prisoner soft
   { f: 80, dur: 30, cInf: 12, focus: () => [0, 1.5, -66.8] }, // S1 medium: prisoner sharp
   { f: 154, cInf: 0 },                                  // S2 wide: establishing, all sharp
   { f: 230, dur: 30, cInf: 10, focus: () => [0.8, 1.4, 140.2] }, // S2 medium: Frank sharp
-  { f: 310, dur: 26, cInf: 14, focus: () => [1.9, 0.9, 140.6] }, // S2 ECU: mail sacks sharp
+  { f: 310, dur: 26, cInf: 14, focus: () => [2.0, 1.0, 140.7] }, // S2 ECU: mail sacks sharp
   { f: 360, cInf: 0 },                                  // S3 wide
   { f: 420, dur: 28, cInf: 10, focus: () => [-4.5, 1.3, 70.6] }, // S3 medium: builders sharp
   { f: 488, cInf: 0 },                                  // S4 wide: gates + loco sharp

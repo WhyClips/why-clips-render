@@ -78,10 +78,10 @@ const buildFallback = (name: string): THREE.Object3D => {
       add(new THREE.BoxGeometry(0.45, 0.35, 0.45), lam("fbCrate2", () => ({ color: "#c9a24e" })), -0.5, 1.08, 0);
       add(new THREE.BoxGeometry(0.4, 0.3, 0.4), lam("fbCrate3", () => ({ color: "#7a9a4a" })), 0.4, 1.06, 0.1);
     } else {
+      // clean empty workbench — tools are placed on it by the scene builder
+      // (the old iron/gold boxes cluttered the top and hid the hero gun).
       add(new THREE.BoxGeometry(1.7, 0.1, 0.5), wood, 0, 0.45, 0);
       for (const s of [-1, 1]) add(new THREE.BoxGeometry(0.1, 0.45, 0.45), woodDark, s * 0.7, 0.22, 0);
-      add(new THREE.BoxGeometry(0.4, 0.25, 0.3), iron, -0.5, 0.62, 0);
-      add(new THREE.BoxGeometry(0.3, 0.2, 0.25), lam("fbTool", () => ({ color: "#c9a24e" })), 0.45, 0.6, 0);
     }
   } else if (name === "windmill") {
     const tower = add(new THREE.CylinderGeometry(0.85, 1.25, 4.6, 10), lam("fbMill", () => ({ map: stoneHD("fbMill", ["#d8cbb2", "#cdbfa6", "#e0d4c0", "#c4b49a"], "#a08b74") })), 0, 2.3, 0);
@@ -510,12 +510,12 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) 
   b.add(boxGeo(V(-7.4, 0, -77), V(-7, W, -63), 2), bw);
   b.add(boxGeo(V(7, 0, -77), V(7.4, W, -63), 2), bw);
   // workbench (stall-bench fallback) + tools on top: hammer + saw.
-  // NOTE: the stall-bench top is at y ~0.48 (legs 0.45 + top 0.1, prop scale 0.95),
-  // NOT 0.95 — the template's tools floated 0.5 m above the bench. All tools sit ON it.
-  prop(b, kit, "stall-bench", 0, 0, -68, 0.95, 0);
-  b.add(boxGeo(V(0.35, 0.48, -67.9), V(0.75, 0.55, -67.7), 0), lam("shopHammerHead", () => ({ color: "#3d414c" })));
-  b.add(boxGeo(V(0.5, 0.48, -68.15), V(0.6, 0.83, -68.05), 0), lam("shopHammerHandle", () => ({ color: "#8a5a3c" })));
-  b.add(boxGeo(V(-0.7, 0.48, -67.85), V(-0.1, 0.52, -67.75), 0), lam("shopSaw", () => ({ color: "#b8bcc4" })));
+  // Bench top is at y ~0.65: the fallback is scaled by prop h / bbox height
+  // (h 0.65 / 0.505 = 1.29, top 0.5 * 1.29). All tools sit ON it, not floating.
+  prop(b, kit, "stall-bench", 0, 0, -68, 0.65, 0);
+  b.add(boxGeo(V(0.35, 0.65, -67.9), V(0.75, 0.72, -67.7), 0), lam("shopHammerHead", () => ({ color: "#3d414c" })));
+  b.add(boxGeo(V(0.5, 0.65, -68.15), V(0.6, 1.0, -68.05), 0), lam("shopHammerHandle", () => ({ color: "#8a5a3c" })));
+  b.add(boxGeo(V(-0.7, 0.65, -67.85), V(-0.1, 0.69, -67.75), 0), lam("shopSaw", () => ({ color: "#b8bcc4" })));
   // shelves on the back wall with jars + boxes
   const shelf = lam("shopShelf", () => ({ color: "#6e4b33" }));
   for (const y of [1.8, 2.4]) b.add(boxGeo(V(-5.5, y, -63.6), V(-1.5, y + 0.08, -63.3), 1), shelf);
@@ -530,12 +530,12 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) 
     b.add(boxGeo(V(7.05, 1.6 + i * 0.45, -70 + i * 0.8), V(7.2, 2.0 + i * 0.45, -69.7 + i * 0.8), 0),
       lam(`shopHang${i}`, () => ({ color: i % 2 ? "#8a5a3c" : "#3d414c" })));
   prop(b, kit, "cart", -4.6, 0, -66, 1.1, 0.5);
-  prop(b, kit, "lantern", 0.65, 0.48, -68.1, 0.42, 0);
+  prop(b, kit, "lantern", 0.65, 0.65, -68.1, 0.42, 0);
   // the wooden gun on the bench (S1 hook ECU) — the whole story in one object.
-  // ON the bench top (y 0.53), near the front edge, clear of the hammer/saw/lantern.
+  // ON the bench top (y 0.68), centre patch, clear of hammer/saw/lantern.
   const benchGun = woodenGun(); benchGun.rotation.x = Math.PI / 2;
   const benchGunH = new THREE.Group(); benchGunH.add(benchGun);
-  benchGunH.position.set(0.35, 0.53, -68.1); benchGunH.rotation.y = -0.5; grp.add(benchGunH);
+  benchGunH.position.set(-0.1, 0.68, -67.95); benchGunH.rotation.y = -0.5; grp.add(benchGunH);
   prop(b, kit, "windmill", 5.6, 0, -64.8, 2.6, 0.4); // small decorative mill on a crate by the wall
   b.add(boxGeo(V(4.2, 0, -65.5), V(5.0, 0.55, -64.7), 1), lam("shopCrate", () => ({ color: "#b5653f" })));
   b.add(boxGeo(V(4.3, 0.55, -65.4), V(4.9, 0.95, -64.8), 1), lam("shopCrate2", () => ({ color: "#8a6a4a" })));
@@ -614,8 +614,8 @@ export class World {
       this.sets.push(grp); R.add(grp);
     }
     // ---- in-scene numbers (Grigware: the biggest figures as 3D text in the scene) ----
-    const n700 = numberCard("$700", null, "gold", 1);
-    n700.position.set(2.0, 1.5, 140.8); this.numbers.push({ mesh: n700, set: 6, pos: [2.0, 1.5, 140.8], a: 300, b: 360 }); R.add(n700);
+    const n700 = numberCard("$700", null, "gold", 0.7);
+    n700.position.set(2.0, 1.7, 140.8); this.numbers.push({ mesh: n700, set: 6, pos: [2.0, 1.7, 140.8], a: 300, b: 360 }); R.add(n700);
     const nMayor = numberCard("MAYOR", "1916", "white", 0.9);
     nMayor.position.set(40.5, 2.6, 5.0); this.numbers.push({ mesh: nMayor, set: 2, pos: [40.5, 2.6, 5.0], a: 1000, b: 1057 }); R.add(nMayor);
     const n24 = numberCard("24 YEARS", null, "gold", 1);
