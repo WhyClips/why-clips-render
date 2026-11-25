@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p out
           echo "RENDER_START $(date -u +%FT%TZ)"
-          npx remotion render src/index.ts ThreeTest out/threejs-test.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose
+          npx remotion render src/index.ts ThreeTest out/threejs-test.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl swiftshader
           echo "RENDER_END $(date -u +%FT%TZ)"
           ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,r_frame_rate out/threejs-test.mp4
       - uses: actions/upload-artifact@v4

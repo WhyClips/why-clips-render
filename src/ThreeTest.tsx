@@ -8,14 +8,14 @@
  */
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { ThreeCanvas, useThreeVideoFrame } from "@remotion/three";
+import { ThreeCanvas } from "@remotion/three";
+import { useFrame, type RootState } from "@react-three/fiber";
 import * as THREE from "three";
 
 // Mutable scene handles, filled once in onCreated, animated per frame.
 const R: {
   box?: THREE.Mesh;
   card?: THREE.Mesh;
-  camera?: THREE.PerspectiveCamera;
 } = {};
 
 /** Seeded pseudo-random so textures are stable across renders. */
@@ -136,15 +136,7 @@ const stickmanTexture = () =>
     g.fill();
   });
 
-const buildScene = ({
-  gl,
-  scene,
-  camera,
-}: {
-  gl: THREE.WebGLRenderer;
-  scene: THREE.Scene;
-  camera: THREE.PerspectiveCamera;
-}) => {
+const buildScene = ({ gl, scene, camera }: RootState) => {
   gl.shadowMap.enabled = true;
   gl.shadowMap.type = THREE.PCFSoftShadowMap;
   scene.background = new THREE.Color("#7ec8f7");
@@ -281,22 +273,24 @@ const buildScene = ({
   scene.add(card);
   R.card = card;
 
-  R.camera = camera;
   camera.lookAt(0, 2.2, -4);
 };
 
-/** Per-frame animation: spin the sign, bob the card, keep the camera aimed. */
+/** Per-frame animation (react-three-fiber render loop): spin the sign,
+ *  bob the card, dolly the camera in and keep it aimed at the street. */
 const Animator: React.FC = () => {
-  const frame = useThreeVideoFrame();
-  if (R.box) {
-    R.box.rotation.y = frame * 0.06;
-  }
-  if (R.card) {
-    R.card.position.y = 2.4 + Math.sin(frame * 0.18) * 0.12;
-  }
-  if (R.camera) {
-    R.camera.lookAt(0, 2.2, -4);
-  }
+  const frame = useCurrentFrame();
+  useFrame(({ camera }) => {
+    const camZ = 15 - (frame / 29) * 3.5;
+    camera.position.set(0, 5, camZ);
+    camera.lookAt(0, 2.2, -4);
+    if (R.box) {
+      R.box.rotation.y = frame * 0.06;
+    }
+    if (R.card) {
+      R.card.position.y = 2.4 + Math.sin(frame * 0.18) * 0.12;
+    }
+  });
   return null;
 };
 
