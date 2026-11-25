@@ -36,7 +36,9 @@ jobs:
       - name: Verify manifest + assemble 1s proof video
         run: |
           node scripts/verify-manifest.mjs --manifest out/smoke-frames/manifest.json --frames 0-29 --out out/smoke-frames
-          ./scripts/assemble.sh --frames out/smoke-frames --manifest out/smoke-frames/manifest.json --out out/smoke-test.mp4 --fps 30 --crf 18
+          # NB: call assemble.sh via bash — the git-data push sets every file to
+          # mode 100644, so the +x bit is lost on the runner (./scripts/... = 126)
+          bash scripts/assemble.sh --frames out/smoke-frames --manifest out/smoke-frames/manifest.json --out out/smoke-test.mp4 --fps 30 --crf 18
           ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,r_frame_rate out/smoke-test.mp4
           ls -la out/smoke-frames/ | head -35
       - uses: actions/upload-artifact@v4
