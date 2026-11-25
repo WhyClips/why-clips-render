@@ -2,8 +2,12 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "grigware",
- "message": "S1a hook: low 3/4 ECU so the wooden gun reads as a revolver, not a plank",
+ "message": "Stills round 3 FINAL: S1a/S14 gun ECU (1.3x, dark grip, steep 2.2m), S8 stall culling-box fix, S3a inside set, S3b fov 42, S2a fov 48",
  "files": [
+  {
+   "path": "BUILD-NOTES.md",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/BUILD-NOTES.md"
+  },
   {
    "path": "README.md",
    "file": "/home/hatch/workspace/ricks-clone/grigware-project/README.md"

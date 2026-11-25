@@ -252,7 +252,7 @@ const buildRoom = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) => {
   // and the lantern (38.45, 2.8). Was buried under the books + lantern at (39.2, 2.5).
   const deskGun = woodenGun(); deskGun.rotation.x = Math.PI / 2;
   const deskGunH = new THREE.Group(); deskGunH.add(deskGun);
-  deskGunH.position.set(39.55, 0.86, 2.75); deskGunH.rotation.y = -0.5; grp.add(deskGunH);
+  deskGunH.position.set(39.55, 0.86, 2.75); deskGunH.rotation.y = -0.7; deskGunH.scale.setScalar(1.3); grp.add(deskGunH);
 };
 
 /** 3 — office (day): marble floor, desk + glowing laptop, columns, window wall, clock */
@@ -364,9 +364,9 @@ const woodenGun = (): THREE.Group => {
     const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.y = ry; m.rotation.z = rz;
     m.castShadow = true; m.receiveShadow = true; g.add(m); return m;
   };
-  add(new THREE.BoxGeometry(0.34, 0.05, 0.05), wood, 0.1, 0.06, 0);            // barrel
-  add(new THREE.CylinderGeometry(0.045, 0.045, 0.1, 10), woodDark, -0.08, 0.05, 0, 0, Math.PI / 2); // cylinder
-  const grip = add(new THREE.BoxGeometry(0.06, 0.16, 0.05), wood, -0.12, -0.03, 0);
+  add(new THREE.BoxGeometry(0.34, 0.07, 0.07), wood, 0.1, 0.06, 0);            // barrel (thicker so it reads at ECU distance)
+  add(new THREE.CylinderGeometry(0.05, 0.05, 0.1, 10), woodDark, -0.08, 0.05, 0, 0, Math.PI / 2); // cylinder
+  const grip = add(new THREE.BoxGeometry(0.07, 0.18, 0.06), woodDark, -0.12, -0.03, 0); // grip DARK: the L reads only if the grip contrasts with the barrel
   grip.rotation.z = 0.35;
   add(new THREE.BoxGeometry(0.05, 0.03, 0.05), woodDark, 0.26, 0.03, 0);       // muzzle tip
   return g;
@@ -539,7 +539,7 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) 
   // ON the bench top (y 0.68), centre patch, clear of hammer/saw/lantern.
   const benchGun = woodenGun(); benchGun.rotation.x = Math.PI / 2;
   const benchGunH = new THREE.Group(); benchGunH.add(benchGun);
-  benchGunH.position.set(-0.1, 0.68, -67.95); benchGunH.rotation.y = -0.9; grp.add(benchGunH);
+  benchGunH.position.set(-0.1, 0.68, -67.95); benchGunH.rotation.y = -0.7; benchGunH.scale.setScalar(1.3); grp.add(benchGunH);
   prop(b, kit, "windmill", 5.6, 0, -64.8, 2.6, 0.4); // small decorative mill on a crate by the wall
   b.add(boxGeo(V(4.2, 0, -65.5), V(5.0, 0.55, -64.7), 1), lam("shopCrate", () => ({ color: "#b5653f" })));
   b.add(boxGeo(V(4.3, 0.55, -65.4), V(4.9, 0.95, -64.8), 1), lam("shopCrate2", () => ({ color: "#8a6a4a" })));

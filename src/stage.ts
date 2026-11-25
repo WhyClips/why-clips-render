@@ -143,13 +143,15 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
     blob(out, 0.5, 0, 1.5, 1);
   } else if (id === 8) {
     // S8 street: Frank IN FRONT OF the candy stall, grinning; two customers at the stall.
-    // (He stood BEHIND the stall before — the template's sight-line discipline culled
-    // the stall because it blocked the S8b camera's ray to him. In front, the stall stays.)
+    // Frank at z 1.2 (NOT 1.6): the stall's sight-line culling box reaches z 1.44
+    // (awning 2.2 m wide, r ~1.06) and a centre ray ENDING inside that box culls the
+    // stall for the whole set — that is why the stall never appeared, even with Frank
+    // in front of it. At z 1.2 both the S8a/S8b centre rays end outside the box.
     const w = who(32, FRANK);
-    out.places.push(person(cam, w, -4, 0, 1.6, faceCam(cam, -4, 1.6),
+    out.places.push(person(cam, w, -4, 0, 1.2, faceCam(cam, -4, 1.2),
       { mode: "stand", expr: "grin", blink: blink(32) },
       { mode: "stand", expr: "grin", blink: blink(32) }));
-    blob(out, -4, 0, 1.6, 1);
+    blob(out, -4, 0, 1.2, 1);
     for (const [x, z, i] of [[-1.6, 1.0, 33], [0.4, 0.6, 34]] as [number, number, number][]) {
       const t = who(i, townsfolk(i));
       out.places.push(person(cam, t, x, 0, z, faceCam(cam, x, z),

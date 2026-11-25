@@ -94,14 +94,14 @@ const dolly = (pos: V3, look: V3, k: number, rest: Partial<Cam> = {}): Shot =>
 // Gun on the bench at (-0.1, 0.68, -67.95); prisoner behind the bench at (0, 0, -66.8).
 // Light is "day", not "golden": golden leaves this windowless interior in
 // hemisphere-only light and everything reads purple (walls, floor, bench).
-// S1a looks at the gun from a LOW 3/4 angle (not top-down): a revolver lying flat
-// reads as a plain plank from directly above — the barrel/cylinder/grip profile
-// only shows from the side. Camera close (1.8 m) so the 0.45 m gun fills the frame.
-const S1a = (f: number) => dolly([0.9, 1.3, -69.3], [-0.1, 0.7, -67.95], pushK(f, 0, 0.0028), { fov: 30 });
+// S1a looks DOWN at the gun at ~58 deg: a flat revolver's L (barrel + dark grip) is
+// only readable from above — from a low 3/4 the grip foreshortens to a block and the
+// barrel reads as a plank. Camera close (1.44 m) so the 0.59 m gun fills the frame.
+const S1a = (f: number) => dolly([0.5, 2.4, -69.3], [-0.1, 0.68, -67.95], pushK(f, 0, 0.0028), { fov: 30 });
 const S1b = (f: number) => dolly([3.4, 1.9, -72.8], [0, 1.4, -67.5], pushK(f, 80, 0.0022), { fov: 38, roll: -0.03 });
 // ---- shot 2 — train yard (day): wide robbery, medium on Frank + sacks, ECU sacks + $700 ----
 // Boxcar at (0, 0, 143); mail sacks at (2.0, 0, 140.5); ballplayers around (-2.4..3.2, 0, 139-140).
-const S2a = (f: number) => dolly([7.5, 2.8, 130.5], [0, 1.6, 141], pushK(f, 154, 0.0022), { fov: 44 });
+const S2a = (f: number) => dolly([7.5, 2.8, 130.5], [0, 1.6, 141], pushK(f, 154, 0.0022), { fov: 48 });
 const S2b = (f: number) => dolly([4.0, 1.9, 136.2], [0.2, 1.4, 139.8], pushK(f, 230, 0.0022), { fov: 36, roll: 0.03 });
 // S2c is a MEDIUM on the sacks + $700, not a tight ECU: at 3 m the 2.6 m number card
 // filled the whole frame and was cut off on both sides. Pulled back so the card fits.
@@ -109,8 +109,8 @@ const S2c = (f: number) => dolly([4.5, 2.2, 135.5], [1.7, 1.0, 140.7], pushK(f, 
 // ---- shot 3 — prison (day): wide of the half-built wall, medium on the builders ----
 // Half-built wall at x -6..-2, z 72; facade at z 76; prisoners IN FRONT of the wall at z 70.2-70.8.
 // S3a pulled back + wider so the full LEAVENWORTH sign (was cut off) and the builders fit.
-const S3a = (f: number) => dolly([11.0, 3.4, 55.5], [-2.0, 2.4, 74], pushK(f, 360, 0.002), { fov: 46 });
-const S3b = (f: number) => dolly([0.5, 2.2, 63.0], [-4.5, 1.3, 70.6], pushK(f, 420, 0.0025), { fov: 38, roll: -0.03 });
+const S3a = (f: number) => dolly([8.0, 3.2, 57.0], [-1.0, 2.4, 74], pushK(f, 360, 0.002), { fov: 46 });
+const S3b = (f: number) => dolly([0.5, 2.2, 63.0], [-4.5, 1.3, 70.6], pushK(f, 420, 0.0025), { fov: 42, roll: -0.03 });
 // ---- shot 4 — prison (day): ESCAPE, loco drives through the gates ----
 // Loco starts z 71.5 (inside), ends z 79.5 (through the gate at z 76); gates at x +/-1.5, z 76.
 const S4a = (f: number) => dolly([8.5, 3.0, 58.5], [0, 2.0, 74], pushK(f, 488, 0.0018), { fov: 44 });
@@ -129,8 +129,8 @@ const S7a = (f: number) => dolly([5.5, 1.7, -3.5], [0.5, 1.35, 1.5], pushK(f, 73
 const S7b = (f: number) => dolly([4.2, 1.55, -1.0], [0.5, 1.35, 1.5], pushK(f, 790, 0.0025), { fov: 34, roll: -0.03 });
 // ---- shot 8 — street (day): candy store, wide then medium on Frank before the stall ----
 // Stall at (-4, 0, 2.5); Frank IN FRONT of it at (-4, 0, 1.6); customers at (-1.6, 0, 1.0) and (0.4, 0, 0.6).
-const S8a = (f: number) => dolly([2.0, 2.4, -6.0], [-3.5, 1.5, 2.0], pushK(f, 828, 0.002), { fov: 42 });
-const S8b = (f: number) => dolly([0.2, 1.8, -3.2], [-3.8, 1.4, 1.7], pushK(f, 890, 0.0025), { fov: 36, roll: 0.03 });
+const S8a = (f: number) => dolly([2.0, 2.4, -6.0], [-3.9, 1.4, 1.2], pushK(f, 828, 0.002), { fov: 42 });
+const S8b = (f: number) => dolly([0.2, 1.8, -3.2], [-3.8, 1.4, 1.2], pushK(f, 890, 0.0025), { fov: 36, roll: 0.03 });
 // ---- shot 9 — room (day): mayor's office, medium then closer + MAYOR card ----
 // Frank at (40.5, 0, 1.0); MAYOR card on the back wall at (40.5, 2.6, 5.0).
 const S9a = (f: number) => dolly([44.5, 2.0, -4.5], [40.3, 1.5, 1.5], pushK(f, 946, 0.0022), { fov: 40 });
@@ -161,8 +161,10 @@ const S13b = (f: number) => dolly([3.5, 2.0, -4.0], [0.8, 1.7, 1.2], pushK(f, 16
 // Shot from above-front so the frame is the sunlit desk top (the old angle showed the
 // shadowed desk faces, purple from the hemisphere ground bounce, and no gun at all).
 // Light is "day", not "golden": golden leaves this interior purple (same as the workshop).
-const S14a = (f: number) => dolly([40.3, 2.6, 1.2], [39.55, 0.85, 2.75], pushK(f, 1689, 0.0022), { fov: 28 });
-const S14b = (f: number) => dolly([40.1, 2.3, 1.8], [39.55, 0.85, 2.75], pushK(f, 1750, 0.0025), { fov: 28 });
+// S14a/S14b: steep 45 deg ECUs on the gun (same lesson as S1a — the flat L reads
+// only from above; a low 3/4 turns the grip into a block and the barrel into a plank).
+const S14a = (f: number) => dolly([40.2, 2.3, 1.3], [39.55, 0.86, 2.75], pushK(f, 1689, 0.0022), { fov: 30 });
+const S14b = (f: number) => dolly([38.7, 2.3, 1.3], [39.55, 0.86, 2.75], pushK(f, 1750, 0.0025), { fov: 30 });
 
 const CAMS: Record<number, Key[]> = {
   1: [{ f: 0, s: S1a }, { f: 80, dur: 30, s: S1b }],
@@ -206,7 +208,7 @@ export const DOF: Dof[] = [
   { f: 736, cInf: 12, focus: () => [0.5, 1.5, 1.5] },   // S7: Frank sharp
   { f: 790, dur: 26, cInf: 14, focus: () => [0.5, 1.5, 1.5] }, // S7 closer
   { f: 828, cInf: 0 },                                  // S8 wide: candy store
-  { f: 890, dur: 28, cInf: 12, focus: () => [-4, 1.4, 1.6] }, // S8 medium: Frank at stall
+  { f: 890, dur: 28, cInf: 12, focus: () => [-4, 1.4, 1.2] }, // S8 medium: Frank at stall
   { f: 946, cInf: 12, focus: () => [40.5, 1.5, 1.0] },  // S9: mayor sharp
   { f: 1000, dur: 26, cInf: 14, focus: () => [40.5, 1.5, 1.2] }, // S9 closer
   { f: 1057, cInf: 0 },                                 // S10 wide
