@@ -1,0 +1,50 @@
+# Ink verification smoke for the Grigware Short (25 Nov 2026).
+# Bisection proved BLOOM is the desaturator on Actions (V4 bloom ON = grey,
+# V5/V6 bloom OFF = full colour). Ink was OFF in all round-2 variants, so it is
+# still untested with bloom off. Two 30-frame variants on the Grigware project
+# (frames 190-219, the colourful robbery wide — blue sky, green grass, red-brown
+# boxcar, white shirts), both with bloom OFF:
+#   V-ink:   ink ON  (lens+grade+tone on) — the intended full-render config
+#   V-noink: ink OFF (lens+grade+tone on) — fallback if ink also desaturates
+# Read both frames by eye: if V-ink is colourful, dispatch the full render with
+# --props '{"post":{"bloom":false}}'. If V-ink is grey but V-noink is colourful,
+# add "ink":false to the full-render props before dispatching.
+# Trigger: Actions tab > "Smoke Test Grigware Ink" > Run workflow (ref: grigware).
+name: Smoke Test Grigware Ink
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    name: Ink check (30 frames x 2 variants)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Ensure browser
+        run: npx remotion browser ensure
+      - name: Install ffmpeg (for the ffprobe check)
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Render V-ink (ink ON, bloom OFF)
+        run: |
+          mkdir -p out
+          npx remotion render src/index.ts TemplateShort out/smoke-grigware-ink.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 190-219 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"bloom":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-grigware-ink.mp4
+      - name: Render V-noink (ink OFF, bloom OFF)
+        run: |
+          npx remotion render src/index.ts TemplateShort out/smoke-grigware-noink.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 190-219 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false,"bloom":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-grigware-noink.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-grigware
+          path: out/smoke-grigware-*.mp4
+          if-no-files-found: error
