@@ -37,29 +37,39 @@ npx remotion render src/index.ts <Comp> <out> --sequence --image-format png \
 - Template full composer, LOCAL, half scale (540x960, dpr 0.5): **~11.4 s/frame**
   marginal (6 frames in 77.5 s incl. ~9 s bundling). Danish's number for the
   full composer is **~16 s/frame** — the composer is the cost, not the scene.
-- Template full composer, ACTIONS, full scale: **~6.2 s/frame** (frame 0 took
-  17 s, first-frame setup; frames 1-29 took ~6.2 s each). The first two smoke
-  runs (45678711829, 45680726599) FAILED at the frame-validation step — "frame
-  0 did not render as a valid PNG" — but the render itself reported 30/30 and
-  the frames were REAL (~1.87 MB each, pixel-identical to the local render,
-  sha256 5792698e...). **Root cause: Remotion zero-pads the `[frame]` token to
-  the width of the LARGEST frame number in the range** — frames 0-1 come out
-  as `frame-0.png`, but frames 0-29 come out as `frame-00.png` ... `frame-29.png`
-  (and 0-1799 as `frame-0000.png` ...). My script looked for the unpadded name
-  and reported "missing". **Fix:** render-chunk.mjs now maps files by parsing
-  the number from `frame-(\d+).png` and renames them to the canonical
-  unpadded `frame-N.png` when moving them into place. Verified locally with
-  frames 9-10 (came out `frame-09.png`/`frame-10.png`, mapped correctly,
-  manifest 2/2). The script also logs the run-dir listing (filenames + sizes)
-  and the validation reason (missing / too small (N bytes) / bad magic (hex)).
-  Third smoke run: 45684050199 (dispatched 25 Nov 22:19 Riyadh) — **[RESULT
-  PENDING]**.
+- Template full composer, ACTIONS, full scale: **~3-5 s/frame** (two green
+  measurements: run 3 = 3.05 s/frame over 30 frames, run 4 = 4.72 s/frame;
+  an earlier run measured 6.2 s/frame before the cInf=0 change). The first
+  two smoke runs (45678711829, 45680726599) FAILED at the frame-validation
+  step — "frame 0 did not render as a valid PNG" — but the render itself
+  reported 30/30 and the frames were REAL (~1.87 MB each, pixel-identical
+  to the local render, sha256 5792698e...). **Root cause: Remotion zero-pads
+  the `[frame]` token to the width of the LARGEST frame number in the
+  range** — frames 0-1 come out as `frame-0.png`, but frames 0-29 come out
+  as `frame-00.png` ... `frame-29.png` (and 0-1799 as `frame-0000.png` ...).
+  My script looked for the unpadded name and reported "missing". **Fix:**
+  render-chunk.mjs now maps files by parsing the number from
+  `frame-(\d+).png` and renames them to the canonical unpadded `frame-N.png`
+  when moving them into place. Verified locally with frames 9-10 (came out
+  `frame-09.png`/`frame-10.png`, mapped correctly, manifest 2/2). The script
+  also logs the run-dir listing (filenames + sizes) and the validation reason
+  (missing / too small (N bytes) / bad magic (hex)). The third run
+  (45684050199) then FAILED at the assemble step instead — `./scripts/
+  assemble.sh: Permission denied` (exit 126): the git-data push sets every
+  file to mode 100644, so the +x bit is lost on the runner. **Fix:** both
+  workflows call `bash scripts/assemble.sh`. **Smoke test GREEN: run
+  45685110963 (25 Nov 22:25 Riyadh) — SUCCESS.** 30/30 frames, manifest
+  verified (30 present, 0 gaps), 1 s proof MP4 assembled: 1080x1920 h264
+  30 fps, 1.000 s, 1.17 MB (artifact `template-smoke-test`, 73.9 MB).
+  Job time 3m04s total.
 - Projected 60 s video (1800 frames) at the measured Actions rate of
-  6.2 s/frame: **3.1 h single machine / 0.78 h (47 min) in 4 parallel chunks**.
-  That is FAR better than Danish's ~16 s/frame (8.0 h single / 2.0 h chunked)
-  — the GitHub runner (4 vCPUs) renders ~2.5x faster per frame than his
-  machine, and the chunking divides it by 4. A 60 s video is an under-an-hour
-  job on 4 parallel Actions runners.
+  ~3-5 s/frame: **~1.5-2.5 h on one machine, ~25-35 min across 4 parallel
+  chunk jobs.** That is FAR better than Danish's ~16 s/frame (5-6 h single /
+  2.0 h chunked) — the GitHub runner (4 vCPUs) renders ~3-5x faster per
+  frame than his machine, and the chunking divides it by 4. A 60 s video is
+  an under-an-hour job on 4 parallel Actions runners. (Local half-scale
+  rate, 11.4 s/frame, is NOT representative — the local VM is a shared
+  1.5-CPU box contended with the Sodder agent's assembly.)
 - The 6-frame local resume test printed: "60s video: single machine 6.46h,
   4 parallel chunks 1.61h" (that rate includes bundling, so it overstates a
   real chunk's marginal rate).
@@ -296,11 +306,17 @@ under the golden preset (shade term) — cosmetic.
 - Smoke test runs: 45678711829 (21:47 Riyadh, FAILED — zero-pad filename),
   45680726599 (21:59 Riyadh, FAILED — same cause, diagnosed from the log +
   artifact frame-00.png, pixel-identical to local), 45684050199 (22:19 Riyadh,
-  with the fix — **[RESULT PENDING]**). Full logs:
-  `~/workspace/ricks-clone/threealwhy-smoke-run-45678711829.log` and
-  `~/workspace/ricks-clone/smoke-run2-45680726599.log` (note the filename typo
-  "threealwhy" — the log files, not the project). Artifact from run 2
-  (56 MB, 30 frames): `~/workspace/ricks-clone/smoke-artifact/`.
+  FAILED — assemble.sh permission denied, exit 126), **45685110963 (22:25
+  Riyadh, SUCCESS — 30/30 frames, manifest verified, 1 s proof MP4
+  1080x1920/30fps/1.17 MB)**. Full logs:
+  `~/workspace/ricks-clone/threealwhy-smoke-run-45678711829.log`,
+  `~/workspace/ricks-clone/smoke-run2-45680726599.log`,
+  `~/workspace/ricks-clone/smoke-run3-45684050199.log`,
+  `~/workspace/ricks-clone/smoke-run4-45685110963.log` (note the filename typo
+  "threealwhy" — the log files, not the project). Artifacts: run 2
+  (56 MB, 30 frames) in `~/workspace/ricks-clone/smoke-artifact/`; run 4
+  (73.9 MB, 30 frames + manifest + proof MP4) in
+  `~/workspace/ricks-clone/smoke-final/`.
 
 ## What is NOT in the template (per-video work, Phase 2/3)
 
