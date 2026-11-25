@@ -10,9 +10,6 @@ jobs:
     name: Render 30-frame three.js test
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    env:
-      REMOTION_TMP: ${{ runner.temp }}/remotion-tmp
-      TMPDIR: ${{ runner.temp }}/remotion-tmp
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
