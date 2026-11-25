@@ -121,33 +121,35 @@ const S5a = (f: number) => dolly([4.5, 1.9, 67.5], [-1, 1.4, 72.5], pushK(f, 659
 // Frank walks from (0.5, 0, 138) toward (0.5, 0, 134); camera wide down the tracks.
 const S6a = (f: number) => dolly([5.0, 2.4, 130.0], [0.5, 1.4, 137], pushK(f, 697, 0.0022), { fov: 42 });
 // ---- shot 7 — street (day): mid-story question, medium on Frank ----
-// Frank at (0.5, 0, 1.5).
-const S7a = (f: number) => dolly([2.8, 1.9, -4.5], [0.5, 1.5, 1.5], pushK(f, 736, 0.0022), { fov: 38 });
-const S7b = (f: number) => dolly([1.9, 1.7, -2.4], [0.5, 1.5, 1.5], pushK(f, 790, 0.0025), { fov: 34, roll: -0.03 });
-// ---- shot 8 — street (day): candy store, wide then medium on Frank behind the stall ----
-// Stall at (-4, 0, 2.5); Frank behind it at (-4, 0, 3.4); customers at (-1.6, 0, 1.0) and (0.4, 0, 0.6).
-// S8a re-aimed onto the stall + Frank — it framed only the customers before, no store in shot.
-const S8a = (f: number) => dolly([2.0, 2.4, -6.0], [-3.0, 1.5, 2.8], pushK(f, 828, 0.002), { fov: 42 });
-const S8b = (f: number) => dolly([0.2, 1.8, -3.2], [-3.2, 1.4, 2.8], pushK(f, 890, 0.0025), { fov: 36, roll: 0.03 });
+// Frank at (0.5, 0, 1.5). Cameras shoot from the right so the LEFT HOUSE (-4.5, 6.5)
+// sits behind him — the old angle looked straight down the gap between the houses
+// and the frame was 55% empty sky. Lower eyeline (look y 1.35) shrinks the sky further.
+const S7a = (f: number) => dolly([5.5, 1.7, -3.5], [0.5, 1.35, 1.5], pushK(f, 736, 0.0022), { fov: 38 });
+const S7b = (f: number) => dolly([4.2, 1.55, -1.0], [0.5, 1.35, 1.5], pushK(f, 790, 0.0025), { fov: 34, roll: -0.03 });
+// ---- shot 8 — street (day): candy store, wide then medium on Frank before the stall ----
+// Stall at (-4, 0, 2.5); Frank IN FRONT of it at (-4, 0, 1.6); customers at (-1.6, 0, 1.0) and (0.4, 0, 0.6).
+const S8a = (f: number) => dolly([2.0, 2.4, -6.0], [-3.5, 1.5, 2.0], pushK(f, 828, 0.002), { fov: 42 });
+const S8b = (f: number) => dolly([0.2, 1.8, -3.2], [-3.8, 1.4, 1.7], pushK(f, 890, 0.0025), { fov: 36, roll: 0.03 });
 // ---- shot 9 — room (day): mayor's office, medium then closer + MAYOR card ----
 // Frank at (40.5, 0, 1.0); MAYOR card on the back wall at (40.5, 2.6, 5.0).
 const S9a = (f: number) => dolly([44.5, 2.0, -4.5], [40.3, 1.5, 1.5], pushK(f, 946, 0.0022), { fov: 40 });
 const S9b = (f: number) => dolly([42.8, 1.8, -2.5], [40.5, 1.5, 1.2], pushK(f, 1000, 0.0025), { fov: 34, roll: -0.03 });
 // ---- shot 10 — street (day): handshakes, wide then medium ----
-// Frank at (0.5, 0, 1.5); townsfolk at (-1.2, 0, 2.2) and (2.0, 0, 2.6).
-const S10a = (f: number) => dolly([6.0, 2.4, -7.5], [0, 1.6, 2.0], pushK(f, 1057, 0.002), { fov: 44 });
-const S10b = (f: number) => dolly([3.0, 1.8, -3.0], [0.5, 1.4, 1.8], pushK(f, 1140, 0.0025), { fov: 36, roll: 0.03 });
+// Frank at (0.5, 0, 1.5); townsfolk at (-0.5, 0, 2.0) and (1.4, 0, 2.3) — tight group.
+// Cameras pulled back + lower eyeline: the old angle was 55% empty sky and cut the left man off.
+const S10a = (f: number) => dolly([6.5, 2.0, -6.0], [0.3, 1.35, 2.0], pushK(f, 1057, 0.002), { fov: 44 });
+const S10b = (f: number) => dolly([4.0, 1.7, -3.5], [0.5, 1.35, 1.9], pushK(f, 1140, 0.0025), { fov: 36, roll: 0.03 });
 // ---- shot 11 — office (day): fingerprinting, wide -> medium -> ECU card ----
 // Officer at (-40, 0, 3.2); Frank at desk (-40, 0, 2.4); card on desk at (-39.05, 0.85, 1.9).
 // S11c looks DOWN at the card from the front — the men's faces were filling the ECU before.
 const S11a = (f: number) => dolly([-35.0, 2.1, -5.0], [-40, 1.4, 2.2], pushK(f, 1214, 0.002), { fov: 42 });
 const S11b = (f: number) => dolly([-37.5, 1.8, -1.5], [-40, 1.4, 2.8], pushK(f, 1300, 0.0022), { fov: 36, roll: -0.03 });
-const S11c = (f: number) => dolly([-38.2, 1.4, 0.2], [-39.05, 0.85, 1.95], pushK(f, 1380, 0.0028), { fov: 30 });
+const S11c = (f: number) => dolly([-38.2, 1.25, 0.2], [-39.05, 0.8, 1.95], pushK(f, 1380, 0.0028), { fov: 30 });
 // ---- shot 12 — office (day): the match, over-the-shoulder at the wanted poster ----
 // Poster on the back wall at (-38.25, 2.1, 5.46); officer at (-39.6, 0, 3.4) seen from behind.
 // S12a moved close to the poster and aimed straight at it — it framed a window before,
 // poster cut off at the edge, officer invisible. Frank at (-37.4, 0, 4.4), left of the poster.
-const S12a = (f: number) => dolly([-38.6, 2.0, 2.6], [-38.25, 2.05, 5.46], pushK(f, 1433, 0.0022), { fov: 34 });
+const S12a = (f: number) => dolly([-38.6, 2.0, 2.6], [-38.25, 2.45, 5.46], pushK(f, 1433, 0.0022), { fov: 34 });
 const S12b = (f: number) => dolly([-37.8, 1.8, -1.0], [-39.6, 1.5, 3.4], pushK(f, 1465, 0.0025), { fov: 36, roll: -0.03 });
 // ---- shot 13 — street (day): bail crowd, wide then closer + $10,000 card ----
 // Crowd at (-1.5..3.3, 0, 1.2-2.2); $10,000 card above at (0.5, 2.8, 3.0).
@@ -203,15 +205,15 @@ export const DOF: Dof[] = [
   { f: 736, cInf: 12, focus: () => [0.5, 1.5, 1.5] },   // S7: Frank sharp
   { f: 790, dur: 26, cInf: 14, focus: () => [0.5, 1.5, 1.5] }, // S7 closer
   { f: 828, cInf: 0 },                                  // S8 wide: candy store
-  { f: 890, dur: 28, cInf: 12, focus: () => [-3.2, 1.4, 2.8] }, // S8 medium: Frank at stall
+  { f: 890, dur: 28, cInf: 12, focus: () => [-4, 1.4, 1.6] }, // S8 medium: Frank at stall
   { f: 946, cInf: 12, focus: () => [40.5, 1.5, 1.0] },  // S9: mayor sharp
   { f: 1000, dur: 26, cInf: 14, focus: () => [40.5, 1.5, 1.2] }, // S9 closer
   { f: 1057, cInf: 0 },                                 // S10 wide
-  { f: 1140, dur: 28, cInf: 12, focus: () => [0.5, 1.4, 1.8] }, // S10 medium
+  { f: 1140, dur: 28, cInf: 12, focus: () => [0.5, 1.35, 1.9] }, // S10 medium
   { f: 1214, cInf: 0 },                                 // S11 wide office
   { f: 1300, dur: 28, cInf: 12, focus: () => [-40, 1.4, 2.8] }, // S11 medium
   { f: 1380, dur: 26, cInf: 14, focus: () => [-39.05, 0.85, 1.95] }, // S11 ECU: fingerprint card
-  { f: 1433, cInf: 10, focus: () => [-38.25, 2.05, 5.46] }, // S12 OTS: poster sharp
+  { f: 1433, cInf: 10, focus: () => [-38.25, 2.45, 5.46] }, // S12 OTS: poster sharp
   { f: 1465, dur: 20, cInf: 12, focus: () => [-39.6, 1.5, 3.4] }, // S12 medium: officer shock
   { f: 1495, cInf: 0 },                                 // S13 wide crowd
   { f: 1600, dur: 28, cInf: 10, focus: () => [0.8, 1.7, 1.2] }, // S13 closer

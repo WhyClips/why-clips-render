@@ -323,7 +323,9 @@ const buildOffice = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) =>
     new THREE.MeshLambertMaterial({ map: fpCard }));
   // front-right corner of the desk — clear of the laptop base (x -40.5..-39.5, z 1.9..2.3)
   // and the paper (x -38.9..-38.6, z 2.2..2.45). Was half-under the laptop at (-39.6, 2.1).
-  fp.rotation.x = -Math.PI / 2; fp.rotation.z = 0.15; fp.position.set(-39.05, 0.86, 1.9); grp.add(fp);
+  // Card reads from the CAMERA's side: rotation.z = PI + 0.15 (was 0.15 — text was
+  // upside-down in the ECU, oriented for the officer behind the desk, not the lens).
+  fp.rotation.x = -Math.PI / 2; fp.rotation.z = Math.PI + 0.15; fp.position.set(-39.05, 0.86, 1.9); grp.add(fp);
   // wanted poster on the back wall between the windows (S12 OTS)
   const poster = ctex("wantedPoster", 512, 720, (g) => {
     g.fillStyle = "#e8d9b0"; g.fillRect(0, 0, 512, 720);
@@ -344,7 +346,9 @@ const buildOffice = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) =>
     g.fillText("ESCAPED LEAVENWORTH", 256, 630);
   });
   const posterM = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.87), new THREE.MeshLambertMaterial({ map: poster }));
-  posterM.position.set(-38.25, 2.1, 5.46); posterM.rotation.y = Math.PI; grp.add(posterM);
+  // y 2.5: the window's horizontal bar (y 1.85..1.95) crossed the poster at y 2.1,
+  // striping it across the name. Now the bar passes below the poster.
+  posterM.position.set(-38.25, 2.5, 5.46); posterM.rotation.y = Math.PI; grp.add(posterM);
 };
 
 /** 4 — prison exterior (day): stone facade + gate + tracks + locomotive + half-built wall.

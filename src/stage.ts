@@ -142,12 +142,14 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
       { mode: "stand", expr: "nervous", blink: blink(31) }));
     blob(out, 0.5, 0, 1.5, 1);
   } else if (id === 8) {
-    // S8 street: Frank behind the candy stall, grinning; two customers at the stall.
+    // S8 street: Frank IN FRONT OF the candy stall, grinning; two customers at the stall.
+    // (He stood BEHIND the stall before — the template's sight-line discipline culled
+    // the stall because it blocked the S8b camera's ray to him. In front, the stall stays.)
     const w = who(32, FRANK);
-    out.places.push(person(cam, w, -4, 0, 3.4, faceCam(cam, -4, 3.4),
+    out.places.push(person(cam, w, -4, 0, 1.6, faceCam(cam, -4, 1.6),
       { mode: "stand", expr: "grin", blink: blink(32) },
       { mode: "stand", expr: "grin", blink: blink(32) }));
-    blob(out, -4, 0, 3.4, 1);
+    blob(out, -4, 0, 1.6, 1);
     for (const [x, z, i] of [[-1.6, 1.0, 33], [0.4, 0.6, 34]] as [number, number, number][]) {
       const t = who(i, townsfolk(i));
       out.places.push(person(cam, t, x, 0, z, faceCam(cam, x, z),
@@ -164,12 +166,13 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
     blob(out, 40.5, 0, 1.0, 1);
   } else if (id === 10) {
     // S10 street: Frank shaking hands with two townsfolk, laughing.
+    // Group kept tight (x -0.5..1.4) — the 9:16 frame cannot fit a 3.2 m spread.
     const w = who(36, FRANK);
     out.places.push(person(cam, w, 0.5, 0, 1.5, faceCam(cam, 0.5, 1.5),
       { mode: "stand", expr: "laugh", blink: blink(36) },
       { mode: "stand", expr: "laugh", blink: blink(36) }));
     blob(out, 0.5, 0, 1.5, 1);
-    for (const [x, z, i] of [[-1.2, 2.2, 37], [2.0, 2.6, 38]] as [number, number, number][]) {
+    for (const [x, z, i] of [[-0.5, 2.0, 37], [1.4, 2.3, 38]] as [number, number, number][]) {
       const t = who(i, townsfolk(i));
       out.places.push(person(cam, t, x, 0, z, faceCam(cam, x, z),
         { mode: "stand", expr: "laugh", blink: blink(i) },
