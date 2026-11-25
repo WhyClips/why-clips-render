@@ -111,7 +111,9 @@ jobs:
           VO=""; MUSIC=""
           [ -n "${{ inputs.vo_path }}" ] && VO="--vo ${{ inputs.vo_path }}"
           [ -n "${{ inputs.music_path }}" ] && MUSIC="--music ${{ inputs.music_path }}"
-          ./scripts/assemble.sh --frames out/frames --manifest out/frames/manifest.json --out out/final.mp4 --fps 30 --crf 18 $VO $MUSIC
+          # NB: call assemble.sh via bash — the git-data push sets every file to
+          # mode 100644, so the +x bit is lost on the runner (./scripts/... = 126)
+          bash scripts/assemble.sh --frames out/frames --manifest out/frames/manifest.json --out out/final.mp4 --fps 30 --crf 18 $VO $MUSIC
       - uses: actions/upload-artifact@v4
         with:
           name: template-final

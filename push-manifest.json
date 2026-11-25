@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "therealwhy-template",
- "message": "Template: zero-pad filename fix, number-card DOF/position fixes, pill width fix, diagnostics",
+ "message": "Template: assemble.sh via bash (git-data push drops +x, ./ = exit 126)",
  "files": [
   {
    "path": "README.md",

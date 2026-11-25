@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "main",
- "message": "Template workflows: zero-pad fix + diagnostics (re-push)",
+ "message": "Template workflows: assemble.sh via bash (exit 126 fix)",
  "files": [
   {
    "path": ".github/workflows/render-template-smoke.yml",

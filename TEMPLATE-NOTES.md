@@ -37,25 +37,29 @@ npx remotion render src/index.ts <Comp> <out> --sequence --image-format png \
 - Template full composer, LOCAL, half scale (540x960, dpr 0.5): **~11.4 s/frame**
   marginal (6 frames in 77.5 s incl. ~9 s bundling). Danish's number for the
   full composer is **~16 s/frame** — the composer is the cost, not the scene.
-- Template full composer, ACTIONS, full scale: run 45678711829 FAILED at the
-  frame-validation step — "frame 0 did not render as a valid PNG". The render
-  itself reported 30/30 frames, ~6.2 s/frame (frame 0 took 17 s, first-frame
-  setup). Locally the same command at full scale produces real 1.87 MB PNGs,
-  so the cause is environmental (Actions) or a naming/size difference — NOT
-  yet established. The script now logs the run-dir listing (filenames +
-  sizes) and the validation reason (missing / too small (N bytes) / bad
-  magic (hex)) so the next run is diagnosable from the log alone, and the
-  workflow uploads the frames even on failure (`if: always()`). Re-run:
-  45680726599 (dispatched 25 Nov 21:59 Riyadh).
-  KEY QUESTION for the re-run: are the Actions frames ~1-2 MB (real) or
-  ~5 KB (blank composer output)? If blank, the raw composer fails on the
-  Actions SwiftShader at full scale and the fix is a frame-buffer-type /
-  MSAA fallback (post.float / post.ms toggles in Template.tsx).
-- Projected 60 s video (1800 frames): single machine = rate x 1800; 4 parallel
-  chunks = rate x 450. At 16 s/frame: 8.0 h single / 2.0 h chunked. At the
-  measured Actions rate of 6.2 s/frame (IF the frames are real): 3.1 h single
-  / 0.78 h chunked. At the local half-scale rate (11.4 s/frame): 5.7 h single
-  / 1.4 h chunked.
+- Template full composer, ACTIONS, full scale: **~6.2 s/frame** (frame 0 took
+  17 s, first-frame setup; frames 1-29 took ~6.2 s each). The first two smoke
+  runs (45678711829, 45680726599) FAILED at the frame-validation step — "frame
+  0 did not render as a valid PNG" — but the render itself reported 30/30 and
+  the frames were REAL (~1.87 MB each, pixel-identical to the local render,
+  sha256 5792698e...). **Root cause: Remotion zero-pads the `[frame]` token to
+  the width of the LARGEST frame number in the range** — frames 0-1 come out
+  as `frame-0.png`, but frames 0-29 come out as `frame-00.png` ... `frame-29.png`
+  (and 0-1799 as `frame-0000.png` ...). My script looked for the unpadded name
+  and reported "missing". **Fix:** render-chunk.mjs now maps files by parsing
+  the number from `frame-(\d+).png` and renames them to the canonical
+  unpadded `frame-N.png` when moving them into place. Verified locally with
+  frames 9-10 (came out `frame-09.png`/`frame-10.png`, mapped correctly,
+  manifest 2/2). The script also logs the run-dir listing (filenames + sizes)
+  and the validation reason (missing / too small (N bytes) / bad magic (hex)).
+  Third smoke run: 45684050199 (dispatched 25 Nov 22:19 Riyadh) — **[RESULT
+  PENDING]**.
+- Projected 60 s video (1800 frames) at the measured Actions rate of
+  6.2 s/frame: **3.1 h single machine / 0.78 h (47 min) in 4 parallel chunks**.
+  That is FAR better than Danish's ~16 s/frame (8.0 h single / 2.0 h chunked)
+  — the GitHub runner (4 vCPUs) renders ~2.5x faster per frame than his
+  machine, and the chunking divides it by 4. A 60 s video is an under-an-hour
+  job on 4 parallel Actions runners.
 - The 6-frame local resume test printed: "60s video: single machine 6.46h,
   4 parallel chunks 1.61h" (that rate includes bundling, so it overstates a
   real chunk's marginal rate).
@@ -159,6 +163,18 @@ on close-ups/mediums, 0 on wides; FLASH_AT=180; XFADE 8 f at set changes.
   headless Chrome canvas measureText under-reports the rendered width by
   ~40% (the "INS" of COINS stuck out past the measured pill). Verified by eye
   in the s1-street-wide crop: "COINS" fully readable on the pill.
+- **Number-card position (frame-0 occlusion):** n1 was at (0.5,2.8,2.0) — 0.1 m
+  BEHIND the pink house's front, so the house clipped the card's left edge
+  ("1,") at the dolly start (f0). Moved to (0.9,2.8,1.6): 0.3 m in front of
+  every facade, so it is never clipped. Verified in the f0 still.
+- **Number-card DOF smear:** the "1,000" glyphs were smeared where they cross
+  the bright sky slit between the houses — the card sits ~1.4 m off the DOF
+  focus plane and the lens blur mixes gold with bright sky. cInf 10 -> 5
+  helped only slightly. **Fix: the street wide is now cInf 0 (all sharp)** —
+  and TheRealWhy's wides are sharp throughout, so 0 matches the reference
+  better. DOF lives on the mediums/close-ups. The office wide went cInf 12
+  -> 6 (same reason for "$300 FINE"). Verified: "1,000" and "COINS" fully
+  crisp in the f0 still; "$300 FINE" crisp in the refreshed s3-office-wide.
 
 ## Composer — the two bugs (src/Template.tsx)
 
@@ -277,11 +293,14 @@ under the golden preset (shade term) — cosmetic.
   (47 files, 613 KB). Branch commit cf1eb322.
 - Workflows also pushed to main (`push-workflow.json`, commit 2ec29ccc) —
   dispatch 404s if the yml is branch-only (Matisse lesson).
-- Smoke test run: 45678711829 (dispatched 25 Nov 21:47 Riyadh) FAILED at frame
-  validation (see "Render cost"); re-run 45680726599 (21:59 Riyadh) with
-  diagnostics + always-upload. Full log:
-  `~/workspace/ricks-clone/threealwhy-smoke-run-45678711829.log` (note the
-  filename typo "threealwhy" — the log file, not the project).
+- Smoke test runs: 45678711829 (21:47 Riyadh, FAILED — zero-pad filename),
+  45680726599 (21:59 Riyadh, FAILED — same cause, diagnosed from the log +
+  artifact frame-00.png, pixel-identical to local), 45684050199 (22:19 Riyadh,
+  with the fix — **[RESULT PENDING]**). Full logs:
+  `~/workspace/ricks-clone/threealwhy-smoke-run-45678711829.log` and
+  `~/workspace/ricks-clone/smoke-run2-45680726599.log` (note the filename typo
+  "threealwhy" — the log files, not the project). Artifact from run 2
+  (56 MB, 30 frames): `~/workspace/ricks-clone/smoke-artifact/`.
 
 ## What is NOT in the template (per-video work, Phase 2/3)
 
