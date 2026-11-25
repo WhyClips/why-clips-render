@@ -1,7 +1,33 @@
-# Renders the Frank Grigware Short (Why Clips, therealwhy template) in 4
+# Renders the Frank Grigware Short (Why Clips, therealwhy template) in 12
 # parallel chunks on GitHub Actions CPU runners, then assembles the final
 # 1080x1920 MP4 with voiceover + music/SFX mixed in.
-# Trigger: Actions tab > "Render Grigware Short" > Run workflow.
+#
+# COMPOSER CONFIG (25 Nov 2026, bisection-verified): bloom OFF — the BloomEffect
+# desaturates the whole frame to grey on Actions/SwiftShader (round 1 V1 grey,
+# round 2 V4 bloom-ON grey, V5/V6 bloom-OFF full colour). Ink + lens blur + grade
+# + NEUTRAL tone map stay ON (ink verified by smoke-grigware.yml before dispatch).
+# Props: --props '{"post":{"bloom":false}}'.
+#
+# RENDER COST (measured on Actions, 30-frame steps incl. startup):
+#   full composer (ink+lens+bloom+grade) ~6.3 s/frame; lens-only ~5.4 s/frame;
+#   bloom+grade (no lens) ~2.8 s/frame; tone-only ~1.5 s/frame.
+#   Danish's ~16 s/frame does NOT hold on Actions — we are 2-5x faster.
+#   Full video at ~6.5 s/frame: 1800 frames = ~3.25 h on one machine;
+#   12 chunks x 150 frames in parallel = ~16 min wall-clock + ~3 min setup.
+#
+# RESUME SYSTEM (Danish pipeline: never re-render a finished frame):
+#   Remotion renders MP4 chunks, not per-frame PNGs, so resume is at CHUNK
+#   granularity (150 frames), not 1 frame. The manifest is the 12 chunk
+#   artifacts (chunk-c01..c12) + chunks-manifest.json written by the assemble job.
+#   - If a chunk leg fails/times out: Actions "Re-run failed jobs" re-runs ONLY
+#     the failed matrix legs. Finished chunks are NOT re-rendered.
+#   - If the whole run is cancelled: re-dispatch; any chunk artifact from the
+#     earlier run can be downloaded into the assemble job instead of re-rendering
+#     that chunk (manual step — see BUILD-NOTES.md).
+#   - Per-chunk timeout is 60 min (a 150-frame chunk needs ~16 min at worst-case
+#     cost), so a hung leg fails fast instead of burning hours.
+#
+# Trigger: Actions tab > "Render Grigware Short" > Run workflow (ref: grigware).
 name: Render Grigware Short
 
 on:
@@ -11,15 +37,23 @@ jobs:
   render:
     name: Render chunk ${{ matrix.chunk.name }}
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         chunk:
-          - { name: c1, frames: "0-449" }
-          - { name: c2, frames: "450-899" }
-          - { name: c3, frames: "900-1349" }
-          - { name: c4, frames: "1350-1799" }
+          - { name: c01, frames: "0-149" }
+          - { name: c02, frames: "150-299" }
+          - { name: c03, frames: "300-449" }
+          - { name: c04, frames: "450-599" }
+          - { name: c05, frames: "600-749" }
+          - { name: c06, frames: "750-899" }
+          - { name: c07, frames: "900-1049" }
+          - { name: c08, frames: "1050-1199" }
+          - { name: c09, frames: "1200-1349" }
+          - { name: c10, frames: "1350-1499" }
+          - { name: c11, frames: "1500-1649" }
+          - { name: c12, frames: "1650-1799" }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,7 +69,7 @@ jobs:
       - name: Render chunk
         run: |
           mkdir -p out
-          npx remotion render src/index.ts TemplateShort out/chunk-${{ matrix.chunk.name }}.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames ${{ matrix.chunk.frames }} --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}'
+          npx remotion render src/index.ts TemplateShort out/chunk-${{ matrix.chunk.name }}.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames ${{ matrix.chunk.frames }} --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"bloom":false}}'
       - uses: actions/upload-artifact@v4
         with:
           name: chunk-${{ matrix.chunk.name }}
@@ -59,12 +93,25 @@ jobs:
       - name: Concat and mix audio
         run: |
           ls -la chunks
-          printf "file 'chunk-c1.mp4'\nfile 'chunk-c2.mp4'\nfile 'chunk-c3.mp4'\nfile 'chunk-c4.mp4'\n" > chunks/chunks.txt
+          printf "file 'chunk-c01.mp4'\nfile 'chunk-c02.mp4'\nfile 'chunk-c03.mp4'\nfile 'chunk-c04.mp4'\nfile 'chunk-c05.mp4'\nfile 'chunk-c06.mp4'\nfile 'chunk-c07.mp4'\nfile 'chunk-c08.mp4'\nfile 'chunk-c09.mp4'\nfile 'chunk-c10.mp4'\nfile 'chunk-c11.mp4'\nfile 'chunk-c12.mp4'\n" > chunks/chunks.txt
           ffmpeg -y -v error -f concat -safe 0 -i chunks/chunks.txt -c copy chunks/video.mp4
           ffmpeg -y -v error -i chunks/video.mp4 -i audio/voiceover.mp3 -i audio/music_sfx.wav -filter_complex "[1:a]apad[a1];[a1][2:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[aout]" -map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 192k -shortest grigware-full-quality.mp4
           ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name grigware-full-quality.mp4
+          # chunk manifest: frame ranges + file sizes (resume record)
+          python3 -c "
+          import json, os
+          ranges = {'c01':[0,149],'c02':[150,299],'c03':[300,449],'c04':[450,599],'c05':[600,749],'c06':[750,899],'c07':[900,1049],'c08':[1050,1199],'c09':[1200,1349],'c10':[1350,1499],'c11':[1500,1649],'c12':[1650,1799]}
+          man = [{'chunk': k, 'frames': v, 'file': f'chunk-{k}.mp4', 'bytes': os.path.getsize(f'chunks/chunk-{k}.mp4')} for k, v in ranges.items()]
+          json.dump({'video': 'grigware-full-quality.mp4', 'total_frames': 1800, 'fps': 30, 'chunks': man}, open('chunks-manifest.json','w'), indent=1)
+          print(open('chunks-manifest.json').read())
+          "
+      - name: Measure loudness (Danish target ~-14 LUFS)
+        run: |
+          ffmpeg -v error -i grigware-full-quality.mp4 -vn -af loudnorm=print_format=json -f null - 2>&1 | tail -20
       - uses: actions/upload-artifact@v4
         with:
           name: grigware-full-quality
-          path: grigware-full-quality.mp4
+          path: |
+            grigware-full-quality.mp4
+            chunks-manifest.json
           if-no-files-found: error

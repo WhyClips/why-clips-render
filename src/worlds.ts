@@ -245,12 +245,14 @@ const buildRoom = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) => {
   const ceil = new THREE.Mesh(quadUp(34, 46, -6, 6, 1, 1, W),
     lam("roomCeil", () => ({ color: "#efe6d0" })));
   ceil.rotation.x = Math.PI; ceil.castShadow = false; ceil.receiveShadow = true; root.add(ceil);
-  prop(b, kit, "lantern", 39.0, 0.8, 2.5, 0.42, 0.5);
+  prop(b, kit, "lantern", 38.45, 0.8, 2.8, 0.42, 0.5);
   prop(b, kit, "plant_bush", 45.0, 0, -5.0, 0.9, 0.3);
-  // the wooden gun, kept on the mayor's desk (S14 final shot: object-only ECU)
+  // the wooden gun, kept on the mayor's desk (S14 final shot: object-only ECU).
+  // Front-right corner of the desk (39.55, 2.75) — clear of the books (x <= 39.1)
+  // and the lantern (38.45, 2.8). Was buried under the books + lantern at (39.2, 2.5).
   const deskGun = woodenGun(); deskGun.rotation.x = Math.PI / 2;
   const deskGunH = new THREE.Group(); deskGunH.add(deskGun);
-  deskGunH.position.set(39.2, 0.86, 2.5); deskGunH.rotation.y = 0.6; grp.add(deskGunH);
+  deskGunH.position.set(39.55, 0.86, 2.75); deskGunH.rotation.y = -0.5; grp.add(deskGunH);
 };
 
 /** 3 — office (day): marble floor, desk + glowing laptop, columns, window wall, clock */
@@ -319,7 +321,9 @@ const buildOffice = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) =>
   });
   const fp = new THREE.Mesh(new THREE.PlaneGeometry(0.55, 0.41),
     new THREE.MeshLambertMaterial({ map: fpCard }));
-  fp.rotation.x = -Math.PI / 2; fp.rotation.z = 0.15; fp.position.set(-39.6, 0.86, 2.1); grp.add(fp);
+  // front-right corner of the desk — clear of the laptop base (x -40.5..-39.5, z 1.9..2.3)
+  // and the paper (x -38.9..-38.6, z 2.2..2.45). Was half-under the laptop at (-39.6, 2.1).
+  fp.rotation.x = -Math.PI / 2; fp.rotation.z = 0.15; fp.position.set(-39.05, 0.86, 1.9); grp.add(fp);
   // wanted poster on the back wall between the windows (S12 OTS)
   const poster = ctex("wantedPoster", 512, 720, (g) => {
     g.fillStyle = "#e8d9b0"; g.fillRect(0, 0, 512, 720);
@@ -505,11 +509,13 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) 
   b.add(boxGeo(V(-7, 0, -63.9), V(7, W, -63.5), 2), bw);
   b.add(boxGeo(V(-7.4, 0, -77), V(-7, W, -63), 2), bw);
   b.add(boxGeo(V(7, 0, -77), V(7.4, W, -63), 2), bw);
-  // workbench (stall-bench fallback) + tools on top: hammer + saw
+  // workbench (stall-bench fallback) + tools on top: hammer + saw.
+  // NOTE: the stall-bench top is at y ~0.48 (legs 0.45 + top 0.1, prop scale 0.95),
+  // NOT 0.95 — the template's tools floated 0.5 m above the bench. All tools sit ON it.
   prop(b, kit, "stall-bench", 0, 0, -68, 0.95, 0);
-  b.add(boxGeo(V(0.35, 0.95, -67.9), V(0.75, 1.02, -67.7), 0), lam("shopHammerHead", () => ({ color: "#3d414c" })));
-  b.add(boxGeo(V(0.5, 0.95, -68.15), V(0.6, 1.3, -68.05), 0), lam("shopHammerHandle", () => ({ color: "#8a5a3c" })));
-  b.add(boxGeo(V(-0.7, 0.95, -67.85), V(-0.1, 0.99, -67.75), 0), lam("shopSaw", () => ({ color: "#b8bcc4" })));
+  b.add(boxGeo(V(0.35, 0.48, -67.9), V(0.75, 0.55, -67.7), 0), lam("shopHammerHead", () => ({ color: "#3d414c" })));
+  b.add(boxGeo(V(0.5, 0.48, -68.15), V(0.6, 0.83, -68.05), 0), lam("shopHammerHandle", () => ({ color: "#8a5a3c" })));
+  b.add(boxGeo(V(-0.7, 0.48, -67.85), V(-0.1, 0.52, -67.75), 0), lam("shopSaw", () => ({ color: "#b8bcc4" })));
   // shelves on the back wall with jars + boxes
   const shelf = lam("shopShelf", () => ({ color: "#6e4b33" }));
   for (const y of [1.8, 2.4]) b.add(boxGeo(V(-5.5, y, -63.6), V(-1.5, y + 0.08, -63.3), 1), shelf);
@@ -524,11 +530,12 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) 
     b.add(boxGeo(V(7.05, 1.6 + i * 0.45, -70 + i * 0.8), V(7.2, 2.0 + i * 0.45, -69.7 + i * 0.8), 0),
       lam(`shopHang${i}`, () => ({ color: i % 2 ? "#8a5a3c" : "#3d414c" })));
   prop(b, kit, "cart", -4.6, 0, -66, 1.1, 0.5);
-  prop(b, kit, "lantern", 0.8, 0.95, -68, 0.42, 0);
-  // the wooden gun on the bench (S1 hook ECU) — the whole story in one object
+  prop(b, kit, "lantern", 0.65, 0.48, -68.1, 0.42, 0);
+  // the wooden gun on the bench (S1 hook ECU) — the whole story in one object.
+  // ON the bench top (y 0.53), near the front edge, clear of the hammer/saw/lantern.
   const benchGun = woodenGun(); benchGun.rotation.x = Math.PI / 2;
   const benchGunH = new THREE.Group(); benchGunH.add(benchGun);
-  benchGunH.position.set(0.35, 0.98, -68.0); benchGunH.rotation.y = -0.5; grp.add(benchGunH);
+  benchGunH.position.set(0.35, 0.53, -68.1); benchGunH.rotation.y = -0.5; grp.add(benchGunH);
   prop(b, kit, "windmill", 5.6, 0, -64.8, 2.6, 0.4); // small decorative mill on a crate by the wall
   b.add(boxGeo(V(4.2, 0, -65.5), V(5.0, 0.55, -64.7), 1), lam("shopCrate", () => ({ color: "#b5653f" })));
   b.add(boxGeo(V(4.3, 0.55, -65.4), V(4.9, 0.95, -64.8), 1), lam("shopCrate2", () => ({ color: "#8a6a4a" })));
@@ -608,7 +615,7 @@ export class World {
     }
     // ---- in-scene numbers (Grigware: the biggest figures as 3D text in the scene) ----
     const n700 = numberCard("$700", null, "gold", 1);
-    n700.position.set(2.2, 1.7, 140.8); this.numbers.push({ mesh: n700, set: 6, pos: [2.2, 1.7, 140.8], a: 300, b: 360 }); R.add(n700);
+    n700.position.set(2.0, 1.5, 140.8); this.numbers.push({ mesh: n700, set: 6, pos: [2.0, 1.5, 140.8], a: 300, b: 360 }); R.add(n700);
     const nMayor = numberCard("MAYOR", "1916", "white", 0.9);
     nMayor.position.set(40.5, 2.6, 5.0); this.numbers.push({ mesh: nMayor, set: 2, pos: [40.5, 2.6, 5.0], a: 1000, b: 1057 }); R.add(nMayor);
     const n24 = numberCard("24 YEARS", null, "gold", 1);

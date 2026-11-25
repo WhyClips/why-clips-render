@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "grigware",
- "message": "Smoke bisection v3 (lens/bloom/grade isolation)",
+ "message": "Stills fixes (7 defects) + ink smoke + 12-chunk render (bloom OFF)",
  "files": [
   {
    "path": "README.md",
@@ -191,6 +191,14 @@
   {
    "path": ".github/workflows/render-smoke.yml",
    "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-smoke.yml"
+  },
+  {
+   "path": ".github/workflows/smoke-grigware.yml",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/smoke-grigware.yml"
+  },
+  {
+   "path": "audio/music_sfx.wav",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/audio/music_sfx.wav"
   },
   {
    "path": "audio/voiceover.mp3",

@@ -60,7 +60,9 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
     }
   } else if (id === 2) {
     // S2 train yard: Frank + four ballplayers with the mail sacks, grinning, mid-robbery.
-    const spots: [number, number, number][] = [[0.2, 139.6, 1], [1.4, 140.6, 3], [-1.2, 140.2, 4], [2.4, 139.8, 5], [-0.4, 141.2, 6]];
+    // All five in FRONT of the boxcar (z <= 139.8) and clear of the sack pile
+    // (x 1.5..2.5, z 139.6..141.2) — two were hidden behind/inside the boxcar before.
+    const spots: [number, number, number][] = [[0.2, 139.6, 1], [1.0, 139.2, 3], [-1.2, 139.8, 4], [3.2, 139.0, 5], [-2.4, 139.4, 6]];
     for (const [x, z, i] of spots) {
       const w = who(i, i === 1 ? FRANK : BALL);
       const v = faceCam(cam, x, z);
@@ -71,7 +73,8 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
     }
   } else if (id === 3) {
     // S3 prison: three prisoners building the half-built wall, one hammering, one carrying stone.
-    const spots: [number, number, number, Expr][] = [[-4.5, 71.5, 7, "stern"], [-3.2, 72.4, 8, "stern"], [-5.8, 72.0, 9, "dazed"]];
+    // IN FRONT of the wall (front face z 71.2) — they were embedded inside it before (z 71.5+).
+    const spots: [number, number, number, Expr][] = [[-4.5, 70.4, 7, "stern"], [-3.2, 70.8, 8, "stern"], [-5.8, 70.2, 9, "dazed"]];
     for (const [x, z, i, e] of spots) {
       const w = who(i, PRISONER);
       const v = viewOf(cam, x, z, 1, 0.2);
@@ -83,7 +86,7 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
   } else if (id === 4) {
     // S4 prison: the escape — Frank + five prisoners rush the loco, guards shocked.
     // The loco itself animates through the gates in World.update().
-    const spots: [number, number, number][] = [[-1.6, 72.2, 10], [-0.4, 73.0, 11], [0.8, 72.6, 12], [-2.6, 73.2, 13], [1.8, 73.4, 14]];
+    const spots: [number, number, number][] = [[-1.6, 72.2, 10], [-1.0, 73.4, 11], [1.6, 72.8, 12], [-2.6, 73.2, 13], [1.8, 73.4, 14]];
     for (const [x, z, i] of spots) {
       const w = who(i, i === 10 ? FRANK : PRISONER);
       const v = viewOf(cam, x, z, 0.3, 1);
@@ -145,7 +148,7 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
       { mode: "stand", expr: "grin", blink: blink(32) },
       { mode: "stand", expr: "grin", blink: blink(32) }));
     blob(out, -4, 0, 3.4, 1);
-    for (const [x, z, i] of [[-1.6, 1.0, 33], [-0.6, 1.8, 34]] as [number, number, number][]) {
+    for (const [x, z, i] of [[-1.6, 1.0, 33], [0.4, 0.6, 34]] as [number, number, number][]) {
       const t = who(i, townsfolk(i));
       out.places.push(person(cam, t, x, 0, z, faceCam(cam, x, z),
         { mode: "stand", expr: "laugh", blink: blink(i) },
@@ -187,22 +190,24 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
     blob(out, -40, 0, 2.4, 1);
   } else if (id === 12) {
     // S12 office: the match — officer shocked at the wanted poster, Frank dazed.
-    // (Camera is over-the-officer's-shoulder: officer at (-40, 0, 3.2) with back to camera.)
+    // (Camera is over-the-officer's-shoulder: officer at (-39.6, 0, 3.4) with back to
+    // camera, right foreground; Frank at (-37.4, 0, 4.4), left of the poster, not on it.)
     const o = who(42, GUARD);
-    const v = viewOf(cam, -40, 3.2, 0, 1);
-    out.places.push(person(cam, o, -40, 0, 3.2, v,
+    const v = viewOf(cam, -39.6, 3.4, 0, 1);
+    out.places.push(person(cam, o, -39.6, 0, 3.4, v,
       { mode: "stand", expr: "shock", blink: blink(42) },
       { mode: "stand", expr: "shock", blink: blink(42) }));
-    blob(out, -40, 0, 3.2, 1);
+    blob(out, -39.6, 0, 3.4, 1);
     const w = who(43, FRANK);
-    out.places.push(person(cam, w, -38.6, 0, 4.2, faceCam(cam, -38.6, 4.2),
+    out.places.push(person(cam, w, -37.4, 0, 4.4, faceCam(cam, -37.4, 4.4),
       { mode: "stand", expr: "dazed", blink: blink(43) },
       { mode: "stand", expr: "dazed", blink: blink(43) }));
-    blob(out, -38.6, 0, 4.2, 1);
+    blob(out, -37.4, 0, 4.4, 1);
   } else if (id === 13) {
     // S13 street: the bail crowd — five townsfolk cheering, Frank among them, relieved.
+    // Shifted +0.5 in x — the leftmost figure was cut off at the frame edge before.
     const spots: [number, number, number, Expr][] = [
-      [-2.0, 1.2, 44, "laugh"], [-0.8, 2.0, 45, "laugh"], [0.5, 1.5, 46, "relief"], [1.8, 2.2, 47, "laugh"], [2.8, 1.2, 48, "grin"],
+      [-1.5, 1.2, 44, "laugh"], [-0.3, 2.0, 45, "laugh"], [1.0, 1.5, 46, "relief"], [2.3, 2.2, 47, "laugh"], [3.3, 1.2, 48, "grin"],
     ];
     for (const [x, z, i, e] of spots) {
       const w = who(i, i === 46 ? FRANK : townsfolk(i));

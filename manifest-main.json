@@ -1,12 +1,1 @@
-{
- "owner": "WhyClips",
- "repo": "why-clips-render",
- "branch": "main",
- "message": "Smoke bisection v2 workflow on main",
- "files": [
-  {
-   "path": ".github/workflows/render-smoke.yml",
-   "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-smoke.yml"
-  }
- ]
-}
+{"branch":"main","files":[{"file":"/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-smoke.yml","path":".github/workflows/render-smoke.yml"},{"file":"/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-grigware.yml","path":".github/workflows/render-grigware.yml"},{"file":"/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/smoke-grigware.yml","path":".github/workflows/smoke-grigware.yml"}],"message":"Grigware: ink-verification smoke + 12-chunk render workflow (bloom OFF)","owner":"WhyClips","repo":"why-clips-render"}
