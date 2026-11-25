@@ -456,8 +456,11 @@ export class World {
     // Placed where the WIDE camera sees them centred (frame range = the wide only:
     // a giant number over the medium/close-up collides with the character).
     // S1a looks down +z (screen-right = -x), so the street number sits near x = 0.5.
+    // n1 floats IN FRONT of the house fronts (z=1.9): at z=2.0 the pink house
+    // occluded the card's left edge ("1,") at the dolly start (f0). z=1.6 puts
+    // it 0.3 m in front of every facade, so it is never clipped.
     const n1 = numberCard("1,000", "COINS", "gold", 1);
-    n1.position.set(0.5, 2.8, 2.0); this.numbers.push({ mesh: n1, set: 1, pos: [0.5, 2.8, 2.0], a: 0, b: 60 }); R.add(n1);
+    n1.position.set(0.9, 2.8, 1.6); this.numbers.push({ mesh: n1, set: 1, pos: [0.9, 2.8, 1.6], a: 0, b: 60 }); R.add(n1);
     const n3 = numberCard("$300", "FINE", "white", 0.9);
     n3.position.set(-38.6, 2.5, 1.0); this.numbers.push({ mesh: n3, set: 3, pos: [-38.6, 2.5, 1.0], a: 360, b: 450 }); R.add(n3);
     for (const n of this.numbers) n.mesh.visible = false;

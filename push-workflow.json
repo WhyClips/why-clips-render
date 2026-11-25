@@ -1,0 +1,16 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "main",
+ "message": "Template workflows: zero-pad fix + diagnostics (re-push)",
+ "files": [
+  {
+   "path": ".github/workflows/render-template-smoke.yml",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/.github/workflows/render-template-smoke.yml"
+  },
+  {
+   "path": ".github/workflows/render-chunks.yml",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/.github/workflows/render-chunks.yml"
+  }
+ ]
+}

@@ -120,11 +120,11 @@ export const keyEnd = (id: number, f: number) => {
 // DOF on close-ups/mediums (focus = the character), wides stay sharp.
 export type Dof = { f: number; dur?: number; cInf: number; focus?: (f: number) => V3 };
 export const DOF: Dof[] = [
-  { f: 0, cInf: 10, focus: () => [0.5, 1.5, 1.5] },    // street wide: walker sharp, houses soft
+  { f: 0, cInf: 0, focus: () => [0.5, 1.5, 1.5] },    // street wide: ALL SHARP. cInf 10 smeared the "1,000" glyphs where they cross the bright sky slit between the houses (cInf 5 still smeared them) — and TheRealWhy's wides are sharp throughout, so 0 matches the reference better. DOF lives on the mediums/close-ups.
   { f: 60, dur: 30, cInf: 12, focus: () => [0.5, 1.5, 1.5] }, // walker medium
   { f: 180, cInf: 12, focus: () => [40.5, 1.45, 1.0] }, // room: character sharp, back wall soft
   { f: 260, dur: 28, cInf: 14, focus: () => [40.5, 1.45, 1.0] }, // room close-up
-  { f: 360, cInf: 12, focus: () => [-40, 1.4, 2.6] },  // office: worker sharp
+  { f: 360, cInf: 6, focus: () => [-40, 1.4, 2.6] },  // office: worker sharp — cInf 6 not 12, same reason as the street wide: the "$300 FINE" card sits off the focus plane
   { f: 450, dur: 28, cInf: 14, focus: () => [-40, 1.4, 2.6] }, // office close-up
   { f: 540, cInf: 0 },                                // exterior wide: establishing, all sharp
   { f: 630, dur: 28, cInf: 10, focus: () => [0.8, 1.6, 73.5] }, // tourist medium

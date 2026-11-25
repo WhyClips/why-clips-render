@@ -1,0 +1,208 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "therealwhy-template",
+ "message": "Template: zero-pad filename fix, number-card DOF/position fixes, pill width fix, diagnostics",
+ "files": [
+  {
+   "path": "README.md",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/README.md"
+  },
+  {
+   "path": "TEMPLATE-NOTES.md",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/TEMPLATE-NOTES.md"
+  },
+  {
+   "path": "caption_band_qa.py",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/caption_band_qa.py"
+  },
+  {
+   "path": "make_branch_orphan.py",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/make_branch_orphan.py"
+  },
+  {
+   "path": "package-lock.json",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/package-lock.json"
+  },
+  {
+   "path": "package.json",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/package.json"
+  },
+  {
+   "path": "push-manifest.json",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/push-manifest.json"
+  },
+  {
+   "path": "push-workflow.json",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/push-workflow.json"
+  },
+  {
+   "path": "remotion.config.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/remotion.config.ts"
+  },
+  {
+   "path": "tsconfig.json",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/tsconfig.json"
+  },
+  {
+   "path": "src/DebugComposer.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/DebugComposer.tsx"
+  },
+  {
+   "path": "src/Root.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/Root.tsx"
+  },
+  {
+   "path": "src/Template.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/Template.tsx"
+  },
+  {
+   "path": "src/captions.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/captions.tsx"
+  },
+  {
+   "path": "src/demo-words.json",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/demo-words.json"
+  },
+  {
+   "path": "src/index.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/index.ts"
+  },
+  {
+   "path": "src/numbers.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/numbers.tsx"
+  },
+  {
+   "path": "src/stage.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/stage.ts"
+  },
+  {
+   "path": "src/story.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/story.ts"
+  },
+  {
+   "path": "src/worlds.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/worlds.ts"
+  },
+  {
+   "path": "src/bridge/build.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/build.ts"
+  },
+  {
+   "path": "src/bridge/cardshade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/cardshade.ts"
+  },
+  {
+   "path": "src/bridge/cast.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/cast.ts"
+  },
+  {
+   "path": "src/bridge/grade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/grade.ts"
+  },
+  {
+   "path": "src/bridge/ink.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/ink.ts"
+  },
+  {
+   "path": "src/bridge/lensblur.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/lensblur.ts"
+  },
+  {
+   "path": "src/bridge/lights.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/lights.ts"
+  },
+  {
+   "path": "src/bridge/paint.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/paint.ts"
+  },
+  {
+   "path": "src/bridge/shade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/shade.ts"
+  },
+  {
+   "path": "src/bridge/toon.ts",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/src/bridge/toon.ts"
+  },
+  {
+   "path": "public/bridge/kenney/canoe.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/canoe.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_purpleA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/flower_purpleA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_redA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/flower_redA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_yellowA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/flower_yellowA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/grass.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/grass.glb"
+  },
+  {
+   "path": "public/bridge/kenney/grass_large.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/grass_large.glb"
+  },
+  {
+   "path": "public/bridge/kenney/lily_large.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/lily_large.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bush.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/plant_bush.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bushDetailed.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/plant_bushDetailed.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bushLarge.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/plant_bushLarge.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_cone.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/tree_cone.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_default.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/tree_default.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_detailed.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/tree_detailed.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_fat.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/tree_fat.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_oak.glb",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/public/bridge/kenney/tree_oak.glb"
+  },
+  {
+   "path": ".github/workflows/render-chunks.yml",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/.github/workflows/render-chunks.yml"
+  },
+  {
+   "path": ".github/workflows/render-template-smoke.yml",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/.github/workflows/render-template-smoke.yml"
+  },
+  {
+   "path": "scripts/assemble.sh",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/scripts/assemble.sh"
+  },
+  {
+   "path": "scripts/render-chunk.mjs",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/scripts/render-chunk.mjs"
+  },
+  {
+   "path": "scripts/verify-manifest.mjs",
+   "file": "/home/hatch/workspace/ricks-clone/therealwhy-project/scripts/verify-manifest.mjs"
+  }
+ ]
+}

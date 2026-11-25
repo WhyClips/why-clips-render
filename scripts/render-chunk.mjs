@@ -164,10 +164,26 @@ for (const [a, b] of runs) {
   // whether a frame is a real render ~1-2 MB or a blank ~5 KB)
   console.log(`run dir ${path.relative(projectDir, runDir)}: ` +
     fs.readdirSync(runDir).map((n) => `${n} ${fs.statSync(path.join(runDir, n)).size}B`).join(", "));
-  // verify each PNG, then move it into place (atomic rename) and record it
+  // NB: Remotion zero-pads the [frame] token to the width of the LARGEST frame
+  // number in the range: frames 0-1 come out as frame-0.png, frame-1.png, but
+  // frames 0-29 come out as frame-00.png ... frame-29.png (and 0-1799 as
+  // frame-0000.png ...). Never assume the filename — map by parsing the number.
+  const byNumber = new Map();
+  for (const n of fs.readdirSync(runDir)) {
+    const m = n.match(/^frame-(\d+)\.png$/);
+    if (m) byNumber.set(Number(m[1]), n);
+  }
+  // verify each PNG, then move it into place (atomic rename, canonical name
+  // frame-N.png with no padding) and record it
   let moved = 0;
   for (let f = a; f <= b; f++) {
-    const src = path.join(runDir, `frame-${f}.png`);
+    const found = byNumber.get(f);
+    if (!found) {
+      console.error(`frame ${f} was not written by Remotion (run dir has: ` +
+        [...byNumber.keys()].sort((x, y) => x - y).join(", ") + `)`);
+      process.exit(1);
+    }
+    const src = path.join(runDir, found);
     const check = validPng(src);
     if (!check.ok) {
       console.error(`frame ${f} did not render as a valid PNG (${src}): ${check.reason}`);
