@@ -539,7 +539,7 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) 
   // ON the bench top (y 0.68), centre patch, clear of hammer/saw/lantern.
   const benchGun = woodenGun(); benchGun.rotation.x = Math.PI / 2;
   const benchGunH = new THREE.Group(); benchGunH.add(benchGun);
-  benchGunH.position.set(-0.1, 0.68, -67.95); benchGunH.rotation.y = -0.5; grp.add(benchGunH);
+  benchGunH.position.set(-0.1, 0.68, -67.95); benchGunH.rotation.y = -0.9; grp.add(benchGunH);
   prop(b, kit, "windmill", 5.6, 0, -64.8, 2.6, 0.4); // small decorative mill on a crate by the wall
   b.add(boxGeo(V(4.2, 0, -65.5), V(5.0, 0.55, -64.7), 1), lam("shopCrate", () => ({ color: "#b5653f" })));
   b.add(boxGeo(V(4.3, 0.55, -65.4), V(4.9, 0.95, -64.8), 1), lam("shopCrate2", () => ({ color: "#8a6a4a" })));

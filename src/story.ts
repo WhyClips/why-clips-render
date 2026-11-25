@@ -92,11 +92,12 @@ const dolly = (pos: V3, look: V3, k: number, rest: Partial<Cam> = {}): Shot =>
 
 // ---- shot 1 — workshop (day): ECU wooden gun on the bench, then medium on the prisoner ----
 // Gun on the bench at (-0.1, 0.68, -67.95); prisoner behind the bench at (0, 0, -66.8).
-// S1a looks DOWN at the bench top from above-front so the gun is the subject and the
-// prisoner stays out of frame (was a giant face + hammer, gun invisible against his torso).
-// Light is "day", not "golden": the golden preset leaves this windowless interior in
+// Light is "day", not "golden": golden leaves this windowless interior in
 // hemisphere-only light and everything reads purple (walls, floor, bench).
-const S1a = (f: number) => dolly([1.4, 2.1, -69.8], [-0.05, 0.6, -67.95], pushK(f, 0, 0.0028), { fov: 30 });
+// S1a looks at the gun from a LOW 3/4 angle (not top-down): a revolver lying flat
+// reads as a plain plank from directly above — the barrel/cylinder/grip profile
+// only shows from the side. Camera close (1.8 m) so the 0.45 m gun fills the frame.
+const S1a = (f: number) => dolly([0.9, 1.3, -69.3], [-0.1, 0.7, -67.95], pushK(f, 0, 0.0028), { fov: 30 });
 const S1b = (f: number) => dolly([3.4, 1.9, -72.8], [0, 1.4, -67.5], pushK(f, 80, 0.0022), { fov: 38, roll: -0.03 });
 // ---- shot 2 — train yard (day): wide robbery, medium on Frank + sacks, ECU sacks + $700 ----
 // Boxcar at (0, 0, 143); mail sacks at (2.0, 0, 140.5); ballplayers around (-2.4..3.2, 0, 139-140).
