@@ -1,0 +1,200 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "grigware",
+ "message": "Smoke bisection v2 (ink off / tone only / composer off)",
+ "files": [
+  {
+   "path": "README.md",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/README.md"
+  },
+  {
+   "path": "make_manifest.py",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/make_manifest.py"
+  },
+  {
+   "path": "manifest-main.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/manifest-main.json"
+  },
+  {
+   "path": "manifest.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/manifest.json"
+  },
+  {
+   "path": "package-lock.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/package-lock.json"
+  },
+  {
+   "path": "package.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/package.json"
+  },
+  {
+   "path": "remotion.config.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/remotion.config.ts"
+  },
+  {
+   "path": "script-grigware.txt",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/script-grigware.txt"
+  },
+  {
+   "path": "tsconfig.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/tsconfig.json"
+  },
+  {
+   "path": "public/bridge/kenney/canoe.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/canoe.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_purpleA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/flower_purpleA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_redA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/flower_redA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_yellowA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/flower_yellowA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/grass.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/grass.glb"
+  },
+  {
+   "path": "public/bridge/kenney/grass_large.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/grass_large.glb"
+  },
+  {
+   "path": "public/bridge/kenney/lily_large.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/lily_large.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bush.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/plant_bush.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bushDetailed.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/plant_bushDetailed.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bushLarge.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/plant_bushLarge.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_cone.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/tree_cone.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_default.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/tree_default.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_detailed.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/tree_detailed.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_fat.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/tree_fat.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_oak.glb",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/public/bridge/kenney/tree_oak.glb"
+  },
+  {
+   "path": "src/DebugComposer.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/DebugComposer.tsx"
+  },
+  {
+   "path": "src/Root.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/Root.tsx"
+  },
+  {
+   "path": "src/Template.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/Template.tsx"
+  },
+  {
+   "path": "src/captions.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/captions.tsx"
+  },
+  {
+   "path": "src/demo-words.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/demo-words.json"
+  },
+  {
+   "path": "src/index.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/index.ts"
+  },
+  {
+   "path": "src/numbers.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/numbers.tsx"
+  },
+  {
+   "path": "src/stage.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/stage.ts"
+  },
+  {
+   "path": "src/story.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/story.ts"
+  },
+  {
+   "path": "src/words.json",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/words.json"
+  },
+  {
+   "path": "src/worlds.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/worlds.ts"
+  },
+  {
+   "path": "src/bridge/build.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/build.ts"
+  },
+  {
+   "path": "src/bridge/cardshade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/cardshade.ts"
+  },
+  {
+   "path": "src/bridge/cast.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/cast.ts"
+  },
+  {
+   "path": "src/bridge/grade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/grade.ts"
+  },
+  {
+   "path": "src/bridge/ink.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/ink.ts"
+  },
+  {
+   "path": "src/bridge/lensblur.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/lensblur.ts"
+  },
+  {
+   "path": "src/bridge/lights.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/lights.ts"
+  },
+  {
+   "path": "src/bridge/paint.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/paint.ts"
+  },
+  {
+   "path": "src/bridge/shade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/shade.ts"
+  },
+  {
+   "path": "src/bridge/toon.ts",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/src/bridge/toon.ts"
+  },
+  {
+   "path": ".github/workflows/render-grigware.yml",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-grigware.yml"
+  },
+  {
+   "path": ".github/workflows/render-smoke.yml",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-smoke.yml"
+  },
+  {
+   "path": "audio/voiceover.mp3",
+   "file": "/home/hatch/workspace/ricks-clone/grigware-project/audio/voiceover.mp3"
+  }
+ ]
+}

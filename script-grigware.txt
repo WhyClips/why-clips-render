@@ -1,8 +1,8 @@
 # Frank Grigware — "He Escaped Prison With a Wooden Gun — Then Became Mayor"
-# Why Clips Short — script v1 (25 Nov 2026, tonight build)
+# Why Clips Short — script v2 (25 Nov 2026, tonight build) — 223 words
 # Facts: fresh-topics-research.md §7. Mayor 1916 (not 1915). Caught 1934 (24 years later).
 # Haul ~$700. Spelling Grigware. Town Spirit River, Alberta.
-# 5 deliberate pauses (0.5s) at segment breaks — marked [PAUSE].
+# 5 deliberate pauses (~0.5s) at segment breaks — marked [PAUSE].
 
 [SEG1 — hook, mid-action, NO title card]
 One morning in 1910, six prisoners broke out of Leavenworth prison — with a gun made of wood.
@@ -10,9 +10,9 @@ One morning in 1910, six prisoners broke out of Leavenworth prison — with a gu
 
 [SEG2 — setting + escalation]
 Frank Grigware was twenty-three, a baseball player who'd robbed a mail train with four friends — seven sacks of mail, seven hundred dollars — and got life for it.
-Leavenworth wasn't even finished yet. The prisoners were building their own prison, stone by stone, like ants building their own anthill.
-Then a supply train backed into the yard — and the six men struck. They pulled the wooden gun, grabbed the engineer, and drove that train straight through the prison gates.
-Five were caught within days. Frank was the only one who got away.
+Leavenworth wasn't even finished yet. The prisoners were building their own prison, like ants building their own anthill.
+Then a supply train backed into the yard — and the six men struck. They pulled the wooden gun, grabbed the engineer, and drove it straight through the gates.
+Five were caught in days. Frank was the only one who got away.
 [PAUSE]
 
 [SEG3 — mid-story question]
@@ -20,13 +20,13 @@ So how do you hide for twenty-four years?
 [PAUSE]
 
 [SEG4 — "You see" pivot]
-You see, he just became someone else. He crossed into Canada, opened a candy store, built houses, got married — and in 1916, the town elected him mayor.
+You see, he became someone else. He crossed into Canada, opened a candy store, built houses, got married — and in 1916, the town elected him mayor.
 [PAUSE]
 
 [SEG5 — escalation + twist 1]
-For twenty-four years, the most wanted man in America was hiding in plain sight, shaking hands at church on Sunday.
-Then one tiny mistake undid it all. Police fingerprinted him for trapping foxes out of season — and the prints matched a twenty-four-year-old FBI file.
+For twenty-four years, America's most wanted man hid in plain sight, shaking hands at church.
+Then one tiny mistake undid it. Police fingerprinted him for trapping foxes out of season — and the prints matched a twenty-four-year-old FBI file.
 [PAUSE]
 
 [SEG6 — double-twist payoff, last line = twist, END on it]
-The mayor was the escaped lifer. But the town didn't turn him in. They raised ten thousand dollars for his bail, flooded Ottawa and Washington with protests — and America quietly dropped the case. He never spent another day in prison, and died a free man at ninety-one.
+The mayor was the escaped lifer. But the town didn't turn him in. They raised ten thousand dollars' bail and flooded Ottawa and Washington with protests — and America dropped the case. He never spent another day in prison — and died free at ninety-one.
