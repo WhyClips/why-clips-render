@@ -1,7 +1,8 @@
-# 30-frame smoke test of the therealwhy template (full post composer ON).
-# Verifies the composer (ink -> lens blur -> bloom -> NEUTRAL tone map -> grade)
-# actually renders the world on GitHub Actions runners — locally it blanks
-# the scene (only sky survives), so this MUST pass before any full render.
+# Post-chain bisection smoke test (v2): renders the same 30 frames with three
+# different post toggles to find which stage strips the colour on Actions.
+# V1 smoke-noink:  ink OFF (lens+bloom+tone+grade on)
+# V2 smoke-tone:   ink+lens+bloom+grade OFF (tone mapping only)
+# V3 smoke-nocomp: composer OFF entirely (control — expect full colour)
 # Trigger: Actions tab > "Smoke Test Template" > Run workflow.
 name: Smoke Test Template
 
@@ -10,7 +11,7 @@ on:
 
 jobs:
   render:
-    name: Render 30-frame smoke test
+    name: Post-chain bisection (30 frames x 3 variants)
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -27,15 +28,21 @@ jobs:
         run: npx remotion browser ensure
       - name: Install ffmpeg (for the ffprobe check)
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
-      - name: Render 30 frames (composer ON)
+      - name: Render V1 (ink OFF)
         run: |
           mkdir -p out
-          echo "RENDER_START $(date -u +%FT%TZ)"
-          npx remotion render src/index.ts TemplateShort out/smoke-test.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}'
-          echo "RENDER_END $(date -u +%FT%TZ)"
-          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,r_frame_rate out/smoke-test.mp4
+          npx remotion render src/index.ts TemplateShort out/smoke-noink.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-noink.mp4
+      - name: Render V2 (tone mapping only)
+        run: |
+          npx remotion render src/index.ts TemplateShort out/smoke-tone.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false,"lens":false,"bloom":false,"grade":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-tone.mp4
+      - name: Render V3 (composer OFF, control)
+        run: |
+          npx remotion render src/index.ts TemplateShort out/smoke-nocomp.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"composer":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-nocomp.mp4
       - uses: actions/upload-artifact@v4
         with:
-          name: smoke-test
-          path: out/smoke-test.mp4
+          name: smoke-bisection
+          path: out/smoke-*.mp4
           if-no-files-found: error
