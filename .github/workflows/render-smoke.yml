@@ -1,8 +1,9 @@
-# Post-chain bisection smoke test (v2): renders the same 30 frames with three
-# different post toggles to find which stage strips the colour on Actions.
-# V1 smoke-noink:  ink OFF (lens+bloom+tone+grade on)
-# V2 smoke-tone:   ink+lens+bloom+grade OFF (tone mapping only)
-# V3 smoke-nocomp: composer OFF entirely (control — expect full colour)
+# Post-chain bisection smoke test (v3, round 2): V1 (ink off) was STILL grey,
+# V2 (tone only) was FULL COLOUR — so the desaturator is lens, bloom or grade.
+# All three variants below keep ink OFF to isolate those three.
+# V4 smoke-noblur:   lens OFF (bloom+grade+tone on)
+# V5 smoke-lensonly: bloom+grade OFF (lens+tone on)
+# V6 smoke-gradeonly: lens+bloom OFF (grade+tone on)
 # Trigger: Actions tab > "Smoke Test Template" > Run workflow.
 name: Smoke Test Template
 
@@ -28,19 +29,19 @@ jobs:
         run: npx remotion browser ensure
       - name: Install ffmpeg (for the ffprobe check)
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
-      - name: Render V1 (ink OFF)
+      - name: Render V4 (lens OFF)
         run: |
           mkdir -p out
-          npx remotion render src/index.ts TemplateShort out/smoke-noink.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false}}'
-          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-noink.mp4
-      - name: Render V2 (tone mapping only)
+          npx remotion render src/index.ts TemplateShort out/smoke-noblur.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false,"lens":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-noblur.mp4
+      - name: Render V5 (lens only)
         run: |
-          npx remotion render src/index.ts TemplateShort out/smoke-tone.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false,"lens":false,"bloom":false,"grade":false}}'
-          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-tone.mp4
-      - name: Render V3 (composer OFF, control)
+          npx remotion render src/index.ts TemplateShort out/smoke-lensonly.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false,"bloom":false,"grade":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-lensonly.mp4
+      - name: Render V6 (grade only)
         run: |
-          npx remotion render src/index.ts TemplateShort out/smoke-nocomp.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"composer":false}}'
-          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-nocomp.mp4
+          npx remotion render src/index.ts TemplateShort out/smoke-gradeonly.mp4 --codec h264 --crf 16 --concurrency 1 --scale 1 --frames 0-29 --timeout 180000 --log=verbose --gl angle --chromium-flags='{"enable-unsafe-swiftshader":true}' --props '{"post":{"ink":false,"lens":false,"bloom":false}}'
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name out/smoke-gradeonly.mp4
       - uses: actions/upload-artifact@v4
         with:
           name: smoke-bisection
