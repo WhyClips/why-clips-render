@@ -1,0 +1,48 @@
+# 30-frame smoke test for the TherealWhy template (full post composer).
+# Measures the composer's per-frame cost on GitHub Actions — the number that decides
+# whether a 60 s video is a 1 h or a 6 h render (Danish: ~16 s/frame with the full
+# composer). Trigger: Actions tab > "Render Template Smoke Test" > Run workflow.
+# NOTE (Matisse lesson): this file must exist on main too, or dispatch 404s.
+name: Render Template Smoke Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    name: Render 30 frames (full composer) + measure
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Ensure browser
+        run: npx remotion browser ensure
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Render frames 0-29 (resumable chunk)
+        run: |
+          mkdir -p out
+          echo "RENDER_START $(date -u +%FT%TZ)"
+          node scripts/render-chunk.mjs --comp TemplateShort --frames 0-29 --chunk 0/1 --out out/smoke-frames --scale 1
+          echo "RENDER_END $(date -u +%FT%TZ)"
+      - name: Verify manifest + assemble 1s proof video
+        run: |
+          node scripts/verify-manifest.mjs --manifest out/smoke-frames/manifest.json --frames 0-29 --out out/smoke-frames
+          ./scripts/assemble.sh --frames out/smoke-frames --manifest out/smoke-frames/manifest.json --out out/smoke-test.mp4 --fps 30 --crf 18
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,r_frame_rate out/smoke-test.mp4
+          ls -la out/smoke-frames/ | head -35
+      - uses: actions/upload-artifact@v4
+        with:
+          name: template-smoke-test
+          path: |
+            out/smoke-frames/manifest.json
+            out/smoke-test.mp4
+          if-no-files-found: error

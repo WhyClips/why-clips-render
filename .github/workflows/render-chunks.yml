@@ -1,0 +1,121 @@
+# Full chunked render for the TherealWhy template (Danish pipeline: ~16 s/frame
+# with the full composer, so a 60 s video is 5-6 h on one machine — render it as
+# 4 parallel chunks on GitHub Actions, each resumable via its frame manifest).
+# Trigger: Actions tab > "Render Template Chunks" > Run workflow.
+# NOTE (Matisse lesson): this file must exist on main too, or dispatch 404s.
+name: Render Template Chunks
+
+on:
+  workflow_dispatch:
+    inputs:
+      comp:
+        description: "Remotion composition id"
+        required: false
+        default: "TemplateShort"
+      frames:
+        description: "Frame range START-END (e.g. 0-899 for the 30 s template, 0-1799 for a 60 s video)"
+        required: false
+        default: "0-899"
+      vo_path:
+        description: "Voiceover audio in the repo (optional, e.g. audio/vo.mp3)"
+        required: false
+        default: ""
+      music_path:
+        description: "Synthesized music bed in the repo (optional, e.g. audio/bed.mp3)"
+        required: false
+        default: ""
+
+jobs:
+  render:
+    name: Render chunk ${{ matrix.chunk }} of 4
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Ensure browser
+        run: npx remotion browser ensure
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Render chunk ${{ matrix.chunk }}
+        run: |
+          echo "RENDER_START $(date -u +%FT%TZ)"
+          node scripts/render-chunk.mjs --comp "${{ inputs.comp }}" --frames "${{ inputs.frames }}" --chunk ${{ matrix.chunk }}/4 --out out/frames-chunk-${{ matrix.chunk }} --scale 1
+          echo "RENDER_END $(date -u +%FT%TZ)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frames-chunk-${{ matrix.chunk }}
+          path: out/frames-chunk-${{ matrix.chunk }}
+          if-no-files-found: error
+
+  assemble:
+    name: Merge manifests + assemble MP4
+    needs: render
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - uses: actions/download-artifact@v4
+        with:
+          name: frames-chunk-0
+          path: out/frames-chunk-0
+      - uses: actions/download-artifact@v4
+        with:
+          name: frames-chunk-1
+          path: out/frames-chunk-1
+      - uses: actions/download-artifact@v4
+        with:
+          name: frames-chunk-2
+          path: out/frames-chunk-2
+      - uses: actions/download-artifact@v4
+        with:
+          name: frames-chunk-3
+          path: out/frames-chunk-3
+      - name: Merge manifests + verify + assemble
+        run: |
+          mkdir -p out/frames
+          node -e "
+            const fs = require('fs');
+            const merged = { comp: '${{ inputs.comp }}', fps: 30, width: 1080, height: 1920, totalFrames: 0, frames: {} };
+            for (let i = 0; i < 4; i++) {
+              const m = JSON.parse(fs.readFileSync(\`out/frames-chunk-\${i}/manifest.json\`, 'utf8'));
+              Object.assign(merged.frames, m.frames);
+              merged.totalFrames = Math.max(merged.totalFrames, m.totalFrames);
+            }
+            // chunk manifests live in per-chunk dirs; the merged manifest points at out/frames
+            fs.writeFileSync('out/frames/manifest.json', JSON.stringify(merged, null, 2));
+            console.log('merged manifest:', Object.keys(merged.frames).length, 'frames');
+          "
+          # the per-chunk artifacts each contain their own frames; move them into out/frames
+          for i in 0 1 2 3; do cp out/frames-chunk-$i/frame-*.png out/frames/ 2>/dev/null || true; done
+          node scripts/verify-manifest.mjs --manifest out/frames/manifest.json --frames "${{ inputs.frames }}" --out out/frames
+          VO=""; MUSIC=""
+          [ -n "${{ inputs.vo_path }}" ] && VO="--vo ${{ inputs.vo_path }}"
+          [ -n "${{ inputs.music_path }}" ] && MUSIC="--music ${{ inputs.music_path }}"
+          ./scripts/assemble.sh --frames out/frames --manifest out/frames/manifest.json --out out/final.mp4 --fps 30 --crf 18 $VO $MUSIC
+      - uses: actions/upload-artifact@v4
+        with:
+          name: template-final
+          path: |
+            out/final.mp4
+            out/frames/manifest.json
+          if-no-files-found: error
