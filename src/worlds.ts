@@ -18,7 +18,7 @@ import { LIGHTS, LOOK, LightPreset } from "./bridge/lights";
 import { TONE, CHAR, twoTone, untone } from "./bridge/shade";
 import { NOINK } from "./bridge/ink";
 import { Pool, Actor, Fx, setCastLight } from "./bridge/cast";
-import { FPS, SHOTS, SET_NAME, camAt, FOREGROUND, ShotDef } from "./story";
+import { FPS, SHOTS, SET_NAME, camAt, FOREGROUND, ShotDef, clamp01 } from "./story";
 import { stageSet } from "./stage";
 import { numberCard } from "./numbers";
 
@@ -183,7 +183,7 @@ const buildStreet = (b: Batch, kit: Kit) => {
 };
 
 /** 2 — interior room (day): wood floor, rug, table + lantern, sofa, bookshelf, painting, window */
-const buildRoom = (b: Batch, kit: Kit, root: THREE.Group) => {
+const buildRoom = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) => {
   b.add(quadUp(34, 46, -6, 6, 6, 6), lam("roomFloor", () => ({ map: planksHD() })));
   const wall = wallMat("roomWall", ["#e6d3ae", "#dfcda8", "#ead9b8", "#d8c49c"], "#b39a78");
   const W = 3.4; // wall height
@@ -247,10 +247,14 @@ const buildRoom = (b: Batch, kit: Kit, root: THREE.Group) => {
   ceil.rotation.x = Math.PI; ceil.castShadow = false; ceil.receiveShadow = true; root.add(ceil);
   prop(b, kit, "lantern", 39.0, 0.8, 2.5, 0.42, 0.5);
   prop(b, kit, "plant_bush", 45.0, 0, -5.0, 0.9, 0.3);
+  // the wooden gun, kept on the mayor's desk (S14 final shot: object-only ECU)
+  const deskGun = woodenGun(); deskGun.rotation.x = Math.PI / 2;
+  const deskGunH = new THREE.Group(); deskGunH.add(deskGun);
+  deskGunH.position.set(39.2, 0.86, 2.5); deskGunH.rotation.y = 0.6; grp.add(deskGunH);
 };
 
 /** 3 — office (day): marble floor, desk + glowing laptop, columns, window wall, clock */
-const buildOffice = (b: Batch, kit: Kit, root: THREE.Group) => {
+const buildOffice = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) => {
   b.add(quadUp(-46, -34, -6, 6, 6, 6), lam("officeFloor", () => ({ map: stoneHD("officeFloor", ["#e8e2d5", "#ddd6c6", "#efe9db", "#d5cdbb"], "#b5ab96") })));
   const wall = wallMat("officeWall", ["#dfe3e8", "#d5d9de", "#e8ebee", "#cfd4d9"], "#a8adb4");
   const W = 3.4;
@@ -298,30 +302,203 @@ const buildOffice = (b: Batch, kit: Kit, root: THREE.Group) => {
   ceil.rotation.x = Math.PI; ceil.castShadow = false; ceil.receiveShadow = true; root.add(ceil);
   prop(b, kit, "plant_bush", -44.6, 0, 4.4, 1.0, 0.6);
   prop(b, kit, "flower_purpleA", -35.2, 0, 4.6, 0.45, 0);
+  // fingerprint card on the desk (S11 ECU): white card, three ink whorls
+  const fpCard = ctex("fpCard", 512, 384, (g) => {
+    g.fillStyle = "#f7f5ee"; g.fillRect(0, 0, 512, 384);
+    g.strokeStyle = "#2c2f38"; g.lineWidth = 6; g.strokeRect(10, 10, 492, 364);
+    g.fillStyle = "#2c2f38"; g.font = "900 34px Arial, Helvetica, sans-serif";
+    g.textAlign = "center"; g.fillText("FINGERPRINT RECORD", 256, 52);
+    g.strokeStyle = "#1f222c"; g.lineWidth = 5; g.lineCap = "round";
+    for (const [cx, cy] of [[110, 200], [256, 210], [402, 200]] as const) {
+      for (let r = 12; r <= 52; r += 10) {
+        g.beginPath(); g.arc(cx, cy, r, 0.3, Math.PI * 1.7); g.stroke();
+      }
+    }
+    g.fillStyle = "#5a5348"; g.font = "700 26px Arial, Helvetica, sans-serif";
+    g.fillText("F.B.I.  —  FILE 1910", 256, 340);
+  });
+  const fp = new THREE.Mesh(new THREE.PlaneGeometry(0.55, 0.41),
+    new THREE.MeshLambertMaterial({ map: fpCard }));
+  fp.rotation.x = -Math.PI / 2; fp.rotation.z = 0.15; fp.position.set(-39.6, 0.86, 2.1); grp.add(fp);
+  // wanted poster on the back wall between the windows (S12 OTS)
+  const poster = ctex("wantedPoster", 512, 720, (g) => {
+    g.fillStyle = "#e8d9b0"; g.fillRect(0, 0, 512, 720);
+    g.strokeStyle = "#3b2f22"; g.lineWidth = 10; g.strokeRect(12, 12, 488, 696);
+    g.fillStyle = "#1f222c"; g.font = "900 96px Arial, Helvetica, sans-serif";
+    g.textAlign = "center"; g.fillText("WANTED", 256, 120);
+    // bean-head face with a cap
+    g.fillStyle = "#ffe2c2"; g.beginPath(); g.arc(256, 300, 82, 0, 7); g.fill();
+    g.strokeStyle = "#241726"; g.lineWidth = 8; g.stroke();
+    g.fillStyle = "#3b3f52"; g.beginPath(); g.arc(256, 248, 84, Math.PI, 0); g.fill();
+    g.fillStyle = "#1f222c";
+    g.beginPath(); g.arc(228, 300, 8, 0, 7); g.fill(); g.beginPath(); g.arc(284, 300, 8, 0, 7); g.fill();
+    g.strokeStyle = "#1f222c"; g.lineWidth = 6; g.beginPath(); g.arc(256, 330, 30, 0.15 * Math.PI, 0.85 * Math.PI); g.stroke();
+    g.font = "900 44px Arial, Helvetica, sans-serif"; g.fillText("FRANK GRIGWARE", 256, 470);
+    g.fillStyle = "#8c2f2a"; g.font = "900 58px Arial, Helvetica, sans-serif";
+    g.fillText("$30,000 REWARD", 256, 560);
+    g.fillStyle = "#1f222c"; g.font = "700 30px Arial, Helvetica, sans-serif";
+    g.fillText("ESCAPED LEAVENWORTH", 256, 630);
+  });
+  const posterM = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.87), new THREE.MeshLambertMaterial({ map: poster }));
+  posterM.position.set(-38.25, 2.1, 5.46); posterM.rotation.y = Math.PI; grp.add(posterM);
 };
 
-/** 4 — exterior building (golden): lawn, big facade, steps, path, trees, hedges */
-const buildExterior = (b: Batch, kit: Kit) => {
-  b.add(quadUp(-12, 12, 56, 84, 12, 14), lam("extGrass", () => ({ map: grassHD() })));
-  b.add(quadUp(-2, 2, 60, 72.5, 2, 6), lam("extPath", () => ({ map: cobbleHD() })));
-  house(b, 0, 78, Math.PI, 12, 8, 7, 1);
-  // steps: three stone treads down from the door to the path
-  const step = lam("extStep", () => ({ map: stoneHD("extStep", ["#d8d0bf", "#cfc5b2", "#e2dacb", "#c4b9a5"], "#a89c85") }));
-  b.add(boxGeo(V(-3, 0.5, 73.9), V(3, 0.75, 74.9), 1), step);
-  b.add(boxGeo(V(-3, 0.25, 73.2), V(3, 0.5, 74.9), 1), step);
-  b.add(boxGeo(V(-3, 0, 72.5), V(3, 0.25, 74.9), 1), step);
-  prop(b, kit, "tree_oak", -7.5, 0, 73, 5.0, 0.7);
-  prop(b, kit, "tree_fat", 7.5, 0, 74, 4.2, 2.4);
-  prop(b, kit, "hedge", -5.5, 0, 71, 1.0, 0);
-  prop(b, kit, "hedge", 5.5, 0, 71, 1.0, 0);
-  prop(b, kit, "flower_redA", -3.6, 0, 72.8, 0.45, 0);
-  prop(b, kit, "flower_yellowA", 3.6, 0, 72.8, 0.45, 0);
-  prop(b, kit, "grass_large", -9, 0, 66, 0.6, 0);
-  prop(b, kit, "grass", 9, 0, 65, 0.5, 0);
+/** 4 — prison exterior (day): stone facade + gate + tracks + locomotive + half-built wall.
+ *  The locomotive (this.loco) animates through the gates during shot 4 in World.update(). */
+let locoRef: THREE.Group | null = null;
+
+/** the hero wooden revolver: barrel + cylinder + grip, wood texture, ~0.45 m long */
+const woodenGun = (): THREE.Group => {
+  const g = new THREE.Group();
+  const wood = lam("gunWood", () => ({ map: beam() }));
+  const woodDark = lam("gunWoodDark", () => ({ color: "#6e4b33" }));
+  const add = (geo: THREE.BufferGeometry, mat: THREE.Material, x = 0, y = 0, z = 0, ry = 0, rz = 0) => {
+    const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.y = ry; m.rotation.z = rz;
+    m.castShadow = true; m.receiveShadow = true; g.add(m); return m;
+  };
+  add(new THREE.BoxGeometry(0.34, 0.05, 0.05), wood, 0.1, 0.06, 0);            // barrel
+  add(new THREE.CylinderGeometry(0.045, 0.045, 0.1, 10), woodDark, -0.08, 0.05, 0, 0, Math.PI / 2); // cylinder
+  const grip = add(new THREE.BoxGeometry(0.06, 0.16, 0.05), wood, -0.12, -0.03, 0);
+  grip.rotation.z = 0.35;
+  add(new THREE.BoxGeometry(0.05, 0.03, 0.05), woodDark, 0.26, 0.03, 0);       // muzzle tip
+  return g;
+};
+
+/** a 1910 supply locomotive: boiler + cab + chimney + cowcatcher + wheels, ~4.5 m long */
+const locomotive = (): THREE.Group => {
+  const g = new THREE.Group();
+  const black = lam("locoBlack", () => ({ color: "#23242a" }));
+  const iron = lam("locoIron", () => ({ color: "#3d414c" }));
+  const brass = lam("locoBrass", () => ({ color: "#c9a24e" }));
+  const add = (geo: THREE.BufferGeometry, mat: THREE.Material, x = 0, y = 0, z = 0) => {
+    const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z);
+    m.castShadow = true; m.receiveShadow = true; g.add(m); return m;
+  };
+  const boiler = add(new THREE.CylinderGeometry(0.62, 0.62, 2.4, 14), black, 0, 1.25, 0.6);
+  boiler.rotation.x = Math.PI / 2;
+  add(new THREE.BoxGeometry(1.5, 1.9, 1.5), black, 0, 1.35, -1.0);            // cab
+  add(new THREE.BoxGeometry(1.6, 0.1, 1.6), iron, 0, 2.35, -1.0);             // cab roof
+  add(new THREE.CylinderGeometry(0.14, 0.2, 0.7, 10), iron, 0, 2.1, 1.6);     // chimney
+  add(new THREE.CylinderGeometry(0.28, 0.28, 0.5, 10), brass, 0, 2.0, 0.9);   // steam dome
+  const cow = add(new THREE.BoxGeometry(1.3, 0.7, 0.08), iron, 0, 0.45, 1.95); // cowcatcher
+  cow.rotation.x = 0.5;
+  for (const [x, z] of [[-0.7, 1.3], [0.7, 1.3], [-0.7, 0.1], [0.7, 0.1], [-0.7, -1.2], [0.7, -1.2]] as const) {
+    const w = add(new THREE.CylinderGeometry(0.34, 0.34, 0.12, 12), iron, x, 0.34, z);
+    w.rotation.z = Math.PI / 2;
+  }
+  const lamp = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, 0.12), new THREE.MeshBasicMaterial({ color: "#ffe9a8" }));
+  lamp.position.set(0, 1.7, 1.85); g.add(lamp);
+  return g;
+};
+
+const buildPrison = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) => {
+  // yard ground: worn stone
+  b.add(quadUp(-9, 9, 56, 84, 9, 14), lam("prisonYard", () => ({ map: stoneHD("prisonYard", ["#b8ab90", "#ada184", "#c2b59c", "#a39a80"], "#8a7f68") })));
+  // facade: tall stone wall with barred windows + LEAVENWORTH sign board
+  const wall = wallMat("prisonWall", ["#c9bda2", "#bfb296", "#d2c6ac", "#b5a888"], "#8a7f68");
+  const W = 6;
+  b.add(boxGeo(V(-9, 0, 76), V(-1.6, W, 76.6), 2), wall);                      // left of gate
+  b.add(boxGeo(V(1.6, 0, 76), V(9, W, 76.6), 2), wall);                       // right of gate
+  b.add(boxGeo(V(-1.6, 4.6, 76), V(1.6, W, 76.6), 2), wall);                  // lintel over gate
+  // gate pillars + open iron leaves (swung wide)
+  const pillar = lam("prisonPillar", () => ({ map: stoneHD("prisonPillar", ["#b0a284", "#a3967c", "#bcb091", "#9a8e74"], "#7c7260") }));
+  for (const x of [-1.9, 1.9]) b.add(boxGeo(V(x - 0.35, 0, 75.7), V(x + 0.35, 4.6, 76.3), 2), pillar);
+  const iron = lam("prisonIron", () => ({ color: "#2c2f38" }));
+  for (const s of [-1, 1]) {
+    const leaf = new THREE.Group();
+    for (let i = 0; i < 5; i++) {
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.06, 3.6, 0.06), iron);
+      bar.position.set(i * 0.32, 1.8, 0); bar.castShadow = true; leaf.add(bar);
+    }
+    const railT = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.08, 0.06), iron); railT.position.set(0.64, 3.5, 0); leaf.add(railT);
+    const railB = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.08, 0.06), iron); railB.position.set(0.64, 0.3, 0); leaf.add(railB);
+    leaf.position.set(s * 1.9, 0, 75.9); leaf.rotation.y = s * 1.15; grp.add(leaf);
+  }
+  // barred windows on the facade
+  for (const x of [-6.5, -4.5, 4.5, 6.5]) {
+    b.add(boxGeo(V(x - 0.5, 3.6, 75.95), V(x + 0.5, 4.6, 76.05), 0), lam("prisonWin", () => ({ color: "#1f222c" })));
+    b.add(boxGeo(V(x - 0.04, 3.6, 75.9), V(x + 0.04, 4.6, 76.1), 0), iron);
+  }
+  // LEAVENWORTH sign board above the gate
+  const sign = ctex("prisonSign", 1024, 192, (g) => {
+    g.fillStyle = "#3b3f52"; g.fillRect(0, 0, 1024, 192);
+    g.strokeStyle = "#c9a24e"; g.lineWidth = 8; g.strokeRect(10, 10, 1004, 172);
+    g.fillStyle = "#efe9dc"; g.font = "900 92px Arial, Helvetica, sans-serif";
+    g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("LEAVENWORTH", 512, 100);
+  });
+  const signM = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 0.6), new THREE.MeshLambertMaterial({ map: sign }));
+  signM.position.set(0, 5.2, 75.95); signM.rotation.y = Math.PI; root.add(signM);
+  // tracks through the gate: rails + sleepers, z 60 -> 82
+  const rail = lam("prisonRail", () => ({ color: "#4a4d58" }));
+  for (const x of [-0.75, 0.75]) b.add(boxGeo(V(x - 0.05, 0.04, 60), V(x + 0.05, 0.12, 82), 2), rail);
+  const sleeper = lam("prisonSleeper", () => ({ color: "#4a3426" }));
+  for (let z = 60.5; z < 82; z += 0.9) b.add(boxGeo(V(-1.1, 0, z), V(1.1, 0.05, z + 0.35), 2), sleeper);
+  // the locomotive (animated in World.update during shot 4)
+  const loco = locomotive();
+  loco.position.set(0, 0, 71.5); grp.add(loco); locoRef = loco;
+  // half-built wall (left) + scaffolding + stone pile — the prisoners build their own prison
+  b.add(boxGeo(V(-6.5, 0, 71.2), V(-2.5, 2.2, 72.0), 2), wall);
+  const scaf = lam("prisonScaf", () => ({ map: beam() }));
+  for (const [x, z] of [[-6.2, 70.6], [-2.8, 70.6], [-6.2, 72.6], [-2.8, 72.6]] as const)
+    b.add(boxGeo(V(x - 0.06, 0, z - 0.06), V(x + 0.06, 3.0, z + 0.06), 0), scaf);
+  b.add(boxGeo(V(-6.5, 2.4, 70.4), V(-2.5, 2.5, 72.8), 1), scaf);
+  const stone = lam("prisonStone", () => ({ color: "#a89c85" }));
+  for (const [x, z, s] of [[-5.5, 69.2, 0.5], [-4.6, 69.5, 0.4], [-5.1, 68.8, 0.45]] as const)
+    b.add(boxGeo(V(x - s / 2, 0, z - s / 2), V(x + s / 2, s * 0.7, z + s / 2), 0), stone);
+  // guard tower (right)
+  const tower = lam("prisonTower", () => ({ map: beamHD() }));
+  for (const [x, z] of [[5.2, 73.8], [6.4, 73.8], [5.2, 75.0], [6.4, 75.0]] as const)
+    b.add(boxGeo(V(x - 0.08, 0, z - 0.08), V(x + 0.08, 3.4, z + 0.08), 0), tower);
+  b.add(boxGeo(V(5.0, 3.4, 73.6), V(6.6, 4.6, 75.2), 1), tower);
+  b.add(boxGeo(V(4.9, 4.6, 73.5), V(6.7, 4.75, 75.3), 1), lam("prisonTowerRoof", () => ({ color: "#3b3f52" })));
+  // side walls close the set
+  const bw = lam("prisonBrick", () => ({ map: brick() }));
+  b.add(boxGeo(V(-9.2, 0, 56), V(-8.8, 4.2, 84), 2), bw);
+  b.add(boxGeo(V(8.8, 0, 56), V(9.2, 4.2, 84), 2), bw);
+  prop(b, kit, "cart", 6.8, 0, 63.5, 1.1, -0.5);
+  prop(b, kit, "lantern", -7.6, 0, 66.0, 0.9, 0);
+};
+
+/** 6 — train yard (day): tracks, boxcar, mail sacks, platform, signal */
+const buildTrainYard = (b: Batch, kit: Kit, grp: THREE.Group) => {
+  b.add(quadUp(-9, 9, 130, 150, 9, 10), lam("yardGround", () => ({ map: grassHD() })));
+  b.add(quadUp(-4, 4, 136, 146, 4, 5), lam("yardDirt", () => ({ map: stoneHD("yardDirt", ["#b59a72", "#ab8f66", "#c0a67e", "#a3865e"], "#8a7452") })));
+  // tracks along z at x = 0
+  const rail = lam("yardRail", () => ({ color: "#4a4d58" }));
+  for (const x of [-0.75, 0.75]) b.add(boxGeo(V(x - 0.05, 0.04, 132), V(x + 0.05, 0.12, 148), 2), rail);
+  const sleeper = lam("yardSleeper", () => ({ color: "#4a3426" }));
+  for (let z = 132.5; z < 148; z += 0.9) b.add(boxGeo(V(-1.1, 0, z), V(1.1, 0.05, z + 0.35), 2), sleeper);
+  // boxcar: red-brown wood, sliding door, roof
+  const car = lam("yardCar", () => ({ map: beamHD() }));
+  b.add(boxGeo(V(-1.6, 0.5, 140.5), V(1.6, 3.1, 145.5), 1), car);
+  b.add(boxGeo(V(-1.7, 3.1, 140.4), V(1.7, 3.35, 145.6), 1), lam("yardCarRoof", () => ({ color: "#3b3f52" })));
+  b.add(boxGeo(V(-0.6, 0.9, 140.45), V(0.6, 2.7, 140.55), 0), lam("yardCarDoor", () => ({ color: "#5a3b2a" })));
+  for (const [x, z] of [[-1.0, 141.2], [1.0, 141.2], [-1.0, 144.8], [1.0, 144.8]] as const) {
+    const w = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.1, 12), lam("yardWheel", () => ({ color: "#2c2f38" })));
+    w.rotation.z = Math.PI / 2; w.position.set(x, 0.3, z); w.castShadow = true; grp.add(w);
+  }
+  // mail sacks: canvas-coloured rounded piles beside the tracks
+  const sack = lam("yardSack", () => ({ color: "#c9b896" }));
+  const sackDark = lam("yardSackDark", () => ({ color: "#a8946e" }));
+  for (const [x, z, s, m] of [[1.8, 140.2, 0.55, sack], [2.4, 140.8, 0.5, sackDark], [1.9, 141.2, 0.5, sack], [2.5, 139.6, 0.45, sack], [1.5, 140.9, 0.4, sackDark]] as const)
+    b.add(boxGeo(V(x - s / 2, 0, z - s / 2), V(x + s / 2, s * 0.75, z + s / 2), 0), m);
+  // signal post + arm
+  const sig = lam("yardSignal", () => ({ color: "#2c2f38" }));
+  b.add(boxGeo(V(-3.55, 0, 144.9), V(-3.45, 3.2, 145.1), 0), sig);
+  b.add(boxGeo(V(-3.5, 2.9, 145.0), V(-2.2, 3.05, 145.05), 0), lam("yardSignalArm", () => ({ color: "#c25a3a" })));
+  // crates + barrels
+  b.add(boxGeo(V(4.2, 0, 143.5), V(5.0, 0.6, 144.3), 1), lam("yardCrate", () => ({ color: "#b5653f" })));
+  b.add(boxGeo(V(4.3, 0.6, 143.6), V(4.9, 1.1, 144.2), 1), lam("yardCrate2", () => ({ color: "#8a6a4a" })));
+  b.add(new THREE.CylinderGeometry(0.35, 0.35, 0.9, 12).translate(0, 0.45, 0), lam("yardBarrel", () => ({ color: "#6e4b33" })),
+    new THREE.Matrix4().makeTranslation(5.6, 0, 142.2));
+  prop(b, kit, "tree_oak", -6.8, 0, 146.5, 4.2, 0.6);
+  prop(b, kit, "tree_default", 7.2, 0, 134.0, 3.6, 2.0);
+  prop(b, kit, "plant_bush", 5.6, 0, 132.5, 1.0, 0.8);
+  prop(b, kit, "grass_large", -7.5, 0, 133.0, 0.6, 0);
 };
 
 /** 5 — workshop (golden): wood floor, brick walls, bench + tools, shelves, cart, crates */
-const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group) => {
+const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) => {
   b.add(quadUp(-7, 7, -77, -63, 7, 7), lam("shopFloor", () => ({ map: planksHD() })));
   const bw = lam("shopBrick", () => ({ map: brick() }));
   const W = 3.4;
@@ -348,6 +525,10 @@ const buildWorkshop = (b: Batch, kit: Kit, root: THREE.Group) => {
       lam(`shopHang${i}`, () => ({ color: i % 2 ? "#8a5a3c" : "#3d414c" })));
   prop(b, kit, "cart", -4.6, 0, -66, 1.1, 0.5);
   prop(b, kit, "lantern", 0.8, 0.95, -68, 0.42, 0);
+  // the wooden gun on the bench (S1 hook ECU) — the whole story in one object
+  const benchGun = woodenGun(); benchGun.rotation.x = Math.PI / 2;
+  const benchGunH = new THREE.Group(); benchGunH.add(benchGun);
+  benchGunH.position.set(0.35, 0.98, -68.0); benchGunH.rotation.y = -0.5; grp.add(benchGunH);
   prop(b, kit, "windmill", 5.6, 0, -64.8, 2.6, 0.4); // small decorative mill on a crate by the wall
   b.add(boxGeo(V(4.2, 0, -65.5), V(5.0, 0.55, -64.7), 1), lam("shopCrate", () => ({ color: "#b5653f" })));
   b.add(boxGeo(V(4.3, 0.55, -65.4), V(4.9, 0.95, -64.8), 1), lam("shopCrate2", () => ({ color: "#8a6a4a" })));
@@ -369,12 +550,12 @@ export class World {
   private cloudMaps: Record<"day" | "golden", THREE.Texture[]>;
   private clouds: THREE.Mesh[] = [];
   private sets: THREE.Group[] = [];
-  private numbers: { mesh: THREE.Mesh; set: number; pos: [number, number, number] }[] = [];
+  private numbers: { mesh: THREE.Mesh; set: number; pos: [number, number, number]; a: number; b: number }[] = [];
   private fgs: { o: THREE.Object3D; a: number; b: number }[] = [];
   private frustum = new THREE.Frustum();
   private m4 = new THREE.Matrix4(); private v = new THREE.Vector3(); private sph = new THREE.Sphere();
   /** hemi boost per set (interiors read dark under a roof — lift the ambient, keep the sun) */
-  private hemiBoost: Record<number, number> = { 1: 1, 2: 1.6, 3: 1.6, 4: 1, 5: 1.25 };
+  private hemiBoost: Record<number, number> = { 1: 1, 2: 1.6, 3: 1.6, 4: 1, 5: 1.25, 6: 1 };
 
   constructor(kit: Kit) {
     const R = this.root;
@@ -416,20 +597,24 @@ export class World {
       this.clouds.push(m); R.add(m);
     }
     // ---- the 5 sets ----
-    const builders = [buildStreet, (b: Batch, k: Kit) => buildRoom(b, k, R), (b: Batch, k: Kit) => buildOffice(b, k, R), buildExterior, (b: Batch, k: Kit) => buildWorkshop(b, k, R)];
-    for (let i = 0; i < 5; i++) {
+    const builders = [buildStreet, (b: Batch, k: Kit, g: THREE.Group) => buildRoom(b, k, R, g), (b: Batch, k: Kit, g: THREE.Group) => buildOffice(b, k, R, g), (b: Batch, k: Kit, g: THREE.Group) => buildPrison(b, k, R, g), (b: Batch, k: Kit, g: THREE.Group) => buildWorkshop(b, k, R, g), (b: Batch, k: Kit, g: THREE.Group) => buildTrainYard(b, k, g)];
+    for (let i = 0; i < 6; i++) {
       const grp = new THREE.Group();
       const b = new Batch();
-      builders[i](b, kit);
+      builders[i](b, kit, grp);
       b.build(grp);
       grp.visible = i === 0;
       this.sets.push(grp); R.add(grp);
     }
-    // ---- in-scene numbers (demo values — per-video code replaces text + set) ----
-    const n1 = numberCard("1,000", "COINS", "gold", 1);
-    n1.position.set(2.2, 2.6, -0.5); this.numbers.push({ mesh: n1, set: 1, pos: [2.2, 2.6, -0.5] }); R.add(n1);
-    const n3 = numberCard("$300", "FINE", "white", 0.9);
-    n3.position.set(-38.2, 2.3, 1.2); this.numbers.push({ mesh: n3, set: 3, pos: [-38.2, 2.3, 1.2] }); R.add(n3);
+    // ---- in-scene numbers (Grigware: the biggest figures as 3D text in the scene) ----
+    const n700 = numberCard("$700", null, "gold", 1);
+    n700.position.set(2.2, 1.7, 140.8); this.numbers.push({ mesh: n700, set: 6, pos: [2.2, 1.7, 140.8], a: 300, b: 360 }); R.add(n700);
+    const nMayor = numberCard("MAYOR", "1916", "white", 0.9);
+    nMayor.position.set(40.5, 2.6, 5.0); this.numbers.push({ mesh: nMayor, set: 2, pos: [40.5, 2.6, 5.0], a: 1000, b: 1057 }); R.add(nMayor);
+    const n24 = numberCard("24 YEARS", null, "gold", 1);
+    n24.position.set(-38.0, 2.5, 4.9); this.numbers.push({ mesh: n24, set: 3, pos: [-38.0, 2.5, 4.9], a: 1380, b: 1433 }); R.add(n24);
+    const n10k = numberCard("$10,000", "BAIL", "gold", 1);
+    n10k.position.set(0.5, 2.8, 3.0); this.numbers.push({ mesh: n10k, set: 1, pos: [0.5, 2.8, 3.0], a: 1515, b: 1600 }); R.add(n10k);
     for (const n of this.numbers) n.mesh.visible = false;
     // ---- foreground framing objects (kit clones, toggled per frame like the skill) ----
     for (const fg of FOREGROUND) {
@@ -507,8 +692,15 @@ export class World {
     // ---- sets, numbers, foreground ----
     this.sets.forEach((g, i) => { g.visible = i === s.set - 1; });
     for (const n of this.numbers) {
-      n.mesh.visible = n.set === s.set;
+      n.mesh.visible = n.set === s.set && f >= n.a && f < n.b;
       if (n.mesh.visible) n.mesh.quaternion.copy(cam.quaternion);
+    }
+    // the escape locomotive drives through the gates during shot 4 (frames 488-658)
+    if (locoRef) {
+      const s4 = SHOTS[3];
+      const k = id === 4 ? clamp01((f - s4.a) / (s4.b - s4.a)) : id > 4 ? 1 : 0;
+      const e = k * k * (3 - 2 * k);
+      locoRef.position.z = 71.5 + e * 8;
     }
     for (const g of this.fgs) g.o.visible = f >= g.a && f < g.b && g.a < s.b && g.b > s.a;
     // ---- cast + effects ----

@@ -7,7 +7,7 @@
 // end a sentence — phrase chunks ("paid the", "So why") read more naturally at speed.
 import React, { useMemo } from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import demoWords from "./demo-words.json";
+import wordsJson from "./words.json";
 
 export type Word = { w: string; s: number; e: number };
 type Chunk = { text: string; s: number; e: number };
@@ -31,7 +31,7 @@ export const CAPTION_H_FRAC = 0.03;
 /** bottom band reserved for captions: the bottom 12% of the frame is floor only */
 export const CAPTION_BAND_FRAC = 0.12;
 
-export const CaptionOverlay: React.FC<{ words?: Word[] }> = ({ words = demoWords as Word[] }) => {
+export const CaptionOverlay: React.FC<{ words?: Word[] }> = ({ words = wordsJson as Word[] }) => {
   const frame = useCurrentFrame();
   const { fps, height } = useVideoConfig();
   const t = frame / fps;

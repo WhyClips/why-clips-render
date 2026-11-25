@@ -2,15 +2,11 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "main",
- "message": "Grigware workflows on main (dispatch needs workflow on default branch)",
+ "message": "Smoke bisection v2 workflow on main",
  "files": [
   {
    "path": ".github/workflows/render-smoke.yml",
    "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-smoke.yml"
-  },
-  {
-   "path": ".github/workflows/render-grigware.yml",
-   "file": "/home/hatch/workspace/ricks-clone/grigware-project/.github/workflows/render-grigware.yml"
   }
  ]
 }

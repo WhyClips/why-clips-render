@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "grigware",
- "message": "Smoke bisection v2 (ink off / tone only / composer off)",
+ "message": "Smoke bisection v3 (lens/bloom/grade isolation)",
  "files": [
   {
    "path": "README.md",
