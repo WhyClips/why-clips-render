@@ -1,12 +1,12 @@
 import React from "react";
 import { Composition } from "remotion";
-import { SpamShort } from "./videos/spam/Spam";
-import { TOTAL } from "./videos/spam/story";
+import { SuedGodShort } from "./videos/suedgod/SuedGod";
+import { TOTAL } from "./videos/suedgod/story";
 
 export const RemotionRoot: React.FC = () => (
   <Composition
-    id="SpamShort"
-    component={SpamShort}
+    id="SuedGodShort"
+    component={SuedGodShort}
     durationInFrames={TOTAL}
     fps={30}
     width={1080}
