@@ -1,0 +1,74 @@
+# Renders the Moon Trees Short (Gullak rebuild, "NASA Flew 500 Seeds Around the
+# Moon") in 4 parallel chunks on GitHub Actions CPU runners, then assembles the
+# final 1080x1920 MP4. Trigger: Actions tab > "Render Moon Trees Gullak" >
+# Run workflow (branch: moon-trees-gullak).
+# Pure SVG/DOM Remotion (no WebGL) — renders at full 1080x1920 directly,
+# no upscale step. Adapted from the Fruit Flies workflow.
+name: Render Moon Trees Gullak
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    name: Render chunk ${{ matrix.chunk.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk:
+          - { name: c1, frames: "0-449" }
+          - { name: c2, frames: "450-899" }
+          - { name: c3, frames: "900-1349" }
+          - { name: c4, frames: "1350-1799" }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: moon-trees-gullak
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+      - name: Ensure browser
+        run: npx remotion browser ensure
+      - name: Render chunk
+        run: |
+          mkdir -p out
+          npx remotion render src/index.ts MoonTreesShort out/chunk-${{ matrix.chunk.name }}.mp4 --codec h264 --crf 16 --concurrency 2 --scale 1 --frames ${{ matrix.chunk.frames }} --timeout 180000 --log=verbose
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chunk-${{ matrix.chunk.name }}
+          path: out/chunk-${{ matrix.chunk.name }}.mp4
+          if-no-files-found: error
+
+  assemble:
+    name: Assemble final video
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: render
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: moon-trees-gullak
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: chunk-*
+          path: chunks
+          merge-multiple: true
+      - name: Concat and mix audio
+        run: |
+          ls -la chunks
+          printf "file 'chunk-c1.mp4'\nfile 'chunk-c2.mp4'\nfile 'chunk-c3.mp4'\nfile 'chunk-c4.mp4'\n" > chunks/chunks.txt
+          ffmpeg -y -v error -f concat -safe 0 -i chunks/chunks.txt -c copy chunks/video-1080.mp4
+          ffmpeg -y -v error -i chunks/video-1080.mp4 -i audio/voiceover.mp3 -i audio/music_sfx.wav -filter_complex "[1:a]apad[a1];[a1][2:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[aout]" -map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 192k -shortest moon-trees-gullak-full-quality.mp4
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name moon-trees-gullak-full-quality.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: moon-trees-gullak-full-quality
+          path: moon-trees-gullak-full-quality.mp4
+          if-no-files-found: error
