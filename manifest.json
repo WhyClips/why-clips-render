@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "moon-trees-gullak",
- "message": "Moon Trees v3: align beat cuts to sub-phase flips (T1/T2 1101, T2/T3 1170, R2/R3 1710; sprout flip 922)",
+ "message": "Moon Trees v4: new script (196w, shocking hook), speed-100 VO (197 WPM), fresh SFX set #3, new words.json + mouthCues",
  "files": [
   {
    "path": "BUILD-NOTES.md",
@@ -45,12 +45,20 @@
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/render-moontrees-gullak.yml"
   },
   {
+   "path": "script-moon-trees-v4.txt",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/script-moon-trees-v4.txt"
+  },
+  {
    "path": "script-moon-trees.txt",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/script-moon-trees.txt"
   },
   {
    "path": "stills.mjs",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/stills.mjs"
+  },
+  {
+   "path": "thumbnail-moon-trees-v3.png",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/thumbnail-moon-trees-v3.png"
   },
   {
    "path": "thumbnail-moon-trees.png",
@@ -85,6 +93,10 @@
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/audio/music_synth.wav"
   },
   {
+   "path": "audio/rhubarb-moontrees-v4.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/audio/rhubarb-moontrees-v4.json"
+  },
+  {
    "path": "audio/rhubarb-moontrees.json",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/audio/rhubarb-moontrees.json"
   },
@@ -95,6 +107,10 @@
   {
    "path": "audio/voiceover.mp3",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/audio/voiceover.mp3"
+  },
+  {
+   "path": "audio/words-raw-v4.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/audio/words-raw-v4.json"
   },
   {
    "path": "audio/words.json",

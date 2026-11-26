@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Moon Trees Gullak — mix the NEW bed with 21 mapped SFX (ROTATED set).
-NONE of the 21 files used in Moon Trees v1 are reused here (banned list in
-BANNED_V1 below). Anchors are Whisper word times from words.json
-(copied from moon-trees-project/src/words.json — identical to the Gullak copy).
+"""Moon Trees Gullak v4 — mix the SAME bed (A minor, 96 BPM, seed 71 — bed
+does NOT rotate for v4, Azhar only banned reusing it across videos and it
+debuted in v2) with 21 mapped SFX (FRESH ROTATED set #3).
+NONE of the 21 files used in Moon Trees v1 (BANNED_V1) or the 21 files used
+in v2 (BANNED_V2) are reused here. Anchors are Whisper word times from the
+v4 words.json (196-word script, speed-100 VO, 187 tokens).
 Each SFX is trimmed to max 3s (several library drones are 12-19s long) so
 the mix stays ~62s; final output trimmed to exactly 62s.
 Writes music_sfx.wav. Run from moon-trees-gullak-project/audio.
 Verifies level + silence scan at the end."""
-import json, subprocess, sys, shutil
+import json, subprocess, sys
 
 SFX = "/home/hatch/workspace/goals/youtube-channel-seekhna/hidden_files/sfx-library"
 
@@ -21,36 +23,48 @@ BANNED_V1 = {
     "boom-reverse-impact-01", "riser-bass-pulse-01", "boom-trailer-epic-01",
 }
 
+BANNED_V2 = {
+    "whoosh-air-zoom-01", "drone-deep-space-01", "boom-trailer-whoosh-01",
+    "blip-scifi-bleep-01", "thud-suspense-hit-01", "blip-tech-alert-01",
+    "boom-explosion-afar-01", "shimmer-magic-sweep-01", "thud-soft-punch-01",
+    "drone-breeze-trees-01", "riser-big-impact-01", "whoosh-powerful-air-01",
+    "shimmer-fairy-sparkle-01", "whoosh-cinematic-fast-01", "blip-interface-beep-01",
+    "drone-cinematic-wind-01", "riser-horn-01", "glitch-virtual-quick-01",
+    "boom-blockbuster-01", "extra-heartbeat-trailer-01", "boom-bass-hit-01",
+}
+
 # (anchor word, sfx file, offset seconds from the anchor, volume)
+# Order MUST follow word order in words.json (sequential forward search).
 MAP = [
-    ("In", "whoosh-air-zoom-01.wav", 0.0, 0.7),          # S1 hook: seed reveal
-    ("NASA", "drone-deep-space-01.wav", 0.0, 0.6),       # S1 NASA flew seeds
-    ("Apollo", "boom-trailer-whoosh-01.wav", 0.0, 0.7),   # S2 launch
-    ("Roosa", "blip-scifi-bleep-01.wav", 0.0, 0.6),       # S2 Roosa intro
-    ("But", "thud-suspense-hit-01.wav", 0.0, 0.8),        # S3 mocker turn
-    ("34", "blip-tech-alert-01.wav", 0.0, 0.6),           # S4 34 orbits
-    ("burst,", "boom-explosion-afar-01.wav", 0.0, 0.7),   # S5 canister burst
-    ("spilled", "shimmer-magic-sweep-01.wav", 0.0, 0.6),  # S5 seeds spill
-    ("over.", "thud-soft-punch-01.wav", 0.0, 0.6),        # S5 "thought it was over"
-    ("planted", "drone-breeze-trees-01.wav", 0.0, 0.6),   # S6 planting / trees
-    ("420", "riser-big-impact-01.mp3", 0.0, 0.7),         # S6 420 seedlings reveal
-    ("wildfire.", "whoosh-powerful-air-01.wav", 0.0, 0.7),# S6 wildfire metaphor
-    ("birthday,", "shimmer-fairy-sparkle-01.wav", 0.0, 0.6), # S7 200th birthday
-    ("Philadelphia,", "whoosh-cinematic-fast-01.wav", 0.0, 0.7), # S7 first planting
-    ("White", "blip-interface-beep-01.wav", 0.0, 0.6),    # S7/S8 White House pine
-    ("forgotten,", "drone-cinematic-wind-01.wav", 0.0, 0.6), # S9 trees forgotten
-    ("110", "riser-horn-01.wav", 0.0, 0.7),               # S9 110 found
-    ("You", "glitch-virtual-quick-01.wav", 0.0, 0.7),     # S9 "You see" pivot
-    ("2022,", "boom-blockbuster-01.wav", 0.0, 0.8),       # S10 Artemis 2022
-    ("thousand", "extra-heartbeat-trailer-01.wav", 0.0, 0.7), # S10 1,000 seeds
-    ("you.", "boom-bass-hit-01.wav", 0.0, 0.8),           # S10 final twist hit
+    ("500", "whoosh-air-hit-01.wav", 0.0, 0.7),          # hook: seed reveal
+    ("NASA", "drone-space-01.wav", 0.0, 0.6),            # hook: NASA came home
+    ("Apollo", "boom-whoosh-01.wav", 0.0, 0.7),          # launch
+    ("Stuart", "blip-scifi-confirm-01.wav", 0.0, 0.6),   # Roosa intro
+    ("But", "thud-metal-hit-01.wav", 0.0, 0.8),          # mocker turn
+    ("34", "blip-robot-click-01.wav", 0.0, 0.6),         # 34 orbits
+    ("splashdown", "whoosh-fast-01.wav", 0.0, 0.7),      # splashdown
+    ("burst", "boom-explosion-battle-01.wav", 0.0, 0.7), # canister burst
+    ("salt.", "shimmer-sparkle-01.wav", 0.0, 0.6),       # mixed like salt
+    ("dead.", "drone-thunder-rumble-01.wav", 0.0, 0.6),  # written off as dead
+    ("planted", "whoosh-wind-01.wav", 0.0, 0.6),         # planting / trees
+    ("420", "boom-horn-trailer-01.wav", 0.0, 0.7),       # 420 seedlings reveal
+    ("wildfire.", "whoosh-flying-01.wav", 0.0, 0.7),     # wildfire metaphor
+    ("birthday,", "pop-bubble-01.wav", 0.0, 0.6),        # 200th birthday
+    ("Philadelphia,", "whoosh-sweep-small-01.wav", 0.0, 0.7), # first planting
+    ("forgotten.", "drone-ancient-drums-01.wav", 0.0, 0.6),   # trees forgotten
+    ("You", "glitch-rewind-01.wav", 0.0, 0.7),           # "You see" pivot
+    ("110", "boom-glass-suspense-01.wav", 0.0, 0.7),     # 110 found
+    ("2022,", "bed-intense-epical-drums-03.mp3", 0.0, 0.8),   # Artemis 2022
+    ("thousand", "drone-high-tech-01.wav", 0.0, 0.7),    # 1,000 seeds
+    ("you.", "thud-whip-echo-01.wav", 0.0, 0.8),         # final twist hit
 ]
 
 for _a, f, _o, _v in MAP:
     stem = f.rsplit(".", 1)[0]
     assert stem not in BANNED_V1, f"BANNED v1 file reused: {f}"
+    assert stem not in BANNED_V2, f"BANNED v2 file reused: {f}"
 assert len({f for _a, f, _o, _v in MAP}) == len(MAP), "duplicate SFX file"
-print(f"rotation check OK: {len(MAP)} SFX, none from the v1 banned list")
+print(f"rotation check OK: {len(MAP)} SFX, none from v1 or v2 sets")
 
 w = json.load(open("words.json"))
 idx = 0
