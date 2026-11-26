@@ -347,10 +347,12 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
       );
     }
     case "sprout": {
-      // A: planted anyway, Mississippi + California (lf 0–110)
-      // B: 420 seedlings, stubborn as weeds (110–end)
+      // A: planted anyway, Mississippi + California (lf 0–102)
+      // B: 420 seedlings, stubborn as weeds (102–end). Flip at lf 102
+      // (= f922, the S1/S2 beat cut) so no beat starts with a sliver of the
+      // other sub-phase.
       // S2 beat: DENSER trays (8 + 9 sprouts vs 6 + 7) — visibly fuller.
-      if (lf < 110) {
+      if (lf < 102) {
         return (
           <>
             <InteriorPlate />

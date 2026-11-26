@@ -87,16 +87,16 @@ export const BEATS: BeatDef[] = [
   { id: "O3", scene: "orbits", a: 724, b: 820, label: "BURST! → spilled like salt", cam: C3 },
   { id: "S1", scene: "sprout", a: 820, b: 922, label: "planted anyway, Mississippi + California", cam: C0 },
   { id: "S2", scene: "sprout", a: 922, b: 1023, label: "420 seedlings, dense trays", cam: C2 },
-  { id: "T1", scene: "states", a: 1023, b: 1099, label: "50 states, five pines", cam: C0 },
-  { id: "T2", scene: "states", a: 1099, b: 1175, label: "Philadelphia planting", cam: C1 },
-  { id: "T3", scene: "states", a: 1175, b: 1252, label: "White House pine + waving crew", cam: C3 },
+  { id: "T1", scene: "states", a: 1023, b: 1101, label: "50 states, five pines", cam: C0 },
+  { id: "T2", scene: "states", a: 1101, b: 1170, label: "Philadelphia planting", cam: C1 },
+  { id: "T3", scene: "states", a: 1170, b: 1252, label: "White House pine + waving crew", cam: C3 },
   { id: "U1", scene: "hunt", a: 1252, b: 1332, label: "FORGOTTEN… faded pine", cam: C0 },
   { id: "U2", scene: "hunt", a: 1332, b: 1412, label: "schoolteacher asks NASA", cam: C2 },
-  { id: "U3", scene: "hunt", a: 1412, b: 1492, label: "newspaper clippings hunt, zoomed", cam: C1 },
-  { id: "U4", scene: "hunt", a: 1492, b: 1572, label: "110 FOUND, celebrating crew", cam: C3 },
+  { id: "U3", scene: "hunt", a: 1412, b: 1492, label: "110 FOUND reveal (pill top)", cam: C1 },
+  { id: "U4", scene: "hunt", a: 1492, b: 1572, label: "110 FOUND + souvenir pine (pill bottom)", cam: C3 },
   { id: "R1", scene: "artemis", a: 1572, b: 1648, label: "Artemis I rocket rises", cam: C0 },
-  { id: "R2", scene: "artemis", a: 1648, b: 1724, label: "1,000 new seeds, big canister", cam: C1 },
-  { id: "R3", scene: "artemis", a: 1724, b: TOTAL, label: "grandchildren growing, big pine park", cam: C2 },
+  { id: "R2", scene: "artemis", a: 1648, b: 1710, label: "1,000 new seeds, big canister", cam: C1 },
+  { id: "R3", scene: "artemis", a: 1710, b: TOTAL, label: "grandchildren growing, big pine park", cam: C2 },
 ];
 
 export const beatAt = (f: number): BeatDef =>

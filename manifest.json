@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "moon-trees-gullak",
- "message": "Moon Trees v3: 22 beats ~3s (scene every 3s), glory-overlap + double-pill fixes",
+ "message": "Moon Trees v3: align beat cuts to sub-phase flips (T1/T2 1101, T2/T3 1170, R2/R3 1710; sprout flip 922)",
  "files": [
   {
    "path": "BUILD-NOTES.md",
