@@ -1,6 +1,13 @@
 // "Moon Trees — NASA Flew 500 Seeds Around the Moon" — Gullak Tales style Short.
-// v3: 22 beats of ~3s each (Azhar 26 Nov 12:33: "Scene har 3 sec baad use kr"),
-// hard cuts, chibi SVG cut-out cast, flat plates, infographic number pills,
+// v4: re-cut to the NEW script (196 words, slower VO 59.668s, 197.1 WPM) —
+// hook rewritten (shocking: "believed dead" → "one stands at the White House"),
+// 22 beats re-timed (hook 0–212, apollo14 212–449, orbits 449–878, sprout
+// 878–1088, states 1088–1307, hunt 1307–1560, artemis 1560–1800), Subs and
+// number-pill anchors re-aligned to the new Whisper token times.
+// NOTE (v4): the slower VO deliberately has natural sentence pauses 0.4–0.82s
+// throughout — this OVERRIDES the old fast-VO "max ONE pause >0.4s" rule.
+// Do not "fix" the pauses; they are the slower feel Azhar asked for.
+// Hard cuts, chibi SVG cut-out cast, flat plates, infographic number pills,
 // bottom-centre karaoke captions, Rhubarb lip-sync.
 // Point-to-point: every beat shows exactly what the words say at that moment.
 // No title card, no end card, frame 1 mid-action, no intro/like/subscribe
@@ -120,7 +127,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
             <Abs left={700} top={1150} width={300} height={180} style={{ transform: `scale(${pop(blf / 10)})` }}>
               <WhiteHouse />
             </Abs>
-            <Sub top={1440}>…and the trees still stand today</Sub>
+            <Sub top={1440}>one stands at the White House</Sub>
           </>
         );
       }
@@ -156,7 +163,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
               steps={["100 SEEDS", "200 SEEDS", "300 SEEDS", "400 SEEDS", "500 SEEDS"]}
               lf={lf} delay={43} size={100} top={1240}
             />
-            <Sub top={1440}>…and the trees still stand today</Sub>
+            <Sub top={1440}>NASA thought they were all dead</Sub>
           </>
         );
       }
@@ -192,20 +199,20 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
             steps={["100 SEEDS", "200 SEEDS", "300 SEEDS", "400 SEEDS", "500 SEEDS"]}
             lf={lf} delay={43} size={100} top={1240}
           />
-          {lf > 120 && (
-            <Sub top={1440}>…and the trees still stand today</Sub>
-          )}
+          <Sub top={1440}>500 seeds flew around the Moon</Sub>
         </>
       );
     }
     case "apollo14": {
-      // A: launch (lf 0–78) | B: two astronauts walk the Moon (78–126)
-      // C: Roosa alone in orbit + canister + ex-firefighter (126–end)
-      if (lf < 78) {
-        const rocketY = interpolate(lf, [0, 78], [1250, 250]);
+      // v4 sub-phases (scene lf = frame − 212):
+      // A1 launch (lf 0–85) | A2 moonwalk close-up (85–101) → Roosa pointing
+      // (101–151, "circled" starts lf 101) | A3 Roosa THINKING + canister +
+      // ex-firefighter badge (151–end, "former" starts lf 151).
+      if (lf < 85) {
+        const rocketY = interpolate(lf, [0, 85], [1250, 250]);
         return (
           <>
-            <PushIn dur={78}><LaunchPadPlate /></PushIn>
+            <PushIn dur={85}><LaunchPadPlate /></PushIn>
             <Abs left={64} top={250}><Badge>APOLLO 14 • JAN 1971</Badge></Abs>
             <Abs left={440} top={rocketY} width={200} height={413}>
               <SaturnRocket />
@@ -214,46 +221,44 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      if (lf < 126) {
-        // A2 beat: moonwalk CLOSE-UP — bigger astronauts, swapped arms (new pose)
-        const closeUp = beat.id === "A2";
+      if (lf < 101) {
+        // A2 beat, first half: moonwalk CLOSE-UP — bigger astronauts, swapped arms (new pose)
         return (
           <>
-            {closeUp ? <PushIn dur={90} to={1.16}><MoonPlate /></PushIn> : <MoonPlate />}
+            <PushIn dur={90} to={1.16}><MoonPlate /></PushIn>
             <Abs left={64} top={250}><Badge>TWO ON THE MOON</Badge></Abs>
-            <Abs left={closeUp ? 120 : 180} top={closeUp ? 900 : 950} width={closeUp ? 340 : 300} height={closeUp ? 510 : 450} style={{ transform: `translateY(${Math.sin(frame * 0.15) * 6}px)` }}>
-              <Astronaut patch="#e8634a" expression="happy" mouth="closed" arm={closeUp ? "down" : "oneUp"} />
+            <Abs left={120} top={900} width={340} height={510} style={{ transform: `translateY(${Math.sin(frame * 0.15) * 6}px)` }}>
+              <Astronaut patch="#e8634a" expression="happy" mouth="closed" arm="down" />
             </Abs>
-            <Abs left={closeUp ? 620 : 620} top={closeUp ? 930 : 980} width={closeUp ? 340 : 300} height={closeUp ? 510 : 450} style={{ transform: `translateY(${Math.cos(frame * 0.13) * 6}px)` }}>
-              <Astronaut patch="#4a6fa5" expression="happy" mouth="closed" arm={closeUp ? "oneUp" : "down"} />
+            <Abs left={620} top={930} width={340} height={510} style={{ transform: `translateY(${Math.cos(frame * 0.13) * 6}px)` }}>
+              <Astronaut patch="#4a6fa5" expression="happy" mouth="closed" arm="oneUp" />
             </Abs>
             <Sub top={1480}>walking on the Moon…</Sub>
           </>
         );
       }
       // Roosa alone in orbit. A3 beat: THINKING pose (chin, think) + canister
-      // mirrored to the LEFT — a visibly different shot from A2's pointing
-      // Roosa. A4 beat: CLOSE-UP — Crewman cheers (bothUp, happy), canister
-      // big at right.
-      const cheering = beat.id === "A4";
+      // mirrored to the LEFT + EX-FOREST FIREFIGHTER badge — a visibly
+      // different shot from A2's pointing Roosa. A2 tail (lf 101–151): Roosa
+      // POINTING with the STUART ROOSA badge; canister pops in A3 at lf 180
+      // ("carrying a tiny canister" starts lf 182).
       const thinking = beat.id === "A3";
       return (
         <>
           <SpacePlate />
-          <Abs left={cheering ? 170 : thinking ? 150 : 220} top={cheering ? 280 : thinking ? 340 : 300} width={cheering ? 880 : thinking ? 860 : 800} height={cheering ? 550 : thinking ? 538 : 500}>
+          <Abs left={thinking ? 150 : 220} top={thinking ? 340 : 300} width={thinking ? 860 : 800} height={thinking ? 538 : 500}>
             <OrbitDiagram />
           </Abs>
-          {lf > 217 && (
+          {thinking ? (
             <Abs left={64} top={170}><Badge color="#2f9e44">EX-FOREST FIREFIGHTER</Badge></Abs>
-          )}
-          {lf <= 217 && (
+          ) : (
             <Abs left={64} top={170}><Badge>STUART ROOSA</Badge></Abs>
           )}
-          <Abs left={cheering ? 340 : thinking ? 420 : 390} top={cheering ? 900 : 950} width={cheering ? 340 : 300} height={cheering ? 510 : 450}>
-            <Crewman shirt="#f5f5f0" expression={cheering ? "happy" : thinking ? "think" : "calm"} mouth={mouth} arm={cheering ? "bothUp" : thinking ? "chin" : "point"} seed={1} />
+          <Abs left={thinking ? 420 : 390} top={950} width={300} height={450}>
+            <Crewman shirt="#f5f5f0" expression={thinking ? "think" : "calm"} mouth={mouth} arm={thinking ? "chin" : "point"} seed={1} />
           </Abs>
-          {lf > 161 && (
-            <Abs left={cheering ? 720 : thinking ? 120 : 700} top={cheering ? 1080 : 1150} width={cheering ? 190 : 150} height={cheering ? 266 : 210} style={{ transform: `scale(${pop((lf - 161) / 8)})` }}>
+          {thinking && lf > 180 && (
+            <Abs left={120} top={1150} width={150} height={210} style={{ transform: `scale(${pop((lf - 180) / 8)})` }}>
               <SeedCanister />
             </Abs>
           )}
@@ -262,9 +267,13 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
       );
     }
     case "orbits": {
-      // A: never touched the Moon (lf 0–44) | B: 34 orbits (44–123)
-      // C: splashdown burst (123–209) | D: spilled like salt (209–end)
-      if (lf < 44) {
+      // v4 sub-phases (scene lf = frame − 449):
+      // O1 chalk NEVER TOUCHED (lf 0–45) → orbit diagram + "34 ORBITS" pill
+      // (45–89, "34" starts lf 65) | O2 big orbit diagram + Sub (89–149) →
+      // capsule falls (149–186, "Then splashdown" starts lf 149) | O3 capsule
+      // keeps falling (186–208) → BURST! (208–271, "burst" starts lf 208) |
+      // O4 MIXED LIKE SALT (271–346) | O5 written off as dead (346–end).
+      if (lf < 45) {
         return (
           <>
             <MoonPlate />
@@ -277,82 +286,127 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
             <Abs left={340} top={760} width={400} height={400}>
               <RedX size={400} delay={8} />
             </Abs>
-            <Sub top={1240}>the seeds never landed…</Sub>
+            <Sub top={1240}>never touched the Moon</Sub>
           </>
         );
       }
-      if (lf < 123) {
-        // O2 beat: orbit diagram BIG (fills the frame) — new shot vs O1's
-        // chalk-text shot. Sub shortened to one line (v2 fix): the old
-        // "…while astronauts took the glory" wrapped to 2 lines and its pill
-        // overlapped the karaoke caption ("glory" over "glory").
-        const big = beat.id === "O2";
+      if (lf < 89) {
+        // O1 tail: "They looped around it 34 times" — orbit diagram + pill
+        // pops exactly on "34" (lf 65). The pill also stays up through O2's
+        // first half (same delay), so it reads for ~2.8s, not a 0.8s flash.
         return (
           <>
             <SpacePlate />
-            <Abs left={big ? 140 : 220} top={big ? 320 : 360} width={big ? 880 : 800} height={big ? 550 : 500}>
+            <Abs left={220} top={360} width={800} height={500}>
               <OrbitDiagram />
             </Abs>
-            <NumberPill text="34 ORBITS" lf={lf} delay={61} size={104} top={1020} />
+            <NumberPill text="34 ORBITS" lf={lf} delay={65} size={104} top={1020} />
+          </>
+        );
+      }
+      if (lf < 149) {
+        // O2 beat, first half: orbit diagram BIG (fills the frame) — new shot
+        // vs O1's small diagram. Sub is one line (v2 fix): the old two-line
+        // Sub overlapped the karaoke caption.
+        return (
+          <>
+            <SpacePlate />
+            <Abs left={140} top={320} width={880} height={550}>
+              <OrbitDiagram />
+            </Abs>
+            <NumberPill text="34 ORBITS" lf={lf} delay={65} size={104} top={1020} />
             <Sub top={1300}>looped around it — 34 times</Sub>
           </>
         );
       }
-      if (lf < 209) {
-        // capsule falls, then BURST at lf 156 ("burst," 23.18s)
-        if (lf < 156) {
-          const capY = interpolate(lf, [123, 156], [250, 780]);
-          return (
-            <>
-              <PushIn dur={90}><SeaPlate /></PushIn>
-              <Abs left={64} top={250}><Badge>SPLASHDOWN</Badge></Abs>
-              <Abs left={340} top={capY} width={400} height={400}>
-                <Capsule />
-              </Abs>
-              <Sub top={1300}>then splashdown…</Sub>
-            </>
-          );
-        }
+      if (lf < 186) {
+        // O2 tail: capsule falls ("Then splashdown shattered everything").
+        const capY = interpolate(lf, [149, 186], [250, 780]);
+        return (
+          <>
+            <PushIn dur={90}><SeaPlate /></PushIn>
+            <Abs left={64} top={250}><Badge>SPLASHDOWN</Badge></Abs>
+            <Abs left={340} top={capY} width={400} height={400}>
+              <Capsule />
+            </Abs>
+            <Sub top={1300}>then splashdown…</Sub>
+          </>
+        );
+      }
+      if (lf < 208) {
+        // O3 head: capsule keeps falling through the beat cut into the
+        // 0.72s pause after "everything." — BURST lands on the word "burst".
+        const capY = interpolate(lf, [186, 208], [780, 1050]);
+        return (
+          <>
+            <SeaPlate />
+            <Abs left={64} top={250}><Badge>SPLASHDOWN</Badge></Abs>
+            <Abs left={340} top={capY} width={400} height={400}>
+              <Capsule />
+            </Abs>
+          </>
+        );
+      }
+      if (lf < 271) {
+        // O3: BURST! at lf 208 ("burst," 22.38s)
         return (
           <>
             <SeaPlate />
             <Abs left={0} top={420} width={1080}>
               <ChalkText size={120} color="#ffd93b">BURST!</ChalkText>
             </Abs>
-            <Abs left={240} top={900} width={600} height={264} style={{ transform: `scale(${pop((lf - 156) / 8)})` }}>
+            <Abs left={240} top={900} width={600} height={264} style={{ transform: `scale(${pop((lf - 208) / 8)})` }}>
               <SeedPile />
             </Abs>
             <Sub top={1300} size={56} strong>the canisters burst open</Sub>
           </>
         );
       }
+      if (lf < 346) {
+        // O4: mixed like salt, ruined — chalk carries the line, so no Sub
+        // (avoids a second pill over the caption). Agent SCARED, pile BIG.
+        return (
+          <>
+            <ChalkPlate />
+            <Abs left={0} top={380} width={1080}>
+              <ChalkText size={72} color="#ffd93b">MIXED LIKE SALT</ChalkText>
+            </Abs>
+            <Abs left={190} top={660} width={700} height={308}>
+              <SeedPile />
+            </Abs>
+            <Abs left={390} top={1050} width={300} height={450}>
+              <Agent expression="scared" mouth={mouth} arm="bothUp" />
+            </Abs>
+          </>
+        );
+      }
+      // O5: written off as dead — faded pile + big red X, Sub carries the line.
+      // No agent here (O4 already has one; keeps the Sub pill clear).
       return (
         <>
           <ChalkPlate />
-          <Abs left={0} top={380} width={1080}>
-            <ChalkText size={72} color="#ffd93b">MIXED LIKE</ChalkText>
-          </Abs>
-          <Abs left={0} top={480} width={1080}>
-            <ChalkText size={72}>SPILLED SALT</ChalkText>
-          </Abs>
-          {/* O3 beat: spill pile BIG + agent SCARED (new pose/expression) */}
-          <Abs left={beat.id === "O3" ? 190 : 240} top={beat.id === "O3" ? 660 : 700} width={beat.id === "O3" ? 700 : 600} height={beat.id === "O3" ? 308 : 264}>
+          <Abs left={240} top={700} width={600} height={264} style={{ opacity: 0.5 }}>
             <SeedPile />
           </Abs>
-          <Abs left={390} top={1050} width={300} height={450}>
-            <Agent expression={beat.id === "O3" ? "scared" : "worried"} mouth={mouth} arm={beat.id === "O3" ? "bothUp" : "down"} />
+          <Abs left={340} top={760} width={400} height={400}>
+            <RedX size={400} delay={4} />
           </Abs>
-          <Sub top={1560} size={46}>everyone thought it was over</Sub>
+          <Sub top={1480} size={56} strong>written off as dead</Sub>
         </>
       );
     }
     case "sprout": {
-      // A: planted anyway, Mississippi + California (lf 0–102)
-      // B: 420 seedlings, stubborn as weeds (102–end). Flip at lf 102
-      // (= f922, the S1/S2 beat cut) so no beat starts with a sliver of the
-      // other sub-phase.
-      // S2 beat: DENSER trays (8 + 9 sprouts vs 6 + 7) — visibly fuller.
-      if (lf < 102) {
+      // v4 (scene lf = frame − 878):
+      // S1 planted anyway, Mississippi + California (lf 0–100) |
+      // S2 dense trays + "420 SEEDLINGS" pill (lf 100–end). The pill pops on
+      // "420" (lf 88, inside S1's tail) so it is already up at the S2 cut.
+      // MID-BEAT FLIP at lf 152 (f1030, "stubborn"): badge swaps to the orange
+      // AFTER A WILDFIRE badge, trays reframe bigger, and the Sub "stubborn
+      // as weeds" appears — so S2 (110f) never holds one composition >3.5s.
+      if (lf < 100) {
+        // No "420 SEEDLINGS" pill here: it would cross the crewman, and the
+        // word "420" (f966–978) ends exactly at the S2 cut — the pill pops
+        // at the cut, the same ~12f-after-word-start pattern v3 used.
         return (
           <>
             <InteriorPlate />
@@ -367,31 +421,40 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      const dense = beat.id === "S2";
+      const wild = lf >= 152;
       return (
         <>
           <InteriorPlate />
-          <Abs left={64} top={250}><Badge color="#2f9e44">ALMOST EVERY ONE SPROUTED</Badge></Abs>
-          <Abs left={dense ? 180 : 240} top={dense ? 600 : 640} width={dense ? 720 : 600} height={dense ? 360 : 300}>
-            <SeedlingTray sprouts={dense ? 8 : 6} />
+          <Abs left={64} top={250}>
+            <Badge color={wild ? "#e8634a" : "#2f9e44"}>
+              {wild ? "AFTER A WILDFIRE" : "ALMOST EVERY ONE SPROUTED"}
+            </Badge>
           </Abs>
-          <Abs left={dense ? 140 : 190} top={dense ? 960 : 980} width={dense ? 800 : 700} height={dense ? 400 : 350}>
-            <SeedlingTray sprouts={dense ? 9 : 7} />
+          <Abs left={wild ? 140 : 180} top={wild ? 560 : 600} width={wild ? 800 : 720} height={wild ? 400 : 360}>
+            <SeedlingTray sprouts={8} />
           </Abs>
-          <NumberPill text="420 SEEDLINGS" lf={lf} delay={112} size={76} top={1400} />
+          <Abs left={wild ? 100 : 140} top={wild ? 940 : 960} width={wild ? 880 : 800} height={wild ? 440 : 400}>
+            <SeedlingTray sprouts={9} />
+          </Abs>
+          <NumberPill text="420 SEEDLINGS" lf={lf} delay={88} size={76} top={1400} />
+          {wild && (
+            <Sub top={1560} size={56} strong>stubborn as weeds</Sub>
+          )}
         </>
       );
     }
     case "states": {
-      // A: 200th birthday, every state (lf 0–78) | B: Philadelphia planting (78–147)
-      // C: White House pine, Brazil + Japan (147–end)
-      if (lf < 78) {
+      // v4 (scene lf = frame − 1088):
+      // T1 200th birthday, every state (lf 0–73) | T2 Philadelphia planting
+      // (73–154, "First" starts lf 89) | C: White House pine (154–end).
+      // "50" is spoken at lf 59, inside T1 — pill delay 59.
+      if (lf < 73) {
         // T1 beat: FIVE pines across the frame (vs three) — fuller shot.
         return (
           <>
             <ChalkPlate />
             <Abs left={64} top={250}><Badge color="#e8634a">AMERICA'S 200th BIRTHDAY</Badge></Abs>
-            <NumberPill text="50 STATES" lf={lf} delay={56} size={110} top={620} />
+            <NumberPill text="50 STATES" lf={lf} delay={59} size={110} top={620} />
             <Abs left={60} top={1200} width={170} height={300}>
               <PineTree />
             </Abs>
@@ -411,17 +474,16 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      if (lf < 147) {
+      if (lf < 154) {
         // T2 beat: Philly pine BIG + planter cheering (bothUp).
-        const big = beat.id === "T2";
         return (
           <>
             <PushIn dur={90}><AirfieldPlate /></PushIn>
             <Abs left={64} top={250}><Badge>PHILADELPHIA • MAY 1975</Badge></Abs>
             <Abs left={180} top={950} width={290} height={435}>
-              <Crewman shirt="#f5f5f0" expression="happy" mouth={mouth} arm={big ? "bothUp" : "oneUp"} seed={1} />
+              <Crewman shirt="#f5f5f0" expression="happy" mouth={mouth} arm="bothUp" seed={1} />
             </Abs>
-            <Abs left={big ? 410 : 440} top={big ? 700 : 750} width={big ? 260 : 200} height={big ? 455 : 350} style={{ transform: `scale(${pop((lf - 78) / 8)})` }}>
+            <Abs left={410} top={700} width={260} height={455} style={{ transform: `scale(${pop((lf - 73) / 8)})` }}>
               <PineTree />
             </Abs>
             <Abs left={700} top={950} width={290} height={435}>
@@ -453,9 +515,11 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
       );
     }
     case "hunt": {
-      // A: forgotten (lf 0–38) | B: schoolteacher asks NASA (38–97)
-      // C: scientist + newspaper clippings (97–166) | D: 110 found (166–end)
-      if (lf < 38) {
+      // v4 (scene lf = frame − 1307):
+      // U1 forgotten (lf 0–101) | U2 schoolteacher asks NASA (101–163,
+      // "where are they?" starts lf 101) | U3 scientist + clippings (163–end,
+      // "110" starts lf 212 — pill pops exactly on it).
+      if (lf < 101) {
         return (
           <>
             <ChalkPlate />
@@ -471,83 +535,49 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      if (lf < 97) {
+      if (lf < 163) {
         // U2 beat: teacher ASKS — both arms up, speech bubble BIG.
-        const big = beat.id === "U2";
         return (
           <>
             <InteriorPlate />
             <Abs left={64} top={250}><Badge>A SCHOOLTEACHER ASKED</Badge></Abs>
             <Abs left={150} top={1180} width={240} height={360}>
-              <Crewman shirt="#f2c14e" expression="think" mouth={mouth} arm={big ? "bothUp" : "oneUp"} seed={1} />
+              <Crewman shirt="#f2c14e" expression="think" mouth={mouth} arm="bothUp" seed={1} />
             </Abs>
-            <Abs left={big ? 440 : 480} top={big ? 1080 : 1150} width={big ? 560 : 480}>
-              <SpeechBubble size={big ? 50 : 44} delay={4} tail="left">Where are the Moon Trees?</SpeechBubble>
+            <Abs left={440} top={1080} width={560}>
+              <SpeechBubble size={50} delay={4} tail="left">Where are the Moon Trees?</SpeechBubble>
             </Abs>
             <Sub top={1560}>…asked NASA where they were</Sub>
           </>
         );
       }
-      if (lf < 166) {
-        // U3 beat: clippings ZOOMED (fills the frame) — new shot vs U2.
-        const zoom = beat.id === "U3";
-        return (
-          <>
-            <QuarantinePlate />
-            <Abs left={64} top={170}><Badge color="#2f9e44">THE HUNT</Badge></Abs>
-            <Abs left={zoom ? 140 : 190} top={zoom ? 480 : 560} width={zoom ? 800 : 700} height={zoom ? 526 : 460}>
-              <NewspaperClippings />
-            </Abs>
-            <Abs left={390} top={1120} width={290} height={435}>
-              <Crewman shirt="#2f9e44" expression="think" mouth={mouth} arm="chin" seed={2} />
-            </Abs>
-          </>
-        );
-      }
-      // U4 beat: 110 FOUND — crewman CELEBRATES (bothUp, happy), clippings
-      // smaller behind the number.
-      // U4 beat: a DIFFERENT "110 FOUND" shot from U3 — the pill moves to
-      // the bottom, the crewman moves right, and the souvenir PINE appears
-      // (words: "longest-living souvenirs"). Without this, U3→U4 would be
-      // the same composition (the sub-phase flips at f1418, inside U3).
-      if (beat.id === "U4") {
-        return (
-          <>
-            <QuarantinePlate />
-            <Abs left={190} top={560} width={700} height={460}>
-              <NewspaperClippings />
-            </Abs>
-            <Abs left={140} top={880} width={240} height={420}>
-              <PineTree />
-            </Abs>
-            <Abs left={800} top={1150} width={240} height={360}>
-              <Crewman shirt="#2f9e44" expression="happy" mouth={mouth} arm="bothUp" seed={2} />
-            </Abs>
-            <NumberPill text="110 FOUND" lf={lf} delay={166} size={110} top={1300} />
-          </>
-        );
-      }
+      // U3 beat: clippings ZOOMED (fills the frame) — new shot vs U2.
+      // "110 FOUND" pill pops at lf 212 ("110" 50.62s), 49f into the beat,
+      // so the beat has two distinct looks (clippings, then clippings + pill).
       return (
         <>
           <QuarantinePlate />
-          <NumberPill text="110 FOUND" lf={lf} delay={166} size={110} top={560} />
-          <Abs left={220} top={800} width={640} height={421}>
+          <Abs left={64} top={170}><Badge color="#2f9e44">THE HUNT</Badge></Abs>
+          <Abs left={140} top={480} width={800} height={526}>
             <NewspaperClippings />
           </Abs>
-          <Abs left={420} top={1260} width={240} height={360}>
-            <Crewman shirt="#2f9e44" expression="happy" mouth={mouth} arm="bothUp" seed={2} />
+          <NumberPill text="110 FOUND" lf={lf} delay={212} size={110} top={560} />
+          <Abs left={390} top={1120} width={290} height={435}>
+            <Crewman shirt="#2f9e44" expression="think" mouth={mouth} arm="chin" seed={2} />
           </Abs>
         </>
       );
     }
     case "artemis": {
-      // A: 2022, NASA did it again — rocket rises (lf 0–76)
-      // B: a thousand new seeds (76–138) | C: grandchildren growing, park near you (138–end)
-      if (lf < 76) {
-        const rocketY = interpolate(lf, [0, 76], [1250, 300]);
+      // v4 (scene lf = frame − 1560):
+      // R1 2022, NASA did it again — rocket rises (lf 0–73) |
+      // R2 a thousand new seeds (73–156, "thousand" starts lf 101) |
+      // R3 grandchildren growing, park near you (156–end).
+      if (lf < 73) {
+        const rocketY = interpolate(lf, [0, 73], [1250, 300]);
         return (
           <>
-            <PushIn dur={76}><SpacePlate /></PushIn>
+            <PushIn dur={73}><SpacePlate /></PushIn>
             <Abs left={64} top={170}><Badge color="#e8634a">2022 • ARTEMIS I</Badge></Abs>
             <Abs left={440} top={rocketY} width={200} height={413}>
               <ArtemisRocket />
@@ -556,24 +586,25 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      if (lf < 138) {
+      if (lf < 156) {
         // R2 beat: canister BIG beside the rocket (new seeds, front + centre).
-        const big = beat.id === "R2";
+        // Canister pops at lf 96 ("a" just before "thousand"), pill counts up
+        // from lf 101 ("thousand" 55.36s).
         return (
           <>
             <SpacePlate />
             <Abs left={440} top={400} width={200} height={413}>
               <ArtemisRocket />
             </Abs>
-            {lf > 88 && (
-              <Abs left={big ? 660 : 700} top={big ? 940 : 1000} width={big ? 230 : 180} height={big ? 322 : 252} style={{ transform: `scale(${pop((lf - 88) / 8)})` }}>
+            {lf > 96 && (
+              <Abs left={660} top={940} width={230} height={322} style={{ transform: `scale(${pop((lf - 96) / 8)})` }}>
                 <SeedCanister />
               </Abs>
             )}
             <NumberPill
               text="1,000 SEEDS"
               steps={["250 SEEDS", "500 SEEDS", "750 SEEDS", "1,000 SEEDS"]}
-              lf={lf} delay={80} size={88} top={1320}
+              lf={lf} delay={101} size={88} top={1320}
             />
           </>
         );
@@ -584,7 +615,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
       return (
         <>
           <PushIn dur={60} to={1.05}><AirfieldPlate /></PushIn>
-          <Abs left={300} top={420} width={480} height={840} style={{ transform: `scale(${pop((lf - 138) / 10)})` }}>
+          <Abs left={300} top={420} width={480} height={840} style={{ transform: `scale(${pop((lf - 156) / 10)})` }}>
             <PineTree />
           </Abs>
           <Abs left={120} top={1100} width={260} height={390}>
