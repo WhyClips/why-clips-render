@@ -16,7 +16,11 @@ Follow Why Clips for a true story that sounds made up — every day.
 #shorts #moontree #nasa #apollo14 #space #history #facts #truestory #didyouknow #whyclips #moonlanding #trees
 
 ## Thumbnail
-`thumbnail-moon-trees.png` — 1080x1920, the hook still (seed canister + Moon, frame ~15-40). To be made from the v2 render.
+`thumbnail-moon-trees.png` — 1080x1920, the hook still (seed canister + Moon + Earth, frame 15).
+
+## Render
+- GitHub Actions run 45777807519, SUCCESS. Branch `moon-trees-gullak` (commit 49ed0d37), workflow on `main`.
+- Deliverable: `~/workspace/your_files/why-clips-moon-trees-v2.mp4` (60.000s, 1080x1920, -14.42 LUFS, zero silences).
 
 ## Upload settings
 - Channel: @WhyClipsShorts (azark4748@gmail.com)
