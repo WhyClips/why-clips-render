@@ -264,3 +264,154 @@ between ANY visual change (beat cuts + sub-phase flips + prop/badge pops,
    shot f750 vs f780) — expected: the beat changes every ~3 s, not
    every second; internal motion (seed sway, mouth, capsule dot) is
    subtle in the static beats.
+
+---
+
+# v4 — NEW SCRIPT + SLOWER VO (Azhar, 26 Nov 2026 ~14:00: v3's script is boring, voice way too fast, hook must be shocking)
+Built 26 Nov 2026 ~14:00–14:40 Riyadh. Uploads TONIGHT 26 Nov 21:00 ONLY if
+Azhar approves v4 — the 21:00 cron currently points to v3; the parent switches
+it to v4 after approval. v4 builder did NOT touch any cron.
+
+## What changed vs v3
+- NEW SCRIPT (196 words, `script-moon-trees.txt` + `script-moon-trees-v4.txt`) —
+  why it is less boring: the hook is now a shock + reversal in the first two
+  lines ("Five hundred seeds flew around the Moon in 1971 — NASA came home
+  believing they were all dead. Today, one stands at the White House.") instead
+  of v3's flat "In 1971, NASA flew 500 seeds…"; every paragraph now ends on a
+  twist or a stake ("ruined, impossible to sort", "stubborn as weeds after a
+  wildfire", "one scientist hunted them from newspaper clippings"); the
+  "forgotten → hunted → found" arc is a proper mystery (schoolteacher asks,
+  scientist hunts clippings, 110 found); Artemis is framed as "NASA did it
+  again" with the grandchildren payoff ("maybe in a park near you").
+- NEW VO (`audio/voiceover.mp3`, 59.668 s, same voice avocado_v2:casper_1_5x,
+  speed 100 — was 120): **197.1 WPM** (was 229.3). Last word ends 59.58 s.
+  Pause profile (DELIBERATE — overrides the old fast-VO "max ONE pause
+  >0.4 s" rule; do not "fix" it): 6 segment-break silences 0.5 s + natural
+  sentence pauses 0.4–0.82 s throughout (26 pauses >0.4 s, max 0.82 s after
+  "NASA," → "where"). This is the slower feel Azhar asked for.
+- TOKEN FIXES (`src/videos/fruitflies/words.json`, 187 Whisper tokens,
+  small.en; raw at `audio/words-raw-v4.json`): idx 33 "Stewart"→"Stuart",
+  34 "Russo"→"Roosa", "moon"→"Moon" everywhere, idx 167 "1"→"One" (Artemis
+  One), idx 127 "Philadelphia," given 40.12–40.72 (Whisper gave it zero
+  duration). "school teacher" is TWO tokens (idx 142–143). Numbers are digit
+  tokens: "500", "34", "420", "50", "110", "2022", "1971", "1975", "200th".
+- MOUTH CUES: Rhubarb 1.13.0 → 392 cues, 0.00–59.66 s, v2 mapping
+  (A/X→closed, B/C/D/E→open, F/G/H→grin); raw at
+  `audio/rhubarb-moontrees-v4.json`.
+- SFX SET #3 (`audio/music_sfx.wav`, REBUILT for v4, mixer
+  `mix_sfx_moontrees.py` — do not remix): 21 FRESH placements, none from the
+  v1 or v2 sets, anchored to the new word times. 62.000 s, mean −21.4 dB,
+  max −3.0 dB, 0 silences below −40 dB. Bed `audio/music_synth.wav`
+  UNCHANGED (A minor, 96 BPM, seed 71).
+- CAPTIONS: `captions.tsx` unchanged — chunks derive from `words.json`
+  automatically (1–2 words, 48 px, gold active word + pop). Verified working
+  with the new tokens, including the digit tokens and the two-token
+  "school teacher".
+
+## Code re-cut (`story.ts`, `MoonTrees.tsx`; tsc --noEmit PASSES)
+- Scenes (word anchors): hook 0–212 / apollo14 212–449 / orbits 449–878 /
+  sprout 878–1088 / states 1088–1307 / hunt 1307–1560 / artemis 1560–1800.
+- 22 beats (A4 and U4 removed; O4/O5 added):
+| Beat | Frames | Time | Dur | Visual |
+|---|---|---|---|---|
+| H1 | 0–69 | 0.00–2.30 | 2.30 s | Canister ECU, "500 SEEDS" count-up |
+| H2 | 69–138 | 2.30–4.60 | 2.30 s | Tight push-in, "NASA thought they were all dead" |
+| H3 | 138–212 | 4.60–7.07 | 2.47 s | Sprout from canister, mini White House |
+| A1 | 212–297 | 7.07–9.90 | 2.83 s | Apollo 14 launch, rocket rises |
+| A2 | 297–363 | 9.90–12.10 | 2.20 s | Moonwalk close-up → Roosa pointing (flip f313) |
+| A3 | 363–449 | 12.10–14.97 | 2.87 s | Roosa thinking, firefighter badge, canister (pops f392) |
+| O1 | 449–538 | 14.97–17.93 | 2.97 s | "NEVER TOUCHED THE MOON" → 34 orbits (flip f494) |
+| O2 | 538–635 | 17.93–21.17 | 3.23 s | Big orbit diagram, "34 ORBITS", capsule falls (f598) |
+| O3 | 635–720 | 21.17–24.00 | 2.83 s | Capsule falls → "BURST!" (f657) |
+| O4 | 720–795 | 24.00–26.50 | 2.50 s | "MIXED LIKE SALT", scared agent |
+| O5 | 795–878 | 26.50–29.27 | 2.77 s | Faded pile + red X, "written off as dead" |
+| S1 | 878–978 | 29.27–32.60 | 3.33 s | Planted anyway, Mississippi + California |
+| S2 | 978–1088 | 32.60–36.27 | 3.67 s | Dense trays, "420 SEEDLINGS" + wildfire flip f1030 |
+| T1 | 1088–1161 | 36.27–38.70 | 2.43 s | Five pines, "50 STATES" |
+| T2 | 1161–1242 | 38.70–41.40 | 2.70 s | Philadelphia planting, May 1975 |
+| T3 | 1242–1307 | 41.40–43.57 | 2.17 s | White House pine + waving crew |
+| U1 | 1307–1408 | 43.57–46.93 | 3.37 s | "FORGOTTEN…", faded pine |
+| U2 | 1408–1470 | 46.93–49.00 | 2.07 s | Schoolteacher asks NASA, speech bubble |
+| U3 | 1470–1560 | 49.00–52.00 | 3.00 s | Clippings, "110 FOUND" reveal (pill pops f1519) |
+| R1 | 1560–1633 | 52.00–54.43 | 2.43 s | Artemis I rocket rises |
+| R2 | 1633–1716 | 54.43–57.20 | 2.77 s | "1,000 SEEDS", big canister |
+| R3 | 1716–1800 | 57.20–60.00 | 2.80 s | Final big pine park, Roosa, NO Sub (v2 fix kept) |
+- Longest beat S2 (110 f = 3.67 s) carries a MID-BEAT VISUAL FLIP at f1030
+  ("stubborn"): badge swaps green→orange "AFTER A WILDFIRE", trays reframe
+  bigger, Sub "stubborn as weeds" appears — so no composition holds longer
+  than 3.5 s (S2 halves: 52 f + 58 f). Longest other beat 101 f = 3.37 s (U1).
+  Max gap between ANY visual change (beat cuts + sub-phase flips + prop/badge
+  pops) is 101 f = 3.37 s.
+- Sub lines re-written to the new script (see MoonTrees.tsx); number-pill
+  anchors re-aligned to the new token starts: "500 SEEDS" f0 (count-up
+  complete ~f60) / "34 ORBITS" f514 / "420 SEEDLINGS" f966 (pill pops at the
+  S2 cut f978, the exact frame "420" ends — same ~12 f pattern v3 used, and
+  it avoids the pill crossing the S1 crewman) / "50 STATES" f1147 /
+  "110 FOUND" f1519 / "1,000 SEEDS" f1661 (count-up complete ~f1675). Only
+  ONE number pill visible at a time.
+- Sub-phase flips inside beats (all word-aligned): A2 moonwalk→Roosa f313
+  ("circled"), O1 chalk→orbits f494 ("They looped"), O2 diagram→capsule f598
+  ("Then splashdown"), O3 capsule→BURST f657 ("burst"), U3 clippings→pill
+  f1519 ("110"). A3's canister pops f392 ("carrying"); R2's canister pops
+  f1656 ("a" before "thousand").
+
+## GitHub / Actions (v4)
+- Branch `moon-trees-gullak`: commit **a7411395bce331c318ad24073c89c8127f475bfa**
+  ("Moon Trees v4: re-cut beats + Subs to new script timings", 42 files).
+  Workflow unchanged on `main`.
+- Render run: **45808574680, SUCCESS** (dispatched 26 Nov ~14:13 Riyadh,
+  completed ~14:20 — ~7 min; the assemble job spent ~6 min on
+  `apt-get install ffmpeg`). All 5 jobs success (c1–c4 + assemble).
+  Artifact `moon-trees-gullak-full-quality` (9,297,626 bytes).
+
+## Verification results (final file — full MP4, checked by coordinator)
+- ffprobe: h264, 1080×1920, 30 fps, aac, duration **60.000000 s**,
+  9,403,364 bytes. No watermark, no title card, no end card.
+- Audio: loudnorm (re-encoded to −14 LUFS like v3): measured **−14.66 LUFS**,
+  true peak **−1.34 dB** (better than v3's +0.49); silencedetect:
+  **ZERO silences < −40 dB**.
+- Whole-video watch: 60 frames at 1 fps read (6 contact sheets) + 21 beat
+  cuts + 6 sub-phase flips checked before/after (54 frames, 3 contact
+  sheets) + 10 full-res spot frames — all CLEAN hard cuts, no ghosting, no
+  double-exposure, no frozen frames; motion continues throughout (rockets
+  rise, capsule orbits the diagram, seeds drift, mouths move, count-ups run).
+- Hook f15 ✓ (canister ECU, Earth + Moon, "1971 • NASA", Sub "500 seeds flew
+  around the Moon", caption "500 seeds" gold — shocking line starts in frame 1).
+- Numbers at exact windows: "500 SEEDS" f60 ✓ (count-up complete) /
+  "34 ORBITS" f525 ✓ / "420 SEEDLINGS" f990 ✓ / "50 STATES" f1155 ✓ /
+  "110 FOUND" f1529 ✓ / "1,000 SEEDS" f1713 ✓ (count-up complete).
+- Wildfire flip f1030 ✓ (badge orange, trays reframe, "stubborn as weeds"
+  Sub appears); BURST f657 ✓; 110 pill pop f1519 ✓ (clippings, then pill).
+- Middle 12–45 s sweep: all clean; caption gaps only at natural sentence
+  pauses (e.g. f446, f1085, f1713 — the deliberate slower-VO pauses).
+- Point-to-point: every checked frame shows exactly what the words say,
+  except minor #5 below.
+- Captions: 48 px, bottom-centre, gold active word + pop on every checked
+  frame; never overlapping a character or prop; only one pill at a time.
+- Deliverable: `~/workspace/your_files/why-clips-moon-trees-v4.mp4`
+  (9,403,364 bytes). Thumbnail: `thumbnail-moon-trees-v4.png` (hook f15).
+  Upload pack: `upload-pack.md` (updated to v4; title/description/hashtags
+  UNCHANGED from v3).
+- Upload: 21:00 cron still points to v3 — the parent switches it to v4 only
+  after Azhar approves v4. v4 builder did NOT touch any cron and did NOT
+  upload anything.
+
+## Remaining minors (honest, none blocking)
+1. "EX-FOREST FIREFIGHTER" badge pill's left rounded corner touches the frame
+   edge (beat camera C1 zoom) — text fully readable.
+2. R2's first ~1 s (f1633–1660) is a bare rocket on empty navy until the
+   canister (f1656) and "1,000 SEEDS" pill (f1661) pop in.
+3. O5's faded seed pile behind the red X is barely visible.
+4. Wildfire flip (f1030): the top tray's rightmost sprout + the blue door are
+   cropped at the right frame edge by the C2 camera zoom (same family as v3's
+   tray/door overlap).
+5. "schoolteacher asked NASA" (f1342–1383) plays over the FORGOTTEN visual;
+   the teacher visual arrives at f1408 on "where are they?" — matches the
+   speech bubble, but the word "schoolteacher" itself has no teacher on screen.
+6. Within-beat frames can look near-identical 1 s apart (BURST f690 vs f705,
+   O5 red-X frames) — expected: beats change every ~3 s, not every second.
+7. No caption in the final 0.42 s (last word ends 59.58 s) — same as v2/v3.
+8. Launch rocket's nose briefly crosses the right end of the "APOLLO 14 •
+   JAN 1971" badge in A1's last ~0.3 s (f287–297) — pre-existing v2 geometry,
+   unchanged.
+

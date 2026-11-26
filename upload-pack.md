@@ -1,4 +1,4 @@
-# UPLOAD PACK — Why Clips: The Moon Trees (v3 — 3-second scenes)
+# UPLOAD PACK — Why Clips: The Moon Trees (v4 — new script + slower VO)
 
 ## Title
 NASA Flew 500 Seeds Around the Moon — The Trees Are Still Standing
@@ -16,15 +16,15 @@ Follow Why Clips for a true story that sounds made up — every day.
 #shorts #moontree #nasa #apollo14 #space #history #facts #truestory #didyouknow #whyclips #moonlanding #trees
 
 ## Thumbnail
-`thumbnail-moon-trees-v3.png` — 1080x1920, the hook still (seed canister + Moon + Earth, frame 15).
+`thumbnail-moon-trees-v4.png` — 1080x1920, the hook still (seed canister + Moon + Earth, frame 15).
 
 ## Render
-- GitHub Actions run 45798069158, SUCCESS. Branch `moon-trees-gullak` (commit c6c975b9), workflow on `main`.
-- Deliverable: `~/workspace/your_files/why-clips-moon-trees-v3.mp4` (60.000s, 1080x1920, -14.42 LUFS, zero silences). 22 beats, longest shot 3.40s.
-- v2 (`why-clips-moon-trees-v2.mp4`) will NOT upload — superseded by v3.
+- GitHub Actions run 45808574680, SUCCESS. Branch `moon-trees-gullak` (commit a7411395), workflow on `main`.
+- Deliverable: `~/workspace/your_files/why-clips-moon-trees-v4.mp4` (60.000s, 1080x1920, -14.66 LUFS, zero silences). 22 beats, longest composition 3.37s (S2 3.67s beat carries a mid-beat wildfire flip at f1030). New script (196 words), VO 197.1 WPM (was 229.3).
+- v3 (`why-clips-moon-trees-v3.mp4`) will NOT upload — superseded by v4, pending Azhar's approval of v4.
 
 ## Upload settings
 - Channel: @WhyClipsShorts (azark4748@gmail.com)
 - Visibility: Public — "No, it's not made for kids"
 - Language: English
-- Slot: TONIGHT Thu 26 Nov 2026 21:00 Asia/Riyadh — cron why-clips-moon-trees-upload-26nov is being switched to v3 by the parent.
+- Slot: TONIGHT Thu 26 Nov 2026 21:00 Asia/Riyadh — ONLY if Azhar approves v4; the cron why-clips-moon-trees-upload-26nov currently points to v3 and is switched to v4 by the parent after approval.

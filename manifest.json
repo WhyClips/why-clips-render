@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "moon-trees-gullak",
- "message": "Moon Trees v4: re-cut beats + Subs to new script timings",
+ "message": "Moon Trees v4: docs (BUILD-NOTES v4 section + upload-pack v4)",
  "files": [
   {
    "path": "BUILD-NOTES.md",
@@ -59,6 +59,10 @@
   {
    "path": "thumbnail-moon-trees-v3.png",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/thumbnail-moon-trees-v3.png"
+  },
+  {
+   "path": "thumbnail-moon-trees-v4.png",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/thumbnail-moon-trees-v4.png"
   },
   {
    "path": "thumbnail-moon-trees.png",
