@@ -48,10 +48,12 @@ export const SHOTS: ShotDef[] = [
 ];
 /** crossfades at shot changes; a white 4-frame flash after the hook (shot 1).
  * V2 fix (Azhar: "glitchs beech ma"): XFADE was 8 — the 8-frame dissolve between
- * very different scenes (dark brick -> bright green nursery, nursery -> street,
- * street -> bright park) read as a double-exposure ghost/flicker. Now 2 frames:
- * a near-cut, no visible ghost. */
-export const XFADE: Record<number, number> = { 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2 };
+ * very different scenes read as a double-exposure ghost/flicker. Tried 2 first:
+ * still showed a visible ghost on BOTH straddling frames (f829: green nursery
+ * bleeding over the workshop bench; f830: brick wall over the nursery). So 0:
+ * TRUE HARD CUTS at every shot boundary — the Shorts norm, zero ghost frames.
+ * (layersAt() treats 0 as "no xfade".) The white flash at 207 stays. */
+export const XFADE: Record<number, number> = { 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0 };
 export const FLASH_AT = 207;
 
 export const shotAt = (f: number) => SHOTS.find((s) => f >= s.a && f < s.b) ?? SHOTS[SHOTS.length - 1];

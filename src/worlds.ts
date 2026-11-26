@@ -701,7 +701,9 @@ export class World {
     mk("500 SEEDS", null, "gold", 0.7, 5, [0, 2.3, -65.2], 75, 190, ["100 SEEDS", "200 SEEDS", "300 SEEDS", "400 SEEDS", "500 SEEDS"]);
     mk("34 ORBITS", null, "gold", 0.7, 3, [-40.2, 2.7, 4.6], 585, 660);
     mk("420 SEEDLINGS", null, "gold", 0.8, 6, [-0.3, 1.9, 140.8], 930, 1010);
-    mk("50 STATES", "1975", "gold", 0.9, 1, [0.5, 2.8, 3.0], 1060, 1140);
+    // V2 fix: window ended 1140, i.e. 10 f INTO the S7b close-up (cut at 1130) where
+    // the card is half out of frame ("0 STATES", "5" cut). End it at the cut: 1129.
+    mk("50 STATES", "1975", "gold", 0.9, 1, [0.5, 2.8, 3.0], 1060, 1129);
     mk("110 FOUND", null, "gold", 0.9, 3, [-40.5, 2.6, 3.6], 1455, 1490);
     mk("1,000 SEEDS", null, "gold", 0.8, 1, [0.8, 2.8, 1.0], 1640, 1700, ["250 SEEDS", "500 SEEDS", "750 SEEDS", "1,000 SEEDS"]); // moved forward (z 1.0) + smaller: at scale 1.0 the S10a dolly push made the "1" clip the left edge by f1670
     for (const n of this.numbers) n.mesh.visible = false;

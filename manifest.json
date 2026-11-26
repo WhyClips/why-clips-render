@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "moon-trees",
- "message": "Moon Trees v2 fix: hard cuts (no more glide zooms), xfade 8->2, stars repositioned, captions 3.0%->2.45%, NEW D-minor 96BPM music bed",
+ "message": "Moon Trees v2 fix R2: hard cuts at ALL shot boundaries (xfade 0, ghost gone), 50 STATES window ends at S7b cut",
  "files": [
   {
    "path": "BUILD-NOTES.md",
