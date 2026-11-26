@@ -211,22 +211,41 @@ the parent to overrule if they disagree.
   with amix + limiter 0.95, `-shortest`, measures loudness (target ~−14 LUFS), artifact
   `moon-trees-full-quality`.
 - Render run: (to be filled)
+- Smoke test (ink verification): run 45762569376, success, ~4 min. V-ink (ink ON, bloom OFF)
+  frames 1060–1089: FULL COLOUR, ink outlines crisp (S7a: "50 STATES" gold, sapling, cream
+  houses, blue shutters) — the intended config is verified; full render dispatched with
+  `--props '{"post":{"bloom":false}}'`.
+- Full render: run 45763082156, dispatched 26 Nov 2026 ~08:40 Riyadh (05:40 UTC),
+  12 chunks c01–c12 × 150 f. (timing to be filled)
 - Composer config (bisection-verified, Grigware): ink ON, lens ON, bloom OFF, grade ON,
   tone NEUTRAL. Render props: `--props '{"post":{"bloom":false}}'`.
 
-## Verification results (final file — to be filled after render)
+## Verification results (final file — V1 render, SUPERSEDED — see V2 below)
 
-- ffprobe: (to be filled — must be h264, 1080×1920, 30 fps, aac, duration 60.000000 s)
-- Audio: loudness / true peak / silencedetect (to be filled — target ~−14 LUFS, zero silences)
-- Frames point-to-point (every shot's key frame from the final MP4): (to be filled)
-- In-scene numbers at their exact windows: 500 SEEDS f75–190; 34 ORBITS f585–660;
-  420 SEEDLINGS f930–1010; 50 STATES f1060–1140; 110 FOUND f1455–1490; 1,000 SEEDS f1640–1700.
-- Captions: 1–2 words, ~3% height, bottom-centre, active word gold + pop — (to be filled)
-- Locations: workshop, office, nursery, street, park = 5 (≥4). No watermark. SFX: 21 mapped.
-- Deliverable: `~/workspace/your_files/why-clips-moon-trees-v1.mp4` (NEW filename; never
-  overwrite a delivered file in place). Thumbnail: `thumbnail-moon-trees.png` (1080×1920,
-  hook still). Upload pack: `upload-pack.md`.
-- Upload cron: runonce Thu 26 Nov 2026 21:00 Asia/Riyadh, id `why-clips-moon-trees-upload-26nov`,
-  owner goal:youtube-channel-seekhna, delivery SHORTS chat only
-  (`ceb4f4c1-d312-410e-a8e3-189a1db4e692`), via YouTube Studio on `azark4748@gmail.com`,
-  Public, "No, it's not made for kids", English. Do NOT touch the Fruit Flies 16:00 cron.
+- ffprobe (V1): h264, 1080×1920, 30 fps, aac, duration 60.000000 s (audio 59.989 s).
+- Audio (V1): loudness −14.62 LUFS, true peak +0.18 dB; silencedetect: ZERO silences < −40 dB.
+- Frames point-to-point (V1 final MP4): hook f10 ✓ (SEEDS label, "1971," gold); 500 SEEDS f120 ✓;
+  34 ORBITS f640 ✓; spill f760 ✓; 420 SEEDLINGS f970 ✓; 50 STATES f1080 ✓; 110 FOUND f1460 ✓;
+  1,000 SEEDS f1670 ✗ (see V2 fix 2); final f1790 ✓ (Roosa + sapling, "near you.").
+- TWO defects found in the V1 final MP4 (both invisible in composer-OFF stills — they are
+  INK artifacts, only visible in the composited render):
+  1. **Laptop screen outline crosses faces** (f250 S2a, f640 S4b, f1460 S9a, f1520 S9b): the
+     upright glowing screen (centre y 1.18, top edge y 1.43, pale #bfe3ff ≈ window colour)
+     put its ink outline straight across the characters' eyes/mouths, the screen itself
+     invisible against the window. Fix: screen lowered + tilted back like a real open laptop
+     (centre (−40, 1.02, 2.3), rotation.x −0.85, top edge y ~1.19 — below every chin),
+     colour deepened to #8fc3ee so it reads as a screen. Verified with a local composer-ON
+     render of f630–650 (out/comp-f640.png): the screen now leans on the desk in front of
+     Roosa's chest, faces clean.
+  2. **"1,000 SEEDS" clipped at the left edge** (f1670: the "1" half-cut): at scale 1.0 the
+     S10a dolly push (0.0022/frame) grows the card through its window until it exceeds the
+     frame. Fix: scale 0.8, position moved forward to (0.8, 2.8, 1.0). Verified in still
+     v2f1670: "1,000 SEEDS" fully readable, "1" complete.
+- V1 deliverable was NEVER delivered to the user, so the V2 render keeps the same
+  deliverable filename (why-clips-moon-trees-v1.mp4).
+
+## V2 render (re-render after the two fixes above)
+
+- Full render: run (to be filled), dispatched (to be filled), 12 chunks c01–c12 × 150 f.
+- Verification (V2 final MP4): (to be filled — focus f250/f640/f1460/f1520 screen line,
+  f1670 "1,000 SEEDS", plus duration/loudness/silence re-check)

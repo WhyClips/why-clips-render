@@ -277,8 +277,12 @@ const buildOffice = (b: Batch, kit: Kit, root: THREE.Group, grp: THREE.Group) =>
   for (const [x, z] of [[-41.0, 1.6], [-39.0, 1.6], [-41.0, 2.4], [-39.0, 2.4]] as const)
     b.add(boxGeo(V(x, 0, z), V(x + 0.09, 0.74, z + 0.09), 0), desk);
   b.add(boxGeo(V(-40.5, 0.82, 1.9), V(-39.5, 0.9, 2.3), 0), lam("officeLap", () => ({ color: "#2c313a" })));
-  const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.85, 0.5), new THREE.MeshBasicMaterial({ color: "#bfe3ff" }));
-  screen.position.set(-40, 1.18, 2.28); screen.rotation.x = -0.25; root.add(screen);
+  // laptop screen, tilted back like a real open laptop and LOW: the old upright screen
+  // (centre y 1.18, top edge y 1.43) put its ink outline straight across the characters'
+  // faces in S2/S4b/S9a, and its pale blue (#bfe3ff) vanished against the window behind it.
+  // Now: top edge y ~1.19 (below every chin), deeper blue so it reads as a screen.
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.85, 0.5), new THREE.MeshBasicMaterial({ color: "#8fc3ee" }));
+  screen.position.set(-40, 1.02, 2.3); screen.rotation.x = -0.85; root.add(screen);
   b.add(boxGeo(V(-38.9, 0.82, 2.2), V(-38.6, 0.85, 2.45), 0), lam("officePaper", () => ({ color: "#f7f5ee" })));
   b.add(new THREE.CylinderGeometry(0.05, 0.045, 0.12, 10).translate(0, 0.06, 0), lam("officeMug", () => ({ color: "#c25a3a" })),
     new THREE.Matrix4().makeTranslation(-41.0, 0.82, 2.35));
@@ -699,7 +703,7 @@ export class World {
     mk("420 SEEDLINGS", null, "gold", 0.8, 6, [-0.3, 1.9, 140.8], 930, 1010);
     mk("50 STATES", "1975", "gold", 0.9, 1, [0.5, 2.8, 3.0], 1060, 1140);
     mk("110 FOUND", null, "gold", 0.9, 3, [-40.5, 2.6, 3.6], 1455, 1490);
-    mk("1,000 SEEDS", null, "gold", 1.0, 1, [0.5, 2.8, 3.0], 1640, 1700, ["250 SEEDS", "500 SEEDS", "750 SEEDS", "1,000 SEEDS"]);
+    mk("1,000 SEEDS", null, "gold", 0.8, 1, [0.8, 2.8, 1.0], 1640, 1700, ["250 SEEDS", "500 SEEDS", "750 SEEDS", "1,000 SEEDS"]); // moved forward (z 1.0) + smaller: at scale 1.0 the S10a dolly push made the "1" clip the left edge by f1670
     for (const n of this.numbers) n.mesh.visible = false;
     // ---- foreground framing objects (kit clones, toggled per frame like the skill) ----
     for (const fg of FOREGROUND) {
