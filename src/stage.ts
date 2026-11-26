@@ -85,8 +85,12 @@ export const stageSet = (setId: number, t: number, cam: CamInfo): Stage => {
       { mode: "stand", expr: "grin", blink: blink(8) }));
     blob(out, -40, 0, 2.4, 1);
     if (lt > 1 && lt < 1.6) {
+      // V2 fix: the shock-stars were at y 3.0 — ~1.5 m ABOVE the controller's head,
+      // floating at the top of the wall, detached — they read as a glitch/artifact.
+      // Now they circle just above his head (head top ~1.7 m), smaller, so the
+      // cartoon "shocked" effect reads as attached to the character.
       const ph = Math.min(1, (lt - 1) / 0.6);
-      out.fx.push({ key: `stars|${Math.round(ph * 10)}`, cw: 256, ch: 256, draw: (p) => fxStars(p, ph), x: -39.6, y: 3.0, z: 3.4, w: 0.9, h: 0.9 });
+      out.fx.push({ key: `stars|${Math.round(ph * 10)}`, cw: 256, ch: 256, draw: (p) => fxStars(p, ph), x: -39.6, y: 1.95, z: 3.4, w: 0.65, h: 0.65 });
     }
   } else if (id === 5) {
     // S5 workshop: splashdown — Roosa and the scientist, dazed, lean over the spilled seeds.

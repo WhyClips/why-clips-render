@@ -26,8 +26,10 @@ export const chunkWords = (words: Word[]): Chunk[] => {
   return out;
 };
 
-/** caption height as a fraction of frame height — 3.0% (TheRealWhy measured 3.1%) */
-export const CAPTION_H_FRAC = 0.03;
+/** caption height as a fraction of frame height — 2.45% (V2: Azhar 26 Nov
+ * "Captions thordha gaints" — was 3.0% / 58 px, now ~47 px, ~19% smaller,
+ * still bold + readable on phone, bottom-centre, gold active word + pop stay) */
+export const CAPTION_H_FRAC = 0.0245;
 /** bottom band reserved for captions: the bottom 12% of the frame is floor only */
 export const CAPTION_BAND_FRAC = 0.12;
 

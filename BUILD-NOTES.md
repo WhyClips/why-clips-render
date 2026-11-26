@@ -246,6 +246,26 @@ the parent to overrule if they disagree.
 
 ## V2 render (re-render after the two fixes above)
 
-- Full render: run (to be filled), dispatched (to be filled), 12 chunks c01–c12 × 150 f.
-- Verification (V2 final MP4): (to be filled — focus f250/f640/f1460/f1520 screen line,
-  f1670 "1,000 SEEDS", plus duration/loudness/silence re-check)
+- Full render: run 45763082156 (V1) / **45766328045 (V2)**, dispatched 26 Nov 2026 ~09:10 Riyadh
+  (06:10 UTC), 12 chunks c01–c12 × 150 f, all success + assemble success (~21 min).
+  Branch commit be418c1c6f7cbaa79bebfd06f0d3d4dc0a6e5298.
+- Verification (V2 final MP4, out/final-v2/moon-trees-full-quality.mp4):
+  - ffprobe: h264, 1080×1920, 30 fps, aac, duration **60.000000 s**.
+  - Audio: loudness **−14.62 LUFS**, true peak **+0.18 dB**; silencedetect: **ZERO silences < −40 dB**.
+  - Fix 1 re-verified: f250/f640/f1460/f1520 — faces clean, tilted screen sits on the desk
+    below the chins, reads as a laptop.
+  - Fix 2 re-verified: f1670 — "1,000 SEEDS" fully readable, "1" complete, inside the frame.
+  - Numbers at exact windows (V2): 500 SEEDS f120 ✓, 34 ORBITS f640 ✓, 420 SEEDLINGS f970 ✓
+    (V1, unchanged), 50 STATES f1080 ✓ (V1, unchanged), 110 FOUND f1460 ✓, 1,000 SEEDS f1670 ✓.
+  - Captions: 1–2 words, ~3% height, bottom-centre, active word gold + pop — verified on
+    every checked frame (f10 "1971,", f120 "still", f640, f760 "salt.", f970 "stubborn",
+    f1080 "every", f1460 "see,", f1670 "thousand", f1790 tail). No watermark.
+  - Locations: workshop, office, nursery, street, park = 5 (≥4). SFX: 21 mapped.
+- Deliverable: `~/workspace/your_files/why-clips-moon-trees-v1.mp4` (56,519,842 bytes, V2 render;
+  the V1 render was never delivered, so this keeps the v1 filename).
+  Thumbnail: `thumbnail-moon-trees.png` (1080×1920, hook ECU f40 — canister + "SEEDS" label).
+  Upload pack: `upload-pack.md`.
+- Upload cron: runonce Thu 26 Nov 2026 21:00 Asia/Riyadh, id `why-clips-moon-trees-upload-26nov`,
+  owner goal:youtube-channel-seekhna, delivery SHORTS chat only
+  (`ceb4f4c1-d312-410e-a8e3-189a1db4e692`), via YouTube Studio on `azark4748@gmail.com`,
+  Public, "No, it's not made for kids", English. Do NOT touch the Fruit Flies 16:00 cron.

@@ -46,8 +46,12 @@ export const SHOTS: ShotDef[] = [
   { id: 9, a: 1420, b: 1560, light: "day", set: 3 },// the hunt: clippings + 110 FOUND
   { id: 10, a: 1560, b: TOTAL, light: "day", set: 1 }, // FINAL: Moon Tree at dusk + 1,000 SEEDS (day, not golden: golden turns this street purple)
 ];
-/** crossfades at shot changes; a white 4-frame flash after the hook (shot 1) */
-export const XFADE: Record<number, number> = { 2: 8, 3: 8, 4: 8, 5: 8, 6: 8, 7: 8, 8: 8, 9: 8, 10: 8 };
+/** crossfades at shot changes; a white 4-frame flash after the hook (shot 1).
+ * V2 fix (Azhar: "glitchs beech ma"): XFADE was 8 — the 8-frame dissolve between
+ * very different scenes (dark brick -> bright green nursery, nursery -> street,
+ * street -> bright park) read as a double-exposure ghost/flicker. Now 2 frames:
+ * a near-cut, no visible ghost. */
+export const XFADE: Record<number, number> = { 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2 };
 export const FLASH_AT = 207;
 
 export const shotAt = (f: number) => SHOTS.find((s) => f >= s.a && f < s.b) ?? SHOTS[SHOTS.length - 1];
@@ -131,16 +135,21 @@ const S10a = (f: number) => dolly([6.5, 2.0, -6.0], [0.3, 1.35, 2.0], pushK(f, 1
 const S10b = (f: number) => dolly([4.0, 1.7, -3.5], [0.5, 1.35, 1.9], pushK(f, 1700, 0.0025), { fov: 36, roll: 0.03 });
 
 const CAMS: Record<number, Key[]> = {
-  1: [{ f: 0, s: S1a }, { f: 80, dur: 30, s: S1b }],
-  2: [{ f: 207, s: S2a }, { f: 300, dur: 30, s: S2b }],
+  // V2 fix (Azhar: "glitchs beech ma"): sub-shot changes were 24-30 f smootherstep
+  // GLIDES — the mid-glide moves fastest, so every reframe read as a sudden fast
+  // zoom burst (frame-diff 25-53, as violent as a hard cut but smeared over 0.5 s).
+  // Template grammar says "cuts on big reframes", and the Key type already has
+  // cut — so all big reframes are now HARD CUTS. Same cameras, same shots.
+  1: [{ f: 0, s: S1a }, { f: 80, cut: true, s: S1b }],
+  2: [{ f: 207, s: S2a }, { f: 300, cut: true, s: S2b }],
   3: [{ f: 400, s: S3a }],
-  4: [{ f: 520, s: S4a }, { f: 620, dur: 30, s: S4b }],
+  4: [{ f: 520, s: S4a }, { f: 620, cut: true, s: S4b }],
   5: [{ f: 700, s: S5a }],
-  6: [{ f: 830, s: S6a }, { f: 940, dur: 28, s: S6b }],
-  7: [{ f: 1010, s: S7a }, { f: 1130, dur: 28, s: S7b }],
-  8: [{ f: 1240, s: S8a }, { f: 1330, dur: 28, s: S8b }],
-  9: [{ f: 1420, s: S9a }, { f: 1490, dur: 26, s: S9b }],
-  10: [{ f: 1560, s: S10a }, { f: 1700, dur: 24, s: S10b }],
+  6: [{ f: 830, s: S6a }, { f: 940, cut: true, s: S6b }],
+  7: [{ f: 1010, s: S7a }, { f: 1130, cut: true, s: S7b }],
+  8: [{ f: 1240, s: S8a }, { f: 1330, cut: true, s: S8b }],
+  9: [{ f: 1420, s: S9a }, { f: 1490, cut: true, s: S9b }],
+  10: [{ f: 1560, s: S10a }, { f: 1700, cut: true, s: S10b }],
 };
 export const camAt = (id: number, f: number): Cam => run(CAMS[id], f);
 export const keyEnd = (id: number, f: number) => {

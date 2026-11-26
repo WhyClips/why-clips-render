@@ -2,7 +2,7 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "moon-trees",
- "message": "Moon Trees Short v2: laptop screen lowered+tilted (face-line fix), 1,000 SEEDS repositioned",
+ "message": "Moon Trees v2 fix: hard cuts (no more glide zooms), xfade 8->2, stars repositioned, captions 3.0%->2.45%, NEW D-minor 96BPM music bed",
  "files": [
   {
    "path": "BUILD-NOTES.md",
@@ -41,6 +41,10 @@
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/script-moon-trees.txt"
   },
   {
+   "path": "thumbnail-moon-trees.png",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/thumbnail-moon-trees.png"
+  },
+  {
    "path": "tsconfig.json",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/tsconfig.json"
   },
@@ -51,6 +55,10 @@
   {
    "path": "audio/music_sfx.wav",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/audio/music_sfx.wav"
+  },
+  {
+   "path": "audio/music_synth_v2.wav",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/audio/music_synth_v2.wav"
   },
   {
    "path": "audio/voiceover.mp3",
