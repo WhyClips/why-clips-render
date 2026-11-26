@@ -1,0 +1,12 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "main",
+ "message": "Moon Trees Gullak: render workflow (4 chunks, 1800f)",
+ "files": [
+  {
+   "path": ".github/workflows/render-moontrees-gullak.yml",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/render-moontrees-gullak.yml"
+  }
+ ]
+}

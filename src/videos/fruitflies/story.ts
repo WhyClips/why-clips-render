@@ -52,6 +52,59 @@ export const SCENES: SceneDef[] = [
 export const sceneAt = (f: number): SceneDef =>
   SCENES.find((s) => f >= s.a && f < s.b) ?? SCENES[SCENES.length - 1];
 
+// ---------------- beats (v3 — Azhar 26 Nov 12:33: "Scene har 3 sec baad use kr") ----------------
+// 22 beats, each ≤ 105f (3.5s) — the old 7 scenes ran 6–11s each, too long.
+// Boundaries sit on word starts / natural pauses; every beat gets its OWN
+// composition (beat camera reframe + content variant in MoonTrees.tsx), so the
+// picture visibly changes at least every ~3s. STANDING RULE going forward:
+// scene every 3 seconds in Why Clips Shorts (supersedes the old ~4s rule).
+export type BeatId =
+  | "H1" | "H2" | "H3"
+  | "A1" | "A2" | "A3" | "A4"
+  | "O1" | "O2" | "O3"
+  | "S1" | "S2"
+  | "T1" | "T2" | "T3"
+  | "U1" | "U2" | "U3" | "U4"
+  | "R1" | "R2" | "R3";
+
+export type Cam = { s: number; x: number; y: number; o: string };
+const C0: Cam = { s: 1.0, x: 0, y: 0, o: "50% 55%" };
+const C1: Cam = { s: 1.1, x: -35, y: -25, o: "40% 50%" };
+const C2: Cam = { s: 1.08, x: 35, y: 20, o: "60% 55%" };
+const C3: Cam = { s: 1.14, x: 0, y: -40, o: "50% 40%" };
+
+export type BeatDef = { id: BeatId; scene: SceneId; a: number; b: number; label: string; cam: Cam };
+export const BEATS: BeatDef[] = [
+  { id: "H1", scene: "hook", a: 0, b: 69, label: "canister ECU, 500 seeds", cam: C0 },
+  { id: "H2", scene: "hook", a: 69, b: 138, label: "tight push-in, seeds drift", cam: C1 },
+  { id: "H3", scene: "hook", a: 138, b: 207, label: "sprout out of canister + White House mini", cam: C2 },
+  { id: "A1", scene: "apollo14", a: 207, b: 297, label: "Apollo 14 launch", cam: C0 },
+  { id: "A2", scene: "apollo14", a: 297, b: 387, label: "moonwalk close-up → Roosa in orbit", cam: C3 },
+  { id: "A3", scene: "apollo14", a: 387, b: 458, label: "Roosa + orbit diagram, firefighter badge", cam: C1 },
+  { id: "A4", scene: "apollo14", a: 458, b: 530, label: "Roosa close-up, big canister", cam: C2 },
+  { id: "O1", scene: "orbits", a: 530, b: 627, label: "never touched the Moon → 34 orbits", cam: C0 },
+  { id: "O2", scene: "orbits", a: 627, b: 724, label: "orbit diagram big → splashdown fall", cam: C1 },
+  { id: "O3", scene: "orbits", a: 724, b: 820, label: "BURST! → spilled like salt", cam: C3 },
+  { id: "S1", scene: "sprout", a: 820, b: 922, label: "planted anyway, Mississippi + California", cam: C0 },
+  { id: "S2", scene: "sprout", a: 922, b: 1023, label: "420 seedlings, dense trays", cam: C2 },
+  { id: "T1", scene: "states", a: 1023, b: 1099, label: "50 states, five pines", cam: C0 },
+  { id: "T2", scene: "states", a: 1099, b: 1175, label: "Philadelphia planting", cam: C1 },
+  { id: "T3", scene: "states", a: 1175, b: 1252, label: "White House pine + waving crew", cam: C3 },
+  { id: "U1", scene: "hunt", a: 1252, b: 1332, label: "FORGOTTEN… faded pine", cam: C0 },
+  { id: "U2", scene: "hunt", a: 1332, b: 1412, label: "schoolteacher asks NASA", cam: C2 },
+  { id: "U3", scene: "hunt", a: 1412, b: 1492, label: "newspaper clippings hunt, zoomed", cam: C1 },
+  { id: "U4", scene: "hunt", a: 1492, b: 1572, label: "110 FOUND, celebrating crew", cam: C3 },
+  { id: "R1", scene: "artemis", a: 1572, b: 1648, label: "Artemis I rocket rises", cam: C0 },
+  { id: "R2", scene: "artemis", a: 1648, b: 1724, label: "1,000 new seeds, big canister", cam: C1 },
+  { id: "R3", scene: "artemis", a: 1724, b: TOTAL, label: "grandchildren growing, big pine park", cam: C2 },
+];
+
+export const beatAt = (f: number): BeatDef =>
+  BEATS.find((b) => f >= b.a && f < b.b) ?? BEATS[BEATS.length - 1];
+
+// Sanity: no beat longer than 3.5s (105f). Verified by `node -e` at build time
+// and by the v3 verifier from the final MP4's cut list.
+
 // ---------------- captions ----------------
 export type ChunkWord = { text: string; s: number; e: number };
 export type Chunk = { words: ChunkWord[]; text: string; s: number; e: number };

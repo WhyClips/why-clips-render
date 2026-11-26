@@ -1,0 +1,20 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "moon-trees-gullak",
+ "message": "Moon Trees Gullak: BUILD-NOTES + upload-pack + thumbnail",
+ "files": [
+  {
+   "path": "BUILD-NOTES.md",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/BUILD-NOTES.md"
+  },
+  {
+   "path": "upload-pack.md",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/upload-pack.md"
+  },
+  {
+   "path": "thumbnail-moon-trees.png",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/thumbnail-moon-trees.png"
+  }
+ ]
+}

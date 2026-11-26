@@ -2,8 +2,12 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "moon-trees-gullak",
- "message": "Moon Trees Gullak: code + audio (new bed, rotated SFX, Rhubarb cues)",
+ "message": "Moon Trees v3: 22 beats ~3s (scene every 3s), glory-overlap + double-pill fixes",
  "files": [
+  {
+   "path": "BUILD-NOTES.md",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/BUILD-NOTES.md"
+  },
   {
    "path": "README.md",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/README.md"
@@ -11,6 +15,14 @@
   {
    "path": "make_manifest.py",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/make_manifest.py"
+  },
+  {
+   "path": "manifest-docs.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/manifest-docs.json"
+  },
+  {
+   "path": "manifest-main.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/manifest-main.json"
   },
   {
    "path": "manifest.json",
@@ -39,6 +51,10 @@
   {
    "path": "stills.mjs",
    "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/stills.mjs"
+  },
+  {
+   "path": "thumbnail-moon-trees.png",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-gullak-project/thumbnail-moon-trees.png"
   },
   {
    "path": "tsconfig.json",
