@@ -1,0 +1,212 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "moon-trees",
+ "message": "Moon Trees Short: full project (script, VO, music/SFX, therealwhy template, caption + number animation)",
+ "files": [
+  {
+   "path": "BUILD-NOTES.md",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/BUILD-NOTES.md"
+  },
+  {
+   "path": "README.md",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/README.md"
+  },
+  {
+   "path": "make_manifest.py",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/make_manifest.py"
+  },
+  {
+   "path": "manifest-main.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/manifest-main.json"
+  },
+  {
+   "path": "manifest.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/manifest.json"
+  },
+  {
+   "path": "package-lock.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/package-lock.json"
+  },
+  {
+   "path": "package.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/package.json"
+  },
+  {
+   "path": "remotion.config.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/remotion.config.ts"
+  },
+  {
+   "path": "script-moon-trees.txt",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/script-moon-trees.txt"
+  },
+  {
+   "path": "tsconfig.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/tsconfig.json"
+  },
+  {
+   "path": "upload-pack.md",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/upload-pack.md"
+  },
+  {
+   "path": "audio/music_sfx.wav",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/audio/music_sfx.wav"
+  },
+  {
+   "path": "audio/voiceover.mp3",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/audio/voiceover.mp3"
+  },
+  {
+   "path": "public/bridge/kenney/canoe.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/canoe.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_purpleA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/flower_purpleA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_redA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/flower_redA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/flower_yellowA.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/flower_yellowA.glb"
+  },
+  {
+   "path": "public/bridge/kenney/grass.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/grass.glb"
+  },
+  {
+   "path": "public/bridge/kenney/grass_large.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/grass_large.glb"
+  },
+  {
+   "path": "public/bridge/kenney/lily_large.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/lily_large.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bush.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/plant_bush.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bushDetailed.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/plant_bushDetailed.glb"
+  },
+  {
+   "path": "public/bridge/kenney/plant_bushLarge.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/plant_bushLarge.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_cone.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/tree_cone.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_default.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/tree_default.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_detailed.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/tree_detailed.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_fat.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/tree_fat.glb"
+  },
+  {
+   "path": "public/bridge/kenney/tree_oak.glb",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/public/bridge/kenney/tree_oak.glb"
+  },
+  {
+   "path": "src/DebugComposer.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/DebugComposer.tsx"
+  },
+  {
+   "path": "src/Root.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/Root.tsx"
+  },
+  {
+   "path": "src/Template.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/Template.tsx"
+  },
+  {
+   "path": "src/captions.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/captions.tsx"
+  },
+  {
+   "path": "src/demo-words.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/demo-words.json"
+  },
+  {
+   "path": "src/index.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/index.ts"
+  },
+  {
+   "path": "src/numbers.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/numbers.tsx"
+  },
+  {
+   "path": "src/stage.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/stage.ts"
+  },
+  {
+   "path": "src/story.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/story.ts"
+  },
+  {
+   "path": "src/words.json",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/words.json"
+  },
+  {
+   "path": "src/worlds.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/worlds.ts"
+  },
+  {
+   "path": "src/bridge/build.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/build.ts"
+  },
+  {
+   "path": "src/bridge/cardshade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/cardshade.ts"
+  },
+  {
+   "path": "src/bridge/cast.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/cast.ts"
+  },
+  {
+   "path": "src/bridge/grade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/grade.ts"
+  },
+  {
+   "path": "src/bridge/ink.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/ink.ts"
+  },
+  {
+   "path": "src/bridge/lensblur.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/lensblur.ts"
+  },
+  {
+   "path": "src/bridge/lights.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/lights.ts"
+  },
+  {
+   "path": "src/bridge/paint.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/paint.ts"
+  },
+  {
+   "path": "src/bridge/shade.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/shade.ts"
+  },
+  {
+   "path": "src/bridge/toon.ts",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/src/bridge/toon.ts"
+  },
+  {
+   "path": ".github/workflows/render-moon-trees.yml",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/.github/workflows/render-moon-trees.yml"
+  },
+  {
+   "path": ".github/workflows/smoke-moon-trees.yml",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/.github/workflows/smoke-moon-trees.yml"
+  }
+ ]
+}

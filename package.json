@@ -1,23 +1,29 @@
 {
-  "name": "spam-short",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "render": "remotion render src/index.ts SpamShort out/video.mp4 --codec h264 --crf 16 --concurrency 1",
-    "typecheck": "tsc --noEmit"
-  },
   "dependencies": {
+    "@react-three/fiber": "9.8.2",
+    "@react-three/postprocessing": "^3.2.2",
     "@remotion/bundler": "4.0.545",
     "@remotion/cli": "4.0.545",
     "@remotion/renderer": "4.0.545",
+    "@remotion/three": "4.0.545",
+    "postprocessing": "^6.36.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "remotion": "4.0.545"
+    "remotion": "4.0.545",
+    "three": "0.180.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "0.180.0",
     "typescript": "^5.8.0"
-  }
+  },
+  "name": "therealwhy-template",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.ts TemplateShort out/template.mp4 --codec h264 --crf 16 --concurrency 1",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "1.0.0"
 }

@@ -1,0 +1,16 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "main",
+ "message": "Moon Trees: render + smoke workflows (bloom OFF, 12 chunks)",
+ "files": [
+  {
+   "path": ".github/workflows/render-moon-trees.yml",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/.github/workflows/render-moon-trees.yml"
+  },
+  {
+   "path": ".github/workflows/smoke-moon-trees.yml",
+   "file": "/home/hatch/workspace/ricks-clone/moon-trees-project/.github/workflows/smoke-moon-trees.yml"
+  }
+ ]
+}
