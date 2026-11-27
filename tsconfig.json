@@ -14,5 +14,6 @@
     "noEmit": true,
     "isolatedModules": true
   },
-  "include": ["src", "remotion.config.ts", "scripts"]
+  "include": ["src", "remotion.config.ts", "scripts"],
+  "exclude": ["src/videos/fruitflies/FruitFlies.tsx"]
 }
