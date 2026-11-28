@@ -1,9 +1,9 @@
 {
-  "name": "spam-short",
+  "name": "vai-script-gullak-short",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "render": "remotion render src/index.ts SpamShort out/video.mp4 --codec h264 --crf 16 --concurrency 1",
+    "render": "remotion render src/index.ts VaiShort out/video.mp4 --codec h264 --crf 16 --concurrency 1",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
