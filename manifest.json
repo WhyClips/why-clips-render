@@ -2,8 +2,12 @@
  "owner": "WhyClips",
  "repo": "why-clips-render",
  "branch": "drake-cimarrones",
- "message": "Drake Cimarrones Gullak v1",
+ "message": "Drake Cimarrones Gullak v2 \u2014 flip timing fix (blf)",
  "files": [
+  {
+   "path": "BUILD-NOTES.md",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/BUILD-NOTES.md"
+  },
   {
    "path": "README.md",
    "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/README.md"
@@ -11,6 +15,10 @@
   {
    "path": "make_manifest.py",
    "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/make_manifest.py"
+  },
+  {
+   "path": "manifest-workflow.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/manifest-workflow.json"
   },
   {
    "path": "manifest.json",
@@ -43,6 +51,10 @@
   {
    "path": "tsconfig.json",
    "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/tsconfig.json"
+  },
+  {
+   "path": "upload-pack.md",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/upload-pack.md"
   },
   {
    "path": "audio/make_bed_drake.py",

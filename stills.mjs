@@ -7,7 +7,9 @@ import { renderStill, selectComposition } from "@remotion/renderer";
 // key frames: hook 30, H2 oceans 150, mule train 260, jungle flee 380,
 // CIMARRONES badge 520, ship 780, lost jungle 880, Pedro 1020,
 // 30 pill 1210, riverbed 1350, TWO OCEANS 1650, final globe 1750
-const FRAMES = [30, 150, 260, 380, 520, 780, 880, 1020, 1210, 1350, 1650, 1750];
+// v2 flip-fix checks: H2 first half 110, S2 run-away 330, M2 melt 660,
+// D2 lost 870, A3 ambush 1290
+const FRAMES = [30, 110, 150, 260, 330, 380, 520, 660, 780, 870, 880, 1020, 1210, 1290, 1350, 1650, 1750];
 const outDir = path.resolve("out/stills");
 fs.mkdirSync(outDir, { recursive: true });
 

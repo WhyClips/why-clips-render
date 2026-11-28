@@ -1,0 +1,7 @@
+{
+  "owner": "WhyClips",
+  "repo": "why-clips-render",
+  "branch": "main",
+  "message": "Add Drake Cimarrones render workflow",
+  "files": [{"path": ".github/workflows/render-drake-gullak.yml", "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/render-drake-gullak.yml"}]
+}

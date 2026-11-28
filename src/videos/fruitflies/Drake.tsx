@@ -123,10 +123,10 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
   switch (id) {
     case "hook": {
       // H1: Drake alone on the hill, 1573 pill | H2: two oceans, then the
-      // cimarrones join him (mid-beat flip at lf 40, "because" 4.62s).
+      // cimarrones join him (mid-beat flip at blf 40, "because" 4.62s).
       // Frame 1 mid-action: Drake standing on the hilltop, seas behind.
       if (beat.id === "H2") {
-        const joined = lf >= 40;
+        const joined = blf >= 40;
         return (
           <>
             <PushIn dur={dur} to={1.1}><HilltopPlate /></PushIn>
@@ -140,10 +140,10 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
             </Abs>
             {joined && (
               <>
-                <Abs left={520} top={1000} width={240} height={360} style={{ transform: `scale(${pop((lf - 40) / 8)})` }}>
+                <Abs left={520} top={1000} width={240} height={360} style={{ transform: `scale(${pop((blf - 40) / 8)})` }}>
                   <Pedro expression="happy" mouth="closed" arm="point" seed={2} />
                 </Abs>
-                <Abs left={700} top={1040} width={200} height={300} style={{ transform: `scale(${pop((lf - 44) / 8)})` }}>
+                <Abs left={700} top={1040} width={200} height={300} style={{ transform: `scale(${pop((blf - 44) / 8)})` }}>
                   <Cimarron1 expression="happy" mouth="closed" arm="oneUp" seed={3} />
                 </Abs>
               </>
@@ -166,8 +166,8 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
     }
     case "silver": {
       // S1 mule train + silver pile | S2 men running away → flip to jungle
-      // at lf 57 ("Thousands" 12.16s) | S3 free village | S4 cimarrones
-      // group + CIMARRONES badge (badge pops on "cimarrones," lf 20).
+      // at blf 57 ("Thousands" 12.16s) | S3 free village | S4 cimarrones
+      // group + CIMARRONES badge (badge pops on "cimarrones," blf 20).
       if (beat.id === "S1") {
         return (
           <>
@@ -186,18 +186,18 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
         );
       }
       if (beat.id === "S2") {
-        if (lf >= 57) {
+        if (blf >= 57) {
           return (
             <>
               <PushIn dur={dur} to={1.12}><JunglePlate /></PushIn>
               <Abs left={64} top={170}><Badge color="#2f9e44">INTO THE JUNGLE</Badge></Abs>
-              <Abs left={160} top={1050} width={260} height={390} style={{ transform: `scale(${pop((lf - 57) / 8)})` }}>
+              <Abs left={160} top={1050} width={260} height={390} style={{ transform: `scale(${pop((blf - 57) / 8)})` }}>
                 <Cimarron1 expression="worried" mouth="closed" arm="point" seed={1} />
               </Abs>
-              <Abs left={430} top={1100} width={260} height={390} style={{ transform: `scale(${pop((lf - 61) / 8)})` }}>
+              <Abs left={430} top={1100} width={260} height={390} style={{ transform: `scale(${pop((blf - 61) / 8)})` }}>
                 <Cimarron2 expression="worried" mouth="closed" arm="down" seed={2} />
               </Abs>
-              <Abs left={700} top={1050} width={260} height={390} style={{ transform: `scale(${pop((lf - 65) / 8)})` }}>
+              <Abs left={700} top={1050} width={260} height={390} style={{ transform: `scale(${pop((blf - 65) / 8)})` }}>
                 <Cimarron3 expression="happy" mouth="closed" arm="oneUp" seed={3} />
               </Abs>
               <Sub top={1560}>fled into the jungle</Sub>
@@ -205,7 +205,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           );
         }
         // men running away across the road (translateX walks them right)
-        const runX = lf * 4;
+        const runX = blf * 4;
         return (
           <>
             <TrailPlate />
@@ -232,7 +232,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
       return (
         <>
           <VillagePlate />
-          {lf > 20 && (
+          {blf > 20 && (
             <Abs left={64} top={260}><Badge color="#2f9e44">CIMARRONES</Badge></Abs>
           )}
           <Abs left={140} top={1000} width={260} height={390}>
@@ -250,7 +250,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
     }
     case "spain": {
       // M1 Spanish armies march | M2 melted into the trees → flip to the
-      // raid at lf 57 ("kept raiding" 22.90s).
+      // raid at blf 57 ("kept raiding" 22.90s).
       if (beat.id === "M1") {
         const marchX = lf * 2;
         return (
@@ -270,7 +270,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      if (lf >= 57) {
+      if (blf >= 57) {
         // raid: cimarrones jump the mule on the treasure road
         return (
           <>
@@ -279,10 +279,10 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
             <Abs left={120} top={1150} width={300} height={260}>
               <Mule />
             </Abs>
-            <Abs left={480} top={1000} width={260} height={390} style={{ transform: `scale(${pop((lf - 57) / 8)})` }}>
+            <Abs left={480} top={1000} width={260} height={390} style={{ transform: `scale(${pop((blf - 57) / 8)})` }}>
               <Cimarron1 expression="happy" mouth="closed" arm="bothUp" seed={1} />
             </Abs>
-            <Abs left={760} top={1050} width={260} height={390} style={{ transform: `scale(${pop((lf - 61) / 8)})` }}>
+            <Abs left={760} top={1050} width={260} height={390} style={{ transform: `scale(${pop((blf - 61) / 8)})` }}>
               <Cimarron2 expression="happy" mouth="closed" arm="point" seed={2} />
             </Abs>
             <Sub top={1560}>kept raiding the treasure road</Sub>
@@ -290,7 +290,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
         );
       }
       // melted into the trees: cimarrones fading out in the jungle
-      const fade = 1 - lf / 57;
+      const fade = 1 - blf / 57;
       return (
         <>
           <JunglePlate />
@@ -305,7 +305,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
       );
     }
     case "drake": {
-      // D1 ship arrives 1572 | D2 Drake lost in the jungle, flip at lf 59
+      // D1 ship arrives 1572 | D2 Drake lost in the jungle, flip at blf 59
       // ("The jungle knew him" 29.98s) | D3 cimarrones found HIM |
       // D4 Pedro Mandinga close-up | D5 the deal, speech bubble.
       if (beat.id === "D1") {
@@ -322,7 +322,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
         );
       }
       if (beat.id === "D2") {
-        const known = lf >= 59;
+        const known = blf >= 59;
         return (
           <>
             <JunglePlate />
@@ -366,7 +366,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
         return (
           <>
             <JunglePlate />
-            {lf > 12 && (
+            {blf > 12 && (
               <Abs left={64} top={170}><Badge color="#2f9e44">PEDRO MANDINGA</Badge></Abs>
             )}
             <Abs left={300} top={900} width={360} height={540}>
@@ -397,7 +397,7 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
     }
     case "ambush": {
       // A1 February 1573 march | A2 30 CIMARRONES pill + march |
-      // A3 ambush → flip to the riverbed at lf 83 ("riverbed" 44.54s).
+      // A3 ambush → flip to the riverbed at blf 83 ("riverbed" 44.54s).
       if (beat.id === "A1") {
         const marchX = lf * 2;
         return (
@@ -438,12 +438,12 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           </>
         );
       }
-      if (lf >= 83) {
+      if (blf >= 83) {
         // riverbed: the stolen silver, hidden
         return (
           <>
             <RiverPlate />
-            <Abs left={290} top={1300} width={500} height={320} style={{ transform: `scale(${pop((lf - 83) / 8)})` }}>
+            <Abs left={290} top={1300} width={500} height={320} style={{ transform: `scale(${pop((blf - 83) / 8)})` }}>
               <TreasureChest />
             </Abs>
             <Sub top={1560}>hid it in a riverbed</Sub>
@@ -464,8 +464,8 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           <Abs left={700} top={900} width={260} height={390} style={{ transform: `scale(${pop((blf - 4) / 8)})` }}>
             <Cimarron2 expression="happy" mouth="closed" arm="bothUp" seed={2} />
           </Abs>
-          {lf > 42 && (
-            <Abs left={390} top={1420} width={340} height={150} style={{ transform: `scale(${pop((lf - 42) / 8)})` }}>
+          {blf > 42 && (
+            <Abs left={390} top={1420} width={340} height={150} style={{ transform: `scale(${pop((blf - 42) / 8)})` }}>
               <SilverPile />
             </Abs>
           )}
@@ -557,8 +557,8 @@ const Scene: React.FC<{ id: SceneId; beat: BeatDef; lf: number; dur: number; t: 
           <Abs left={390} top={950} width={300} height={450}>
             <Drake expression="happy" mouth={mouth} arm="oneUp" seed={2} />
           </Abs>
-          {lf > 20 && (
-            <Abs left={700} top={1150} width={220} height={220} style={{ transform: `scale(${pop((lf - 20) / 8)})` }}>
+          {blf > 20 && (
+            <Abs left={700} top={1150} width={220} height={220} style={{ transform: `scale(${pop((blf - 20) / 8)})` }}>
               <Globe />
             </Abs>
           )}
