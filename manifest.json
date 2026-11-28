@@ -1,0 +1,148 @@
+{
+ "owner": "WhyClips",
+ "repo": "why-clips-render",
+ "branch": "drake-cimarrones",
+ "message": "Drake Cimarrones Gullak v1",
+ "files": [
+  {
+   "path": "README.md",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/README.md"
+  },
+  {
+   "path": "make_manifest.py",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/make_manifest.py"
+  },
+  {
+   "path": "manifest.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/manifest.json"
+  },
+  {
+   "path": "package-lock.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/package-lock.json"
+  },
+  {
+   "path": "package.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/package.json"
+  },
+  {
+   "path": "remotion.config.ts",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/remotion.config.ts"
+  },
+  {
+   "path": "render-drake-gullak.yml",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/render-drake-gullak.yml"
+  },
+  {
+   "path": "script-drake.txt",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/script-drake.txt"
+  },
+  {
+   "path": "stills.mjs",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/stills.mjs"
+  },
+  {
+   "path": "tsconfig.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/tsconfig.json"
+  },
+  {
+   "path": "audio/make_bed_drake.py",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/make_bed_drake.py"
+  },
+  {
+   "path": "audio/mix_sfx_drake.py",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/mix_sfx_drake.py"
+  },
+  {
+   "path": "audio/mouthCues.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/mouthCues.json"
+  },
+  {
+   "path": "audio/music_sfx.wav",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/music_sfx.wav"
+  },
+  {
+   "path": "audio/music_synth.wav",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/music_synth.wav"
+  },
+  {
+   "path": "audio/rhubarb-drake.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/rhubarb-drake.json"
+  },
+  {
+   "path": "audio/voiceover-16k.wav",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/voiceover-16k.wav"
+  },
+  {
+   "path": "audio/voiceover.mp3",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/voiceover.mp3"
+  },
+  {
+   "path": "audio/words-raw.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/words-raw.json"
+  },
+  {
+   "path": "audio/words.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/audio/words.json"
+  },
+  {
+   "path": "public/fonts/Fredoka-Bold.ttf",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/public/fonts/Fredoka-Bold.ttf"
+  },
+  {
+   "path": "src/Root.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/Root.tsx"
+  },
+  {
+   "path": "src/index.ts",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/index.ts"
+  },
+  {
+   "path": "src/videos/fruitflies/Drake.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/Drake.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/captions.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/captions.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/cards.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/cards.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/characters.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/characters.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/fonts.ts",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/fonts.ts"
+  },
+  {
+   "path": "src/videos/fruitflies/mouthCues.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/mouthCues.json"
+  },
+  {
+   "path": "src/videos/fruitflies/plates-drake.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/plates-drake.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/plates.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/plates.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/props-drake.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/props-drake.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/props.tsx",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/props.tsx"
+  },
+  {
+   "path": "src/videos/fruitflies/story.ts",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/story.ts"
+  },
+  {
+   "path": "src/videos/fruitflies/words.json",
+   "file": "/home/hatch/workspace/ricks-clone/drake-cimarrones-gullak-project/src/videos/fruitflies/words.json"
+  }
+ ]
+}
